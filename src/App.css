@@ -3,3 +3,26 @@
 	display: flex !important;
 	justify-content: center !important;  
 }
+
+.ant-menu-horizontal > .ant-menu-item-selected {
+	background: var(--menu-active-color) !important;
+	box-shadow: none !important;
+}
+
+.ant-menu-horizontal > .ant-menu-item-selected > a {
+	opacity: 1 !important;
+	font-weight: 700 !important;
+	text-shadow: 0 0 6px rgba(255,255,255,0.5);
+}
+
+.ant-menu-horizontal > .ant-menu-item-selected > a > .anticon {
+	filter: brightness(1.5);
+}
+
+.ant-message {
+	z-index: 99999 !important;
+}
+
+.ant-message-notice-content {
+	color: #ffffff !important;
+}

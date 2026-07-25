@@ -4,10 +4,10 @@ import {
 	Card,
 	Input,
 	Button,
-	message,
 	Typography,
 	Space,
 	Badge,
+	App,
 } from 'antd';
 import {
 	SendOutlined,
@@ -24,6 +24,7 @@ const { Text } = Typography;
 //
 
 const Chat = () => {
+	const { message } = App.useApp();
 	const [messages, setMessages] = useState([]);
 	const [inputMessage, setInputMessage] = useState('');
 	const [username, setUsername] = useState('');
@@ -189,6 +190,26 @@ const Chat = () => {
 		}
 	};
 
+	const groupMessagesByDate = (msgs) => {
+		const groups = [];
+		let currentDate = null;
+
+		msgs.forEach((msg) => {
+			const date = new Date(msg.timestamp).toLocaleDateString('pt-BR', {
+				year: 'numeric',
+				month: 'long',
+				day: 'numeric',
+			});
+			if (date !== currentDate) {
+				currentDate = date;
+				groups.push({ type: 'date', label: date, id: `date-${date}` });
+			}
+			groups.push({ type: 'message', data: msg, id: msg.timestamp });
+		});
+
+		return groups;
+	};
+
 	const renderMessageContent = (message) => {
 		// System message
 		if (message.type === 'system') {
@@ -235,7 +256,7 @@ const Chat = () => {
 	};
 
 	return (
-		<div className='chat-wrapper relative h-full bg-[#00cc99]'>
+		<div className='chat-wrapper relative h-full bg-[#22c55e]'>
 			<div
 				style={{
 					transform: 'translate(-50%, -50%)',
@@ -253,6 +274,7 @@ const Chat = () => {
 								<Text strong>Chat Amizade</Text>
 							</Space>
 							<Space>
+								<span style={{ color: '#999', fontSize: 12 }}>Seu nickname:</span>
 								{editingUsername ? (
 									<Space.Compact>
 										<Input
@@ -317,25 +339,52 @@ const Chat = () => {
 							border: 'solid 1px #000',
 						}}
 					>
-						{messages.map((message, index) => (
-							<div
-								key={index}
-								style={{
-									display: 'flex',
-									justifyContent:
-										message.type === 'system'
-											? 'center'
-											: message.username === username
-												? 'flex-end'
-												: 'flex-start',
-									maxWidth: '80%',
-									alignSelf:
-										message.username === username ? 'flex-end' : 'flex-start',
-								}}
-							>
-								{renderMessageContent(message)}
-							</div>
-						))}
+						{groupMessagesByDate(messages).map((item) => {
+							if (item.type === 'date') {
+								return (
+									<div
+										key={item.id}
+										style={{
+											textAlign: 'center',
+											margin: '8px 0',
+										}}
+									>
+										<Text
+											type='secondary'
+											style={{
+												fontSize: '0.7em',
+												background: '#f0f0f0',
+												padding: '2px 10px',
+												borderRadius: '10px',
+											}}
+										>
+											{item.label}
+										</Text>
+									</div>
+								);
+							}
+
+							const message = item.data;
+							return (
+								<div
+									key={item.id}
+									style={{
+										display: 'flex',
+										justifyContent:
+											message.type === 'system'
+												? 'center'
+												: message.username === username
+													? 'flex-end'
+													: 'flex-start',
+										maxWidth: '80%',
+										alignSelf:
+											message.username === username ? 'flex-end' : 'flex-start',
+									}}
+								>
+									{renderMessageContent(message)}
+								</div>
+							);
+						})}
 						<div ref={messagesEndRef} className='messages-end-ref' />
 					</Content>
 					<Space.Compact className='flex flex-row w-full   bg-white gap-4 mt-4'>

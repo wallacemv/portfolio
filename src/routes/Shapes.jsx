@@ -62,7 +62,7 @@ const Shapes = () => {
 	};
 
 	return (
-		<div className='shapes-wrapper h-full overflow-auto bg-[#ff6600]'>
+		<div className='shapes-wrapper h-full overflow-auto bg-[#f97316]'>
 			<div className='flex flex-1 p-4 flex-col gap-2'>
 				<div className='flex gap-2'>
 					<Button

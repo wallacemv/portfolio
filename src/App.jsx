@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Layout, Menu, Breadcrumb, Button, theme, Affix } from 'antd';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
+import { Layout, Menu, Breadcrumb, Button, theme, Affix, App as AntApp } from 'antd';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import './App.css';
 
@@ -15,47 +15,234 @@ import {
 
 const { Header, Content, Footer, Sider } = Layout;
 
+const randomBetween = (min, max) => Math.random() * (max - min) + min;
+
+const FloatingCircles = () => {
+	const circlesRef = useRef([]);
+	const mouseRef = useRef({ x: -9999, y: -9999 });
+	const circlesConfig = useMemo(() => {
+		const colors = [
+			'#1e293b20',
+			'#33415518',
+			'#47556915',
+			'#64748b18',
+			'#0f172a20',
+			'#1e3a5f15',
+			'#2d374818',
+			'#1a202c20',
+			'#37415115',
+			'#1f293718',
+			'#11182720',
+			'#1e293b15',
+			'#0f172a18',
+			'#33415520',
+			'#47556915',
+		];
+		const centerX = window.innerWidth / 2;
+		const centerY = window.innerHeight / 2;
+		const circles = Array.from({ length: 15 }, (_, i) => ({
+			id: i,
+			size: randomBetween(12, 32),
+			color: colors[i % colors.length],
+			x: centerX + randomBetween(-400, 400),
+			y: centerY + randomBetween(-400, 400),
+			vx: randomBetween(-0.3, 0.3),
+			vy: randomBetween(-0.3, 0.3),
+		}));
+		return circles;
+	}, []);
+
+	useEffect(() => {
+		const circles = circlesConfig.map((c) => ({ ...c, el: null }));
+
+		circlesRef.current.forEach((el) => {
+			if (!el) return;
+			const id = parseInt(el.dataset.id);
+			const circle = circles.find((c) => c.id === id);
+			if (circle) circle.el = el;
+		});
+
+		const handleMouseMove = (e) => {
+			mouseRef.current = { x: e.clientX, y: e.clientY };
+		};
+		window.addEventListener('mousemove', handleMouseMove);
+
+		let animId;
+
+		const animate = () => {
+			const mx = mouseRef.current.x;
+			const my = mouseRef.current.y;
+			const ww = window.innerWidth;
+			const wh = window.innerHeight;
+
+			circles.forEach((c) => {
+				if (!c.el) return;
+
+				const radius = c.el.offsetWidth / 2;
+				const cx = c.x + radius;
+				const cy = c.y + radius;
+				const dx = cx - mx;
+				const dy = cy - my;
+				const dist = Math.sqrt(dx * dx + dy * dy);
+				const minDist = 120;
+
+				if (dist < minDist && dist > 0) {
+					const force = ((minDist - dist) / minDist) * 3;
+					c.vx += (dx / dist) * force;
+					c.vy += (dy / dist) * force;
+				}
+
+				c.vx *= 0.98;
+				c.vy *= 0.98;
+				c.x += c.vx;
+				c.y += c.vy;
+
+				const ew = c.el.offsetWidth;
+				const eh = c.el.offsetHeight;
+
+				if (c.x + ew >= ww) { c.x = ww - ew; c.vx = 0; }
+				if (c.x <= 0) { c.x = 0; c.vx = 0; }
+				if (c.y + eh >= wh) { c.y = wh - eh; c.vy = 0; }
+				if (c.y <= 0) { c.y = 0; c.vy = 0; }
+			});
+
+			for (let i = 0; i < circles.length; i++) {
+				for (let j = i + 1; j < circles.length; j++) {
+					const a = circles[i];
+					const b = circles[j];
+					if (!a.el || !b.el) continue;
+
+					const ax = a.x + a.el.offsetWidth / 2;
+					const ay = a.y + a.el.offsetHeight / 2;
+					const bx = b.x + b.el.offsetWidth / 2;
+					const by = b.y + b.el.offsetHeight / 2;
+					const dx = ax - bx;
+					const dy = ay - by;
+					const dist = Math.sqrt(dx * dx + dy * dy);
+					const minDist = (a.el.offsetWidth + b.el.offsetWidth) / 2;
+
+					if (dist < minDist && dist > 0) {
+						const overlap = (minDist - dist) / 2;
+						const nx = dx / dist;
+						const ny = dy / dist;
+						a.x += nx * overlap;
+						a.y += ny * overlap;
+						b.x -= nx * overlap;
+						b.y -= ny * overlap;
+
+						const dvx = a.vx - b.vx;
+						const dvy = a.vy - b.vy;
+						const dot = dvx * nx + dvy * ny;
+						a.vx -= dot * nx * 0.5;
+						a.vy -= dot * ny * 0.5;
+						b.vx += dot * nx * 0.5;
+						b.vy += dot * ny * 0.5;
+					}
+				}
+			}
+
+			circles.forEach((c) => {
+				if (!c.el) return;
+				c.el.style.transform = `translate(${c.x}px, ${c.y}px)`;
+			});
+
+			animId = requestAnimationFrame(animate);
+		};
+
+		let resizeTimer;
+		const handleResize = () => {
+			clearTimeout(resizeTimer);
+			resizeTimer = setTimeout(() => {
+				const ww = window.innerWidth;
+				const wh = window.innerHeight;
+				circles.forEach((c) => {
+					if (!c.el) return;
+					c.vx = 0;
+					c.vy = 0;
+					if (c.x + c.el.offsetWidth > ww) c.x = Math.max(0, ww - c.el.offsetWidth);
+					if (c.y + c.el.offsetHeight > wh) c.y = Math.max(0, wh - c.el.offsetHeight);
+					if (c.x < 0) c.x = 0;
+					if (c.y < 0) c.y = 0;
+				});
+			}, 300);
+		};
+		window.addEventListener('resize', handleResize);
+
+		animId = requestAnimationFrame(animate);
+		return () => {
+			cancelAnimationFrame(animId);
+			clearTimeout(resizeTimer);
+			window.removeEventListener('mousemove', handleMouseMove);
+			window.removeEventListener('resize', handleResize);
+		};
+	}, [circlesConfig]);
+
+	return (
+		<div className='fixed inset-0 pointer-events-none' style={{ zIndex: 1 }}>
+			{circlesConfig.map((c) => (
+				<div
+					key={c.id}
+					data-id={c.id}
+					ref={(el) => {
+						if (el) circlesRef.current[c.id] = el;
+					}}
+					className='rounded-full pointer-events-none'
+					style={{
+						position: 'absolute',
+						top: 0,
+						left: 0,
+						width: `${c.size}rem`,
+						height: `${c.size}rem`,
+						backgroundColor: c.color,
+					}}
+				/>
+			))}
+		</div>
+	);
+};
+
+const pageColors = {
+	'/': '#6366f1',
+	'/paint': '#ef4444',
+	'/shapes': '#f97316',
+	'/chat': '#22c55e',
+	'/about': '#3b82f6',
+};
+
 const menuItems = [
 	{
 		key: '/',
 		label: <Link to='/'>Home</Link>,
 		icon: <HomeOutlined />,
-		style: { background: '#818cf8' },
-		text: 'Home',
+		style: { borderBottom: '5px solid #6366f1' },
 	},
 
 	{
 		key: '/paint',
 		label: <Link to='/paint'>Paint</Link>,
 		icon: <BookOutlined />,
-		style: { background: '#63bbff' },
-		text: 'Paint',
+		style: { borderBottom: '5px solid #ef4444' },
 	},
 
 	{
 		key: '/shapes',
 		label: <Link to='/shapes'>Shapes</Link>,
 		icon: <BookOutlined />,
-		style: { background: '#ff6600' },
-		text: 'Shapes',
+		style: { borderBottom: '5px solid #f97316' },
 	},
 
 	{
 		key: '/chat',
-		label: <Link to='/chat'>Chat</Link>,
+		label: <Link to='/chat'>Chat Amizade</Link>,
 		icon: <MessageOutlined />,
-		style: { background: '#00cc99' },
-		text: 'Chat',
+		style: { borderBottom: '5px solid #22c55e' },
 	},
 
 	{
 		key: '/about',
 		label: <Link to='/about'>About</Link>,
 		icon: <ContactsOutlined />,
-
-		style: { background: '#7600dc' },
-
-		text: 'Sobre',
+		style: { borderBottom: '5px solid #3b82f6' },
 	},
 ];
 
@@ -68,17 +255,25 @@ const App = () => {
 		token: { colorBgContainer, colorPrimaryBg },
 	} = theme.useToken();
 
-	const selectedBg =
-		menuItems.find((item) => item.key === location.pathname)?.style
-			?.background || '#818cf8';
+	const selectedBg = pageColors[location.pathname] || '#6366f1';
+
+	const hexToRgba = (hex, alpha) => {
+		const r = parseInt(hex.slice(1, 3), 16);
+		const g = parseInt(hex.slice(3, 5), 16);
+		const b = parseInt(hex.slice(5, 7), 16);
+		return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+	};
 
 	return (
+		<AntApp style={{ height: '100%' }}>
 		<Layout className='flex flex-col h-full bg-white'>
+			<FloatingCircles />
 			<Header
 				style={{
 					padding: 0,
 					zIndex: 9999,
 					display: 'flex',
+					background: 'transparent',
 				}}
 			>
 				<Menu
@@ -87,9 +282,11 @@ const App = () => {
 					selectedKeys={[location.pathname]}
 					items={menuItems}
 					style={{
-						background: selectedBg,
+						background: hexToRgba(selectedBg, 0.88),
 						flex: 1,
 						minWidth: 0,
+						'--menu-active-color': selectedBg,
+						transition: 'background 0.4s ease',
 					}}
 				/>
 			</Header>
@@ -107,8 +304,9 @@ const App = () => {
 
 			<Footer
 				style={{
-					background: colorPrimaryBg,
+					background: hexToRgba(selectedBg, 0.88),
 					width: '100%',
+					transition: 'background 0.4s ease',
 				}}
 				className='drop-shadow p-4 justify-end'
 			>
@@ -145,6 +343,7 @@ const App = () => {
 				</div>
 			</Footer>
 		</Layout>
+		</AntApp>
 	);
 };
 

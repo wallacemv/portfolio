@@ -2,7 +2,7 @@ import React from 'react';
 
 const About = () => {
 	return (
-		<div className='about-wrapper bg-[#7600dc] h-full overflow-auto'>
+		<div className='about-wrapper bg-[#3b82f6] h-full overflow-auto'>
 			<div className='p-8 text-[#fff]'>
 				<h1>O que eu usei aqui</h1>
 

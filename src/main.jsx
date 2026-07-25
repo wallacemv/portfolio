@@ -34,15 +34,15 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 		theme={{
 			token: {
 				colorPrimary: '#363636',
-				colorPrimaryHover: '#7600dc',
-				colorItemBgSelected: '#7600dc',
+				colorPrimaryHover: '#6366f1',
+				colorItemBgSelected: '#6366f1',
 				colorPrimaryBg: '#363636',
-				colorBgTextActive: '#7600dc',
-				colorLink: '#7600dc',
+				colorBgTextActive: '#6366f1',
+				colorLink: '#6366f1',
 				colorTextBase: '#505050',
-				colorLinkActive: '#4900b0',
-				colorLinkHover: '#4900b0',
-				controlItemBgActiveHover: '#4900b0',
+				colorLinkActive: '#4f46e5',
+				colorLinkHover: '#4f46e5',
+				controlItemBgActiveHover: '#4f46e5',
 				colorBgContainer: '#ffffff',
 				colorBgBase: '#363636',
 				colorBgLayout: '#363636',
@@ -53,9 +53,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 		<MainProvider>
 			<RouterProvider router={router}>
 				<StyleProvider hashPriority='high'>
-					{/* <React.StrictMode> */}
 					<App />
-					{/* </React.StrictMode> */}
 				</StyleProvider>
 			</RouterProvider>
 		</MainProvider>
