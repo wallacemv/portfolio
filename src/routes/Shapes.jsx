@@ -1,84 +1,99 @@
-import React from 'react';
-import KUTE from 'kute.js';
-import { useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { Button } from 'antd';
 import { RedoOutlined, DeleteOutlined } from '@ant-design/icons';
 
-let nextId = 0;
-
 const Shapes = () => {
-	const [path, setPath] = useState([]);
+	const wavesRef = useRef([]);
+	const animRef = useRef(null);
+	const [waveCount, setWaveCount] = useState(0);
 
-	useEffect(() => {}, []);
-
-	const createWave = (color = 'blue', opacity = '0.6') => {
+	const createWave = useCallback(() => {
 		const container = document.getElementById('svg-wrapper');
+		if (!container) return;
 		const svgWidth = container.clientWidth;
 		const svgHeight = 400;
-		const svg = document.getElementById('wave-container');
 
-		svg.setAttribute('width', svgWidth);
-		svg.setAttribute('height', svgHeight);
+		wavesRef.current.push({
+			id: Date.now() + Math.random(),
+			color: `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0')}`,
+			opacity: (Math.random() * 0.4 + 0.2).toFixed(2),
+			frequency: Math.random() * 0.015 + 0.005,
+			amplitude: Math.random() * 60 + 20,
+			phase: Math.random() * Math.PI * 2,
+			speed: Math.random() * 0.08 + 0.04,
+			offsetX: 0,
+			svgWidth,
+			svgHeight,
+		});
 
-		const frequency = Math.random() * (0.02 - 0.009 + 0.009);
-		const amplitude = Math.random() * 80;
-		const phase = Math.random() * 10;
+		setWaveCount((n) => n + 1);
+	}, []);
 
-		let pathData = `M 0 ${svgHeight / 2}`;
+	const clearWaves = useCallback(() => {
+		wavesRef.current = [];
+		setWaveCount(0);
+	}, []);
 
-		for (let x = 0; x < svgWidth; x++) {
-			const y = amplitude * Math.sin(frequency * x + phase) + svgHeight / 2;
-			pathData += `L ${x} ${y}`;
-		}
+	useEffect(() => {
+		const animate = () => {
+			const svg = document.getElementById('wave-container');
+			const container = document.getElementById('svg-wrapper');
+			if (!svg || !container) {
+				animRef.current = requestAnimationFrame(animate);
+				return;
+			}
 
-		pathData += `L ${svgWidth} ${svgHeight} L 0 ${svgHeight} Z`;
+			const svgWidth = container.clientWidth;
+			const svgHeight = 400;
+			svg.setAttribute('width', svgWidth);
+			svg.setAttribute('height', svgHeight);
+			svg.innerHTML = '';
 
-		setPath([...path, { id: nextId++, path: pathData }]);
+			wavesRef.current.forEach((w) => {
+				w.offsetX += w.speed;
 
-		const pathElement = document.createElementNS(
-			'http://www.w3.org/2000/svg',
-			'path'
-		);
-		pathElement.setAttribute('d', pathData);
-		pathElement.setAttribute('id', `wave-${nextId}`);
+				let pathData = `M 0 ${svgHeight}`;
+				for (let x = 0; x <= svgWidth; x += 3) {
+					const y =
+						w.amplitude * Math.sin(w.frequency * (x + w.offsetX) + w.phase) +
+						svgHeight / 2;
+					pathData += `L ${x} ${y}`;
+				}
+				pathData += `L ${svgWidth} ${svgHeight} Z`;
 
-		pathElement.setAttribute(
-			'fill',
-			`#${Math.floor(Math.random() * 16777215).toString(16)}`
-		);
-		pathElement.setAttribute('opacity', opacity);
+				const pathEl = document.createElementNS(
+					'http://www.w3.org/2000/svg',
+					'path'
+				);
+				pathEl.setAttribute('d', pathData);
+				pathEl.setAttribute('fill', w.color);
+				pathEl.setAttribute('opacity', w.opacity);
+				svg.appendChild(pathEl);
+			});
 
-		svg.appendChild(pathElement);
+			animRef.current = requestAnimationFrame(animate);
+		};
 
-		// path.setAttribute("stroke", "black");
-
-		// useChat()
-		// como usar o useState
-	};
-
-	const clearWaves = () => {
-		const svg = document.getElementById('wave-container');
-		svg.innerHTML = '';
-	};
+		animRef.current = requestAnimationFrame(animate);
+		return () => cancelAnimationFrame(animRef.current);
+	}, [waveCount]);
 
 	return (
 		<div className='shapes-wrapper h-full overflow-auto bg-[#f97316]'>
-			<div className='flex flex-1 p-4 flex-col gap-2'>
+			<div className='flex h-full p-4 flex-col gap-2 justify-end'>
 				<div className='flex gap-2'>
 					<Button
 						onClick={createWave}
 						shape='default'
-						color='primary'
 						style={{ background: 'white' }}
 						icon={<RedoOutlined />}
 					>
-						Gerar shape (clica bastante)
+						Gerar shapes
 					</Button>
 
 					<Button
 						onClick={clearWaves}
 						shape='default'
-						color='primary'
 						style={{ background: 'white' }}
 						icon={<DeleteOutlined />}
 					>

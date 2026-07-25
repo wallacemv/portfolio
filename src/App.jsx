@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { Layout, Menu, Breadcrumb, Button, theme, Affix, App as AntApp } from 'antd';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import './App.css';
@@ -20,36 +20,31 @@ const randomBetween = (min, max) => Math.random() * (max - min) + min;
 const FloatingCircles = () => {
 	const circlesRef = useRef([]);
 	const mouseRef = useRef({ x: -9999, y: -9999 });
-	const circlesConfig = useMemo(() => {
+	const animIdRef = useRef(null);
+	const [, forceUpdate] = useState(0);
+
+	const createRandomColor = () => {
 		const colors = [
-			'#1e293b20',
-			'#33415518',
-			'#47556915',
-			'#64748b18',
-			'#0f172a20',
-			'#1e3a5f15',
-			'#2d374818',
-			'#1a202c20',
-			'#37415115',
-			'#1f293718',
-			'#11182720',
-			'#1e293b15',
-			'#0f172a18',
-			'#33415520',
-			'#47556915',
+			'#1e293b20', '#33415518', '#47556915', '#64748b18',
+			'#0f172a20', '#1e3a5f15', '#2d374818', '#1a202c20',
+			'#37415115', '#1f293718', '#11182720', '#1e293b15',
 		];
+		return colors[Math.floor(Math.random() * colors.length)];
+	};
+
+	const circlesConfig = useMemo(() => {
 		const centerX = window.innerWidth / 2;
 		const centerY = window.innerHeight / 2;
-		const circles = Array.from({ length: 15 }, (_, i) => ({
+		return Array.from({ length: 15 }, (_, i) => ({
 			id: i,
 			size: randomBetween(12, 32),
-			color: colors[i % colors.length],
+			color: createRandomColor(),
 			x: centerX + randomBetween(-400, 400),
 			y: centerY + randomBetween(-400, 400),
 			vx: randomBetween(-0.3, 0.3),
 			vy: randomBetween(-0.3, 0.3),
+			popping: false,
 		}));
-		return circles;
 	}, []);
 
 	useEffect(() => {
@@ -67,8 +62,6 @@ const FloatingCircles = () => {
 		};
 		window.addEventListener('mousemove', handleMouseMove);
 
-		let animId;
-
 		const animate = () => {
 			const mx = mouseRef.current.x;
 			const my = mouseRef.current.y;
@@ -76,7 +69,7 @@ const FloatingCircles = () => {
 			const wh = window.innerHeight;
 
 			circles.forEach((c) => {
-				if (!c.el) return;
+				if (!c.el || c.popping) return;
 
 				const radius = c.el.offsetWidth / 2;
 				const cx = c.x + radius;
@@ -110,7 +103,7 @@ const FloatingCircles = () => {
 				for (let j = i + 1; j < circles.length; j++) {
 					const a = circles[i];
 					const b = circles[j];
-					if (!a.el || !b.el) continue;
+					if (!a.el || !b.el || a.popping || b.popping) continue;
 
 					const ax = a.x + a.el.offsetWidth / 2;
 					const ay = a.y + a.el.offsetHeight / 2;
@@ -142,11 +135,11 @@ const FloatingCircles = () => {
 			}
 
 			circles.forEach((c) => {
-				if (!c.el) return;
+				if (!c.el || c.popping) return;
 				c.el.style.transform = `translate(${c.x}px, ${c.y}px)`;
 			});
 
-			animId = requestAnimationFrame(animate);
+			animIdRef.current = requestAnimationFrame(animate);
 		};
 
 		let resizeTimer;
@@ -156,7 +149,7 @@ const FloatingCircles = () => {
 				const ww = window.innerWidth;
 				const wh = window.innerHeight;
 				circles.forEach((c) => {
-					if (!c.el) return;
+					if (!c.el || c.popping) return;
 					c.vx = 0;
 					c.vy = 0;
 					if (c.x + c.el.offsetWidth > ww) c.x = Math.max(0, ww - c.el.offsetWidth);
@@ -168,14 +161,49 @@ const FloatingCircles = () => {
 		};
 		window.addEventListener('resize', handleResize);
 
-		animId = requestAnimationFrame(animate);
+		animIdRef.current = requestAnimationFrame(animate);
 		return () => {
-			cancelAnimationFrame(animId);
+			cancelAnimationFrame(animIdRef.current);
 			clearTimeout(resizeTimer);
 			window.removeEventListener('mousemove', handleMouseMove);
 			window.removeEventListener('resize', handleResize);
 		};
 	}, [circlesConfig]);
+
+	const popBubble = useCallback((id) => {
+		const circle = circlesConfig.find((c) => c.id === id);
+		if (!circle || circle.popping) return;
+		const el = circlesRef.current[id];
+		if (!el) return;
+
+		circle.popping = true;
+
+		el.style.transition = 'transform 0.35s ease-out, opacity 0.35s ease-out';
+		el.style.opacity = '0';
+		el.style.transform = `translate(${circle.x}px, ${circle.y}px) scale(1.8)`;
+
+		setTimeout(() => {
+			el.style.display = 'none';
+		}, 400);
+	}, [circlesConfig]);
+
+	const handleBubbleClick = useCallback((e) => {
+		for (const c of circlesConfig) {
+			if (c.popping) continue;
+			const el = circlesRef.current[c.id];
+			if (!el) continue;
+			if (e.clientX >= c.x && e.clientX <= c.x + el.offsetWidth &&
+				e.clientY >= c.y && e.clientY <= c.y + el.offsetHeight) {
+				popBubble(c.id);
+				break;
+			}
+		}
+	}, [circlesConfig, popBubble]);
+
+	useEffect(() => {
+		window.addEventListener('click', handleBubbleClick);
+		return () => window.removeEventListener('click', handleBubbleClick);
+	}, [handleBubbleClick]);
 
 	return (
 		<div className='fixed inset-0 pointer-events-none' style={{ zIndex: 1 }}>
@@ -186,7 +214,7 @@ const FloatingCircles = () => {
 					ref={(el) => {
 						if (el) circlesRef.current[c.id] = el;
 					}}
-					className='rounded-full pointer-events-none'
+					className='rounded-full'
 					style={{
 						position: 'absolute',
 						top: 0,
