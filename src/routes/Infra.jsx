@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Tag, Space } from 'antd';
+import { Tag, Space } from 'antd';
 import {
 	CloudServerOutlined,
 	ClusterOutlined,
@@ -95,189 +95,171 @@ const Infra = () => {
 					Como os projetos são servidos em produção.
 				</p>
 
-				<div className='flex flex-col gap-6'>
-					<Card
-						className='w-full'
+				<div className='flex flex-col gap-4'>
+					<div
+						className='flex flex-col gap-3 p-4 rounded-lg text-[#ffffff]'
 						style={{
-							backgroundColor: '#ffffff18',
-							border: '1px solid #ffffff40',
-							borderRadius: '12px',
-							boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
-							color: '#ffffff',
+							backgroundColor: 'rgba(255,255,255,0.06)',
+							borderLeft: '4px solid #14b8a6',
 						}}
-						styles={{ body: { padding: '20px 24px' } }}
 					>
-						<Space direction='vertical' size='middle' className='w-full'>
-							<Space align='center' size='middle'>
-								<span
-									className='inline-flex'
-									style={{ fontSize: '26px', color: '#fff' }}
+						<div className='flex items-center gap-3'>
+							<span
+								className='inline-flex'
+								style={{ fontSize: '26px', color: '#14b8a6' }}
+							>
+								<CloudServerOutlined />
+							</span>
+							<h2 className='text-2xl font-bold'>Servidor</h2>
+						</div>
+						<div className='text-white/90'>
+							VPS Ubuntu 22.04 LTS com todos os apps rodando em Kubernetes (k3s v1.28).
+						</div>
+						<div className='grid grid-cols-1 sm:grid-cols-2 gap-3'>
+							{[{
+								icon: <ClusterOutlined />,
+								title: 'Kubernetes (k3s)',
+								desc: 'Orquestração de containers: Deployments, Services, namespaces, probes e rolling updates.',
+							}, {
+								icon: <DockerOutlined />,
+								title: 'Docker + containerd',
+								desc: 'Imagens construídas com Docker e importadas no containerd do k8s (ctr).',
+							}, {
+								icon: <GlobalOutlined />,
+								title: 'Nginx (host)',
+								desc: 'Reverse proxy na porta 443 com prefixos por app (/portfolio, /shop-commerce, /sexybot, /photojobs) para os serviços via *.svc.cluster.local.',
+							}, {
+								icon: <LockOutlined />,
+								title: 'SSL Let\u2019s Encrypt',
+								desc: 'Certificados automáticos no Nginx do host; dashboard em HTTPS na porta 8443.',
+							}].map((item) => (
+								<div
+									key={item.title}
+									className='flex flex-col gap-1 p-3 rounded-lg'
+									style={{ backgroundColor: '#ffffff12' }}
 								>
-									<CloudServerOutlined />
-								</span>
-								<h2 className='text-2xl font-bold'>Servidor</h2>
-							</Space>
-							<div className='text-white/90'>
-								VPS Ubuntu 22.04 LTS com todos os apps rodando em Kubernetes (k3s v1.28).
-							</div>
-							<div className='grid grid-cols-1 sm:grid-cols-2 gap-3'>
-								{[{
-									icon: <ClusterOutlined />,
-									title: 'Kubernetes (k3s)',
-									desc: 'Orquestração de containers: Deployments, Services, namespaces, probes e rolling updates.',
-								}, {
-									icon: <DockerOutlined />,
-									title: 'Docker + containerd',
-									desc: 'Imagens construídas com Docker e importadas no containerd do k8s (ctr).',
-								}, {
-									icon: <GlobalOutlined />,
-									title: 'Nginx (host)',
-									desc: 'Reverse proxy na porta 443 com prefixos por app (/portfolio, /shop-commerce, /sexybot, /photojobs) para os serviços via *.svc.cluster.local.',
-								}, {
-									icon: <LockOutlined />,
-									title: 'SSL Let\u2019s Encrypt',
-									desc: 'Certificados automáticos no Nginx do host; dashboard em HTTPS na porta 8443.',
-								}].map((item) => (
-									<div
-										key={item.title}
-										className='flex flex-col gap-1 p-3 rounded-lg'
-										style={{ backgroundColor: '#ffffff12' }}
-									>
-										<Space>
-											<span className='inline-flex text-lg text-white/90'>
-												{item.icon}
-											</span>
-											<span className='font-semibold'>{item.title}</span>
-										</Space>
-										<div className='text-sm text-white/80'>{item.desc}</div>
-									</div>
-								))}
-							</div>
-						</Space>
-					</Card>
+									<Space>
+										<span className='inline-flex text-lg text-white/90'>
+											{item.icon}
+										</span>
+										<span className='font-semibold'>{item.title}</span>
+									</Space>
+									<div className='text-sm text-white/80'>{item.desc}</div>
+								</div>
+							))}
+						</div>
+					</div>
 
-					<Card
-						className='w-full'
+					<div
+						className='flex flex-col gap-3 p-4 rounded-lg text-[#ffffff]'
 						style={{
-							backgroundColor: '#ffffff18',
-							border: '1px solid #ffffff40',
-							borderRadius: '12px',
-							boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
-							color: '#ffffff',
+							backgroundColor: 'rgba(255,255,255,0.06)',
+							borderLeft: '4px solid #0ea5e9',
 						}}
-						styles={{ body: { padding: '20px 24px' } }}
 					>
-						<Space direction='vertical' size='middle' className='w-full'>
-							<Space align='center' size='middle'>
-								<span
-									className='inline-flex'
-									style={{ fontSize: '26px', color: '#fff' }}
+						<div className='flex items-center gap-3'>
+							<span
+								className='inline-flex'
+								style={{ fontSize: '26px', color: '#0ea5e9' }}
+							>
+								<DeploymentUnitOutlined />
+							</span>
+							<h2 className='text-2xl font-bold'>Aplicações hospedadas</h2>
+						</div>
+						<div className='flex flex-col gap-3'>
+							{apps.map((app) => (
+								<div
+									key={app.name}
+									className='flex flex-col sm:flex-row gap-3 sm:gap-4 p-3 rounded-lg'
+									style={{
+										backgroundColor: `${app.color}22`,
+										border: `1px solid ${app.color}66`,
+									}}
 								>
-									<DeploymentUnitOutlined />
-								</span>
-								<h2 className='text-2xl font-bold'>Aplicações hospedadas</h2>
-							</Space>
-							<div className='flex flex-col gap-3'>
-								{apps.map((app) => (
-									<div
-										key={app.name}
-										className='flex flex-col sm:flex-row gap-3 sm:gap-4 p-3 rounded-lg'
-										style={{
-											backgroundColor: `${app.color}22`,
-											border: `1px solid ${app.color}66`,
-										}}
-									>
-										<div className='flex items-center gap-3 min-w-[180px]'>
-											<span
-												className='inline-flex text-xl'
-												style={{ color: app.color }}
-											>
-												{app.icon}
-											</span>
-											<div className='flex flex-col'>
-												<span className='font-semibold'>{app.name}</span>
-												<a
-													href={app.url}
-													target='_blank'
-													rel='noreferrer'
-													className='text-xs text-white/70 hover:text-white underline underline-offset-2'
-												>
-													{app.url.replace('wss://', '').replace('https://', '')}
-												</a>
-											</div>
-										</div>
-										<div className='flex flex-col gap-1 flex-1'>
-											<div className='text-sm text-white/85'>{app.desc}</div>
-											<div className='flex flex-wrap gap-1.5'>
-												{app.stack.map((tech) => (
-													<Tag
-														key={tech}
-														style={{
-															background: `${app.color}33`,
-															border: `1px solid ${app.color}88`,
-															color: '#fff',
-															borderRadius: '999px',
-															padding: '0 10px',
-															fontSize: '11px',
-														}}
-													>
-														{tech}
-													</Tag>
-												))}
-											</div>
-										</div>
-									</div>
-								))}
-							</div>
-						</Space>
-					</Card>
-
-					<Card
-						className='w-full'
-						style={{
-							backgroundColor: '#ffffff18',
-							border: '1px solid #ffffff40',
-							borderRadius: '12px',
-							boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
-							color: '#ffffff',
-						}}
-						styles={{ body: { padding: '20px 24px' } }}
-					>
-						<Space direction='vertical' size='middle' className='w-full'>
-							<Space align='center' size='middle'>
-								<span
-									className='inline-flex'
-									style={{ fontSize: '26px', color: '#fff' }}
-								>
-									<DockerOutlined />
-								</span>
-								<h2 className='text-2xl font-bold'>Fluxo de deploy</h2>
-							</Space>
-							<div className='flex flex-col gap-3'>
-								{deploySteps.map((item, i) => (
-									<div key={item.step} className='flex items-start gap-3'>
+									<div className='flex items-center gap-3 min-w-[180px]'>
 										<span
-											className='inline-flex items-center justify-center rounded-full font-bold'
-											style={{
-												minWidth: '28px',
-												height: '28px',
-												backgroundColor: '#ffffff25',
-												border: '1px solid #ffffff55',
-											}}
+											className='inline-flex text-xl'
+											style={{ color: app.color }}
 										>
-											{i + 1}
+											{app.icon}
 										</span>
 										<div className='flex flex-col'>
-											<span className='font-semibold'>{item.step}</span>
-											<span className='text-sm text-white/80'>
-												{item.detail}
-											</span>
+											<span className='font-semibold'>{app.name}</span>
+											<a
+												href={app.url}
+												target='_blank'
+												rel='noreferrer'
+												className='text-xs text-white/70 hover:text-white underline underline-offset-2'
+											>
+												{app.url.replace('wss://', '').replace('https://', '')}
+											</a>
 										</div>
 									</div>
-								))}
-							</div>
-						</Space>
-					</Card>
+									<div className='flex flex-col gap-1 flex-1'>
+										<div className='text-sm text-white/85'>{app.desc}</div>
+										<div className='flex flex-wrap gap-1.5'>
+											{app.stack.map((tech) => (
+												<Tag
+													key={tech}
+													style={{
+														background: `${app.color}33`,
+														border: `1px solid ${app.color}88`,
+														color: '#fff',
+														borderRadius: '999px',
+														padding: '0 10px',
+														fontSize: '11px',
+													}}
+												>
+													{tech}
+												</Tag>
+											))}
+										</div>
+									</div>
+								</div>
+							))}
+						</div>
+					</div>
+
+					<div
+						className='flex flex-col gap-3 p-4 rounded-lg text-[#ffffff]'
+						style={{
+							backgroundColor: 'rgba(255,255,255,0.06)',
+							borderLeft: '4px solid #f59e0b',
+						}}
+					>
+						<div className='flex items-center gap-3'>
+							<span
+								className='inline-flex'
+								style={{ fontSize: '26px', color: '#f59e0b' }}
+							>
+								<DockerOutlined />
+							</span>
+							<h2 className='text-2xl font-bold'>Fluxo de deploy</h2>
+						</div>
+						<div className='flex flex-col gap-3'>
+							{deploySteps.map((item, i) => (
+								<div key={item.step} className='flex items-start gap-3'>
+									<span
+										className='inline-flex items-center justify-center rounded-full font-bold'
+										style={{
+											minWidth: '28px',
+											height: '28px',
+											backgroundColor: '#ffffff25',
+											border: '1px solid #ffffff55',
+										}}
+									>
+										{i + 1}
+									</span>
+									<div className='flex flex-col'>
+										<span className='font-semibold'>{item.step}</span>
+										<span className='text-sm text-white/80'>
+											{item.detail}
+										</span>
+									</div>
+								</div>
+							))}
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
