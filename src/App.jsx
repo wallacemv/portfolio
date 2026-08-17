@@ -23,7 +23,8 @@ const FloatingCircles = () => {
 	const circlesRef = useRef([]);
 	const mouseRef = useRef({ x: -9999, y: -9999 });
 	const animIdRef = useRef(null);
-	const [, forceUpdate] = useState(0);
+	const lastInteractRef = useRef(Date.now());
+	const pausedRef = useRef(false);
 
 	const createRandomColor = () => {
 		const colors = [
@@ -34,19 +35,28 @@ const FloatingCircles = () => {
 		return colors[Math.floor(Math.random() * colors.length)];
 	};
 
+	const isMobile = () => window.innerWidth < 768;
+
 	const circlesConfig = useMemo(() => {
-		const centerX = window.innerWidth / 2;
-		const centerY = window.innerHeight / 2;
-		return Array.from({ length: 15 }, (_, i) => ({
-			id: i,
-			size: randomBetween(12, 32),
-			color: createRandomColor(),
-			x: centerX + randomBetween(-400, 400),
-			y: centerY + randomBetween(-400, 400),
-			vx: randomBetween(-0.3, 0.3),
-			vy: randomBetween(-0.3, 0.3),
-			popping: false,
-		}));
+		const count = isMobile() ? 10 : 15;
+		const ww = window.innerWidth;
+		const wh = window.innerHeight;
+		return Array.from({ length: count }, (_, i) => {
+			const size = randomBetween(12, 32);
+			const d = size * 16;
+			return {
+				id: i,
+				size,
+				r: size * 8,
+				color: createRandomColor(),
+				x: randomBetween(0, Math.max(0, ww - d)),
+				y: randomBetween(0, Math.max(0, wh - d)),
+				vx: randomBetween(-0.25, 0.25),
+				vy: randomBetween(-0.25, 0.25),
+				popping: false,
+				lastTransform: '',
+			};
+		});
 	}, []);
 
 	useEffect(() => {
@@ -59,88 +69,84 @@ const FloatingCircles = () => {
 			if (circle) circle.el = el;
 		});
 
-		const handleMouseMove = (e) => {
-			mouseRef.current = { x: e.clientX, y: e.clientY };
+		const wake = () => {
+			lastInteractRef.current = Date.now();
+			if (pausedRef.current) {
+				pausedRef.current = false;
+				animIdRef.current = requestAnimationFrame(animate);
+			}
 		};
-		window.addEventListener('mousemove', handleMouseMove);
+
+		const handlePointerMove = (e) => {
+			mouseRef.current = { x: e.clientX, y: e.clientY };
+			wake();
+		};
+		const handlePointerDown = (e) => {
+			mouseRef.current = { x: e.clientX, y: e.clientY };
+			wake();
+		};
+		window.addEventListener('pointermove', handlePointerMove, { passive: true });
+		window.addEventListener('pointerdown', handlePointerDown, { passive: true });
+
+		const MAX_SPEED = 0.6;
+		const IDLE_MS = 5000;
 
 		const animate = () => {
 			const mx = mouseRef.current.x;
 			const my = mouseRef.current.y;
 			const ww = window.innerWidth;
 			const wh = window.innerHeight;
+			const repulseRange = 150;
 
 			circles.forEach((c) => {
 				if (!c.el || c.popping) return;
 
-				const radius = c.el.offsetWidth / 2;
-				const cx = c.x + radius;
-				const cy = c.y + radius;
-				const dx = cx - mx;
-				const dy = cy - my;
+				const dx = c.x + c.r - mx;
+				const dy = c.y + c.r - my;
 				const dist = Math.sqrt(dx * dx + dy * dy);
-				const minDist = 120;
 
-				if (dist < minDist && dist > 0) {
-					const force = ((minDist - dist) / minDist) * 3;
+				if (dist < repulseRange && dist > 0) {
+					const force = ((repulseRange - dist) / repulseRange) * 0.5;
 					c.vx += (dx / dist) * force;
 					c.vy += (dy / dist) * force;
 				}
 
-				c.vx *= 0.98;
-				c.vy *= 0.98;
+				c.vx *= 0.985;
+				c.vy *= 0.985;
+
+				const speed = Math.sqrt(c.vx * c.vx + c.vy * c.vy);
+				if (speed > MAX_SPEED) {
+					c.vx = (c.vx / speed) * MAX_SPEED;
+					c.vy = (c.vy / speed) * MAX_SPEED;
+				}
+
 				c.x += c.vx;
 				c.y += c.vy;
 
-				const ew = c.el.offsetWidth;
-				const eh = c.el.offsetHeight;
-
-				if (c.x + ew >= ww) { c.x = ww - ew; c.vx = 0; }
-				if (c.x <= 0) { c.x = 0; c.vx = 0; }
-				if (c.y + eh >= wh) { c.y = wh - eh; c.vy = 0; }
-				if (c.y <= 0) { c.y = 0; c.vy = 0; }
+				// Wrap-around: sai por um lado e entra pelo outro — sem colisão
+				// e sem acúmulo de bolhas espremidas nas bordas.
+				const d = c.r * 2;
+				if (c.x > ww) c.x = -d;
+				if (c.x + d < 0) c.x = ww;
+				if (c.y > wh) c.y = -d;
+				if (c.y + d < 0) c.y = wh;
 			});
-
-			for (let i = 0; i < circles.length; i++) {
-				for (let j = i + 1; j < circles.length; j++) {
-					const a = circles[i];
-					const b = circles[j];
-					if (!a.el || !b.el || a.popping || b.popping) continue;
-
-					const ax = a.x + a.el.offsetWidth / 2;
-					const ay = a.y + a.el.offsetHeight / 2;
-					const bx = b.x + b.el.offsetWidth / 2;
-					const by = b.y + b.el.offsetHeight / 2;
-					const dx = ax - bx;
-					const dy = ay - by;
-					const dist = Math.sqrt(dx * dx + dy * dy);
-					const minDist = (a.el.offsetWidth + b.el.offsetWidth) / 2;
-
-					if (dist < minDist && dist > 0) {
-						const overlap = (minDist - dist) / 2;
-						const nx = dx / dist;
-						const ny = dy / dist;
-						a.x += nx * overlap;
-						a.y += ny * overlap;
-						b.x -= nx * overlap;
-						b.y -= ny * overlap;
-
-						const dvx = a.vx - b.vx;
-						const dvy = a.vy - b.vy;
-						const dot = dvx * nx + dvy * ny;
-						a.vx -= dot * nx * 0.5;
-						a.vy -= dot * ny * 0.5;
-						b.vx += dot * nx * 0.5;
-						b.vy += dot * ny * 0.5;
-					}
-				}
-			}
 
 			circles.forEach((c) => {
 				if (!c.el || c.popping) return;
-				c.el.style.transform = `translate(${c.x}px, ${c.y}px)`;
+				const tx = `translate(${c.x}px, ${c.y}px)`;
+				if (c.lastTransform !== tx) {
+					c.lastTransform = tx;
+					c.el.style.transform = tx;
+				}
 			});
 
+			// Pausa quando ocioso: sem interação o loop para por completo,
+			// zerando o custo de CPU do navegador.
+			if (Date.now() - lastInteractRef.current > IDLE_MS) {
+				pausedRef.current = true;
+				return;
+			}
 			animIdRef.current = requestAnimationFrame(animate);
 		};
 
@@ -152,22 +158,20 @@ const FloatingCircles = () => {
 				const wh = window.innerHeight;
 				circles.forEach((c) => {
 					if (!c.el || c.popping) return;
-					c.vx = 0;
-					c.vy = 0;
-					if (c.x + c.el.offsetWidth > ww) c.x = Math.max(0, ww - c.el.offsetWidth);
-					if (c.y + c.el.offsetHeight > wh) c.y = Math.max(0, wh - c.el.offsetHeight);
-					if (c.x < 0) c.x = 0;
-					if (c.y < 0) c.y = 0;
+					if (c.x + c.r * 2 > ww) c.x = Math.max(0, ww - c.r * 2);
+					if (c.y + c.r * 2 > wh) c.y = Math.max(0, wh - c.r * 2);
 				});
+				wake();
 			}, 300);
 		};
-		window.addEventListener('resize', handleResize);
+		window.addEventListener('resize', handleResize, { passive: true });
 
 		animIdRef.current = requestAnimationFrame(animate);
 		return () => {
 			cancelAnimationFrame(animIdRef.current);
 			clearTimeout(resizeTimer);
-			window.removeEventListener('mousemove', handleMouseMove);
+			window.removeEventListener('pointermove', handlePointerMove);
+			window.removeEventListener('pointerdown', handlePointerDown);
 			window.removeEventListener('resize', handleResize);
 		};
 	}, [circlesConfig]);
@@ -194,8 +198,9 @@ const FloatingCircles = () => {
 			if (c.popping) continue;
 			const el = circlesRef.current[c.id];
 			if (!el) continue;
-			if (e.clientX >= c.x && e.clientX <= c.x + el.offsetWidth &&
-				e.clientY >= c.y && e.clientY <= c.y + el.offsetHeight) {
+			const d = c.r * 2;
+			if (e.clientX >= c.x && e.clientX <= c.x + d &&
+				e.clientY >= c.y && e.clientY <= c.y + d) {
 				popBubble(c.id);
 				break;
 			}
@@ -301,10 +306,10 @@ const App = () => {
 					items={menuItems}
 					style={{
 						background: 'rgba(15, 23, 42, 0.92)',
+						borderBottom: '1px solid rgba(255,255,255,0.06)',
 						flex: 1,
 						minWidth: 0,
 						'--menu-active-color': selectedBg,
-						transition: 'background 0.4s ease',
 					}}
 				/>
 			</Header>
@@ -322,9 +327,9 @@ const App = () => {
 
 			<Footer
 				style={{
-					background: 'rgba(15, 23, 42, 0.92)',
+					background: 'rgba(30, 41, 59, 0.95)',
+					borderTop: '1px solid rgba(255,255,255,0.08)',
 					width: '100%',
-					transition: 'background 0.4s ease',
 				}}
 				className='drop-shadow p-4 justify-end'
 			>

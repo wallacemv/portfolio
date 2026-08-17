@@ -23,6 +23,14 @@ body {
 	height: 100%; 
 }
 
+/* Altura dinâmica do viewport (mobile): o rodapé fica sempre visível,
+mesmo com a barra de endereço do navegador aberta. */
+@supports (height: 100dvh) {
+	#root {
+		height: 100dvh;
+	}
+}
+
 .ant-app {
 	height: 100%;
 }

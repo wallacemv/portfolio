@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Tag, Space, Divider } from 'antd';
+import { Tag, Space } from 'antd';
 import {
 	RobotOutlined,
 	ShoppingCartOutlined,
@@ -13,7 +13,7 @@ const projects = [
 		name: 'SexyBot',
 		icon: <RobotOutlined />,
 		description:
-			'Plataforma multi-tenant de gestão de modelos e bots do Telegram. Backend FastAPI com painel admin web, gerenciamento de conteúdo e integração de pagamentos (Mercado Pago e Stripe).',
+			'Plataforma multi-tenant de gestão de modelos e bots do Telegram. Backend FastAPI com painel admin web, gerenciamento de conteúdo e integração de pagamentos (Mercado Pago e Stripe). Assistente de IA (Gemini) entrevista a modelo e gera a persona do bot automaticamente.',
 		stack: [
 			'Python',
 			'FastAPI',
@@ -24,6 +24,7 @@ const projects = [
 			'Tailwind CSS',
 			'shadcn',
 			'Telegram Bot API',
+			'Gemini',
 		],
 		github: 'https://github.com/wallacemv/sexybot',
 		live: 'https://codedbywallace.dev/sexybot/',
@@ -33,7 +34,7 @@ const projects = [
 		name: 'Shop Commerce',
 		icon: <ShoppingCartOutlined />,
 		description:
-			'Plataforma de e-commerce multi-tenant: cada loja com catálogo, carrinho, pedidos e administração próprios, tema/design system customizável por loja, checkout e relatórios exportáveis.',
+			'Plataforma de e-commerce multi-tenant: cada loja com catálogo, carrinho, pedidos e administração próprios, tema/design system customizável por loja, checkout e relatórios exportáveis. Assistente de IA (Gemini) no admin ajuda a configurar a loja: explica as telas, escreve descrições e cadastra produtos, categorias, cupons e tema por chat.',
 		stack: [
 			'FastAPI',
 			'SQLAlchemy',
@@ -44,6 +45,7 @@ const projects = [
 			'Tailwind CSS',
 			'TanStack Query',
 			'Zod',
+			'Gemini',
 		],
 		github: 'https://github.com/wallacemv/shop-commerce',
 		live: 'https://codedbywallace.dev/shop-commerce/',
@@ -84,91 +86,77 @@ const Projects = () => {
 					Alguns dos projetos que desenvolvi recentemente.
 				</p>
 
-				<div className='flex flex-col gap-6'>
+				<div className='flex flex-col gap-4'>
 					{projects.map((project) => (
-						<Card
+						<div
 							key={project.name}
-							className='w-full backdrop-blur-sm'
 							style={{
-								backgroundColor: `${project.color}2e`,
-								border: `1px solid ${project.color}66`,
-								borderRadius: '12px',
-								boxShadow: '0 8px 24px rgba(0,0,0,0.3)',
+								backgroundColor: 'rgba(255,255,255,0.06)',
+								borderLeft: `4px solid ${project.color}`,
 							}}
-							styles={{
-								body: { padding: '20px 24px' },
-							}}
+							className='flex flex-col gap-3 p-4 rounded-lg text-[#ffffff]'
 						>
-							<Space direction='vertical' size='middle' className='w-full'>
-								<Space align='center' className='w-full justify-between'>
-									<Space align='center' size='middle'>
-										<span
-											style={{
-												fontSize: '28px',
-												color: project.color,
-												display: 'inline-flex',
-											}}
-										>
-											{project.icon}
-										</span>
-										<h2
-											className='text-2xl font-bold'
-											style={{ color: '#fff' }}
-										>
-											{project.name}
-										</h2>
-									</Space>
-									<Space size='small' wrap>
-										{project.github && (
-											<a
-												href={project.github}
-												target='_blank'
-												rel='noreferrer'
-												className='text-white hover:text-white/70'
-												style={{ fontSize: '22px' }}
-												aria-label={`GitHub do ${project.name}`}
-											>
-												<GithubOutlined />
-											</a>
-										)}
-										{project.live && (
-											<a
-												href={project.live}
-												target='_blank'
-												rel='noreferrer'
-												className='text-white hover:text-white/70'
-												style={{ fontSize: '22px' }}
-												aria-label={`Demo do ${project.name}`}
-											>
-												<ExportOutlined />
-											</a>
-										)}
-									</Space>
+							<div className='flex items-center justify-between gap-2 flex-wrap'>
+								<Space align='center' size='middle'>
+									<span
+										style={{
+											fontSize: '24px',
+											color: project.color,
+											display: 'inline-flex',
+										}}
+									>
+										{project.icon}
+									</span>
+									<h2 className='text-2xl font-bold'>{project.name}</h2>
 								</Space>
-
-								<div className='text-white/90'>{project.description}</div>
-
-								<Divider style={{ margin: '4px 0', borderColor: '#ffffff33' }} />
-
-								<div className='flex flex-wrap gap-2'>
-									{project.stack.map((tech) => (
-										<Tag
-											key={tech}
-											style={{
-												background: `${project.color}33`,
-												border: `1px solid ${project.color}88`,
-												color: '#fff',
-												borderRadius: '999px',
-												padding: '2px 12px',
-												fontWeight: 500,
-											}}
+								<Space size='small' wrap>
+									{project.github && (
+										<a
+											href={project.github}
+											target='_blank'
+											rel='noreferrer'
+											className='text-white hover:text-white/70'
+											style={{ fontSize: '22px' }}
+											aria-label={`GitHub do ${project.name}`}
 										>
-											{tech}
-										</Tag>
-									))}
-								</div>
-							</Space>
-						</Card>
+											<GithubOutlined />
+										</a>
+									)}
+									{project.live && (
+										<a
+											href={project.live}
+											target='_blank'
+											rel='noreferrer'
+											className='text-white hover:text-white/70'
+											style={{ fontSize: '22px' }}
+											aria-label={`Demo do ${project.name}`}
+										>
+											<ExportOutlined />
+										</a>
+									)}
+								</Space>
+							</div>
+
+							<div className='text-white/90'>{project.description}</div>
+
+							<div className='flex flex-wrap gap-2'>
+								{project.stack.map((tech) => (
+									<Tag
+										key={tech}
+										style={{
+											background: `${project.color}26`,
+											border: `1px solid ${project.color}88`,
+											color: '#fff',
+											borderRadius: '999px',
+											padding: '2px 12px',
+											fontWeight: 500,
+										}}
+									>
+										{tech}
+									</Tag>
+								))}
+							</div>
+						</div>
 					))}
 				</div>
 			</div>

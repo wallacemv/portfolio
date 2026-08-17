@@ -1,12 +1,11 @@
 import React from 'react';
-import { Card, Tag, Space, Divider } from 'antd';
+import { Card, Tag, Space } from 'antd';
 import {
 	CloudServerOutlined,
 	ClusterOutlined,
 	DockerOutlined,
 	GlobalOutlined,
 	LockOutlined,
-	ApiOutlined,
 	RobotOutlined,
 	ShoppingCartOutlined,
 	CameraOutlined,
@@ -81,30 +80,6 @@ const deploySteps = [
 	},
 ];
 
-const ai = [
-	{
-		app: 'SexyBot',
-		model: 'Gemini (gemini-3.5-flash-lite)',
-		detail:
-			'Persona de uma modelo com funil de vendas guiando as conversas do bot no Telegram: geração de respostas, gatilhos de mídia e oferta de assinatura.',
-		color: '#d946ef',
-	},
-	{
-		app: 'Shop Commerce',
-		model: 'Gemini (gemini-flash-latest)',
-		detail:
-			'Assistente de IA no painel admin: responde em JSON estruturado, envia histórico e imagens, com health check e chave de API criptografada no banco.',
-		color: '#22d3ee',
-	},
-	{
-		app: 'Photojobs',
-		model: 'Sem LLM no momento',
-		detail:
-			'Integrações utilitárias: consulta de CEP via ViaCEP e cálculo de distância com haversine. IA pode entrar no futuro.',
-		color: '#fbbf24',
-	},
-];
-
 const Infra = () => {
 	return (
 		<div
@@ -128,6 +103,7 @@ const Infra = () => {
 							border: '1px solid #ffffff40',
 							borderRadius: '12px',
 							boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
+							color: '#ffffff',
 						}}
 						styles={{ body: { padding: '20px 24px' } }}
 					>
@@ -142,11 +118,7 @@ const Infra = () => {
 								<h2 className='text-2xl font-bold'>Servidor</h2>
 							</Space>
 							<div className='text-white/90'>
-								VPS Ubuntu 22.04 LTS em{' '}
-								<span className='font-semibold text-white'>
-									104.251.211.44 (codedbywallace.dev)
-								</span>
-								, com todos os apps rodando em Kubernetes (k3s v1.28).
+								VPS Ubuntu 22.04 LTS com todos os apps rodando em Kubernetes (k3s v1.28).
 							</div>
 							<div className='grid grid-cols-1 sm:grid-cols-2 gap-3'>
 								{[{
@@ -191,6 +163,7 @@ const Infra = () => {
 							border: '1px solid #ffffff40',
 							borderRadius: '12px',
 							boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
+							color: '#ffffff',
 						}}
 						styles={{ body: { padding: '20px 24px' } }}
 					>
@@ -266,58 +239,7 @@ const Infra = () => {
 							border: '1px solid #ffffff40',
 							borderRadius: '12px',
 							boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
-						}}
-						styles={{ body: { padding: '20px 24px' } }}
-					>
-						<Space direction='vertical' size='middle' className='w-full'>
-							<Space align='center' size='middle'>
-								<span
-									className='inline-flex'
-									style={{ fontSize: '26px', color: '#fff' }}
-								>
-									<ApiOutlined />
-								</span>
-								<h2 className='text-2xl font-bold'>Integração com IA</h2>
-							</Space>
-							<div className='flex flex-col gap-3'>
-								{ai.map((item) => (
-									<div
-										key={item.app}
-										className='flex flex-col gap-1 p-3 rounded-lg'
-										style={{
-											backgroundColor: `${item.color}22`,
-											border: `1px solid ${item.color}66`,
-										}}
-									>
-										<div className='flex items-center gap-2 flex-wrap'>
-											<span className='font-semibold'>{item.app}</span>
-											<Tag
-												style={{
-													background: `${item.color}33`,
-													border: `1px solid ${item.color}88`,
-													color: '#fff',
-													borderRadius: '999px',
-													padding: '0 10px',
-													fontSize: '11px',
-												}}
-											>
-												{item.model}
-											</Tag>
-										</div>
-										<div className='text-sm text-white/85'>{item.detail}</div>
-									</div>
-								))}
-							</div>
-						</Space>
-					</Card>
-
-					<Card
-						className='w-full'
-						style={{
-							backgroundColor: '#ffffff18',
-							border: '1px solid #ffffff40',
-							borderRadius: '12px',
-							boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
+							color: '#ffffff',
 						}}
 						styles={{ body: { padding: '20px 24px' } }}
 					>
