@@ -1,11 +1,12 @@
 # Portfolio — Dev Notes
 
 ## Project
-Portfolio website with React + Vite + Ant Design, deployed via Docker on VPS `104.251.211.44`.
+Portfolio website with React + Vite + Ant Design, deployed on Kubernetes (k3s) on VPS `104.251.211.44`.
 
 - **Vite base:** `/portfolio/` — always use `import.meta.env.BASE_URL` for image paths
 - **Dev:** `npm run dev` (port 5173)
-- **Build + deploy:** `npm run deploy:docker` (rsync → Docker build/run)
+- **Deploy:** `npm run deploy` → `bash deploy/deploy.sh` (rsync → docker build → `ctr` import → kubectl apply/rollout)
+- **Live:** https://codedbywallace.dev/portfolio — host Nginx proxies `/portfolio/` to the k8s service `portfolio.default.svc.cluster.local:80` (config in the server's `sites-enabled/codedbywallace.dev`)
 
 ## UI Work Done (Jul 7, 2026)
 
@@ -23,9 +24,24 @@ Portfolio website with React + Vite + Ant Design, deployed via Docker on VPS `10
 ### About Page
 - Removed ImageTracerJS and Pica (unused deps)
 
+### Projects Page
+- New `/projects` route listing the main projects as cards (SexyBot, Shop Commerce, Photojobs): description, stack tags, GitHub + live links
+
+### Infra Page
+- New `/infra` route explaining the production infra: VPS Ubuntu 22.04, k3s, Docker+containerd, Nginx host + Let's Encrypt, apps hosted (portfolio, websocket, sexybot, shop-commerce, photojobs), AI integrations (SexyBot and Shop Commerce use Google Gemini), and the deploy flow (rsync → docker build → ctr import → kubectl apply → rollout)
+
 ### Chat Page
 - Removed `prompt()` on load; generates random username, saves to localStorage
 - Username editing: EditOutlined icon → inline input + OK button
+- Chat is now a floating widget (`src/components/ChatWidget.jsx`), FAB bottom-right, global on all pages; WebSocket connects on open, disconnects on close; only error toasts. `/chat` route and menu item removed.
+
+### Design harmonization (Aug 17, 2026)
+- Single dark palette: all pages on `#0f172a` base with a subtle per-page radial tint (indigo, purple, teal, red, blue)
+- Header/footer neutral dark; page color only on the active menu underline
+- Floating bubbles now light translucent tones (were dark, invisible on dark bg)
+- Home: photo filter sobered (was psychedelic), experience cards neutral with colored left border
+- Shapes page removed (menu, route, file); its sine-flow wave animation moved into the Paint page background (rAF)
+- About menu label is now "Sobre"
 
 ## Dependencies
 - `potrace` is used; `imagetracerjs` and `pica` unused but still in `package.json`

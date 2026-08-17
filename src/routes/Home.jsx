@@ -7,21 +7,10 @@ const Home = () => {
 	const photoRef = useRef(null);
 	const innerCirclesRef = useRef([]);
 	const innerColors = [
-		'#1e293b25',
-		'#33415520',
-		'#47556918',
-		'#64748b20',
-		'#0f172a25',
-		'#1e3a5f18',
-		'#2d374820',
-		'#1a202c25',
-		'#37415118',
-		'#1f293720',
-		'#11182725',
-		'#1e293b18',
-		'#0f172a20',
-		'#33415525',
-		'#47556918',
+		'#e2e8f01a',
+		'#cbd5e120',
+		'#94a3b81f',
+		'#f1f5f91a',
 	];
 	const innerCirclesConfig = useMemo(() => {
 		return Array.from({ length: 4 }, (_, i) => ({
@@ -82,14 +71,18 @@ const Home = () => {
 
 	return (
 		<div
-			className='home-wrapper relative h-full overflow-auto bg-[#6366f1]'
+			className='home-wrapper relative h-full overflow-auto'
+			style={{
+				background:
+					'radial-gradient(1100px 700px at 85% -10%, rgba(99,102,241,0.22), transparent 55%), #0f172a',
+			}}
 		>
 			<div className='flex flex-col'>
 				{/**left */}
 				<div className='flex flex-col p-4 sm:p-6 relative overflow-hidden pic'>
 					<div
 						ref={photoRef}
-						className='absolute rounded-full overflow-hidden pointer-events-none border-solid border-[6px] sm:border-[12px] border-[#bec5ff]'
+						className='absolute rounded-full overflow-hidden pointer-events-none border-solid border-[6px] sm:border-[12px] border-[#94a3b8]'
 						style={{
 							width: 'min(250px, 50vw)',
 							aspectRatio: '1',
@@ -102,8 +95,7 @@ const Home = () => {
 						<img
 							className='absolute inset-0 w-full h-full object-cover'
 							style={{
-								filter:
-									'grayscale(1) contrast(1.2) sepia(1) saturate(8) hue-rotate(210deg) brightness(1.2)',
+								filter: 'grayscale(1) contrast(1.05) brightness(0.9)',
 							}}
 							src={`${import.meta.env.BASE_URL}images/paint.webp`}
 						/>
@@ -223,8 +215,11 @@ const Home = () => {
 								].map((exp) => (
 									<div
 										key={exp.company}
-										style={{ backgroundColor: exp.color }}
-										className='flex flex-1 min-w-[200px] flex-col p-4 rounded-lg text-[#ffffff] backdrop-blur-sm'
+										style={{
+											backgroundColor: 'rgba(255,255,255,0.06)',
+											borderLeft: `4px solid ${exp.color}`,
+										}}
+										className='flex flex-1 min-w-[200px] flex-col p-4 rounded-lg text-[#ffffff]'
 									>
 										<div className='font-semibold'>{exp.role}</div>
 										<div className='text-sm opacity-80'>{exp.company}</div>

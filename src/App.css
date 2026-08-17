@@ -1,18 +1,18 @@
 .ant-menu-horizontal > .ant-menu-item {
-	 
 	display: flex !important;
-	justify-content: center !important;  
+	justify-content: center !important;
+	border-bottom: 3px solid transparent !important;
 }
 
 .ant-menu-horizontal > .ant-menu-item-selected {
-	background: var(--menu-active-color) !important;
+	background: rgba(255, 255, 255, 0.08) !important;
+	border-bottom-color: var(--menu-active-color) !important;
 	box-shadow: none !important;
 }
 
 .ant-menu-horizontal > .ant-menu-item-selected > a {
 	opacity: 1 !important;
 	font-weight: 700 !important;
-	text-shadow: 0 0 6px rgba(255,255,255,0.5);
 }
 
 .ant-menu-horizontal > .ant-menu-item-selected > a > .anticon {

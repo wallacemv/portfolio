@@ -10,8 +10,8 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Home from './routes/Home';
 import Paint from './routes/Paint';
 import About from './routes/About';
-import Shapes from './routes/Shapes';
-import Chat from './routes/Chat';
+import Projects from './routes/Projects';
+import Infra from './routes/Infra';
 
 import { MainProvider } from './providers/mainProvider';
 
@@ -23,8 +23,8 @@ const router = createBrowserRouter([
 			{ path: '/', element: <Home /> },
 			{ path: '/paint', element: <Paint /> },
 			{ path: '/about', element: <About /> },
-			{ path: '/shapes', element: <Shapes /> },
-			{ path: '/chat', element: <Chat /> },
+			{ path: '/projects', element: <Projects /> },
+			{ path: '/infra', element: <Infra /> },
 		],
 	},
 ], { basename: '/portfolio' });

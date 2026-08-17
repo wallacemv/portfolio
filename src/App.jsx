@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
-import { Layout, Menu, Breadcrumb, Button, theme, Affix, App as AntApp } from 'antd';
+import { Layout, Menu, theme, App as AntApp } from 'antd';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import './App.css';
+import ChatWidget from './components/ChatWidget';
 
 import {
 	HomeOutlined,
@@ -10,7 +11,8 @@ import {
 	LinkedinOutlined,
 	InstagramOutlined,
 	MailOutlined,
-	MessageOutlined,
+	ProjectOutlined,
+	CloudServerOutlined,
 } from '@ant-design/icons';
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -25,9 +27,9 @@ const FloatingCircles = () => {
 
 	const createRandomColor = () => {
 		const colors = [
-			'#1e293b20', '#33415518', '#47556915', '#64748b18',
-			'#0f172a20', '#1e3a5f15', '#2d374818', '#1a202c20',
-			'#37415115', '#1f293718', '#11182720', '#1e293b15',
+			'#e2e8f014', '#cbd5e11a', '#94a3b818', '#f1f5f91a',
+			'#e2e8f01f', '#cbd5e122', '#f8fafc14', '#94a3b820',
+			'#e2e8f01a', '#cbd5e110', '#f1f5f91e', '#94a3b814',
 		];
 		return colors[Math.floor(Math.random() * colors.length)];
 	};
@@ -231,9 +233,9 @@ const FloatingCircles = () => {
 
 const pageColors = {
 	'/': '#6366f1',
+	'/projects': '#a855f7',
+	'/infra': '#14b8a6',
 	'/paint': '#ef4444',
-	'/shapes': '#f97316',
-	'/chat': '#22c55e',
 	'/about': '#3b82f6',
 };
 
@@ -242,35 +244,30 @@ const menuItems = [
 		key: '/',
 		label: <Link to='/'>Home</Link>,
 		icon: <HomeOutlined />,
-		style: { borderBottom: '5px solid #6366f1' },
+	},
+
+	{
+		key: '/projects',
+		label: <Link to='/projects'>Projetos</Link>,
+		icon: <ProjectOutlined />,
+	},
+
+	{
+		key: '/infra',
+		label: <Link to='/infra'>Infra</Link>,
+		icon: <CloudServerOutlined />,
 	},
 
 	{
 		key: '/paint',
 		label: <Link to='/paint'>Paint</Link>,
 		icon: <BookOutlined />,
-		style: { borderBottom: '5px solid #ef4444' },
-	},
-
-	{
-		key: '/shapes',
-		label: <Link to='/shapes'>Shapes</Link>,
-		icon: <BookOutlined />,
-		style: { borderBottom: '5px solid #f97316' },
-	},
-
-	{
-		key: '/chat',
-		label: <Link to='/chat'>Chat Amizade</Link>,
-		icon: <MessageOutlined />,
-		style: { borderBottom: '5px solid #22c55e' },
 	},
 
 	{
 		key: '/about',
-		label: <Link to='/about'>About</Link>,
+		label: <Link to='/about'>Sobre</Link>,
 		icon: <ContactsOutlined />,
-		style: { borderBottom: '5px solid #3b82f6' },
 	},
 ];
 
@@ -285,16 +282,9 @@ const App = () => {
 
 	const selectedBg = pageColors[location.pathname] || '#6366f1';
 
-	const hexToRgba = (hex, alpha) => {
-		const r = parseInt(hex.slice(1, 3), 16);
-		const g = parseInt(hex.slice(3, 5), 16);
-		const b = parseInt(hex.slice(5, 7), 16);
-		return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-	};
-
 	return (
 		<AntApp style={{ height: '100%' }}>
-		<Layout className='flex flex-col h-full bg-white'>
+		<Layout className='flex flex-col h-full bg-[#0f172a]'>
 			<FloatingCircles />
 			<Header
 				style={{
@@ -310,7 +300,7 @@ const App = () => {
 					selectedKeys={[location.pathname]}
 					items={menuItems}
 					style={{
-						background: hexToRgba(selectedBg, 0.88),
+						background: 'rgba(15, 23, 42, 0.92)',
 						flex: 1,
 						minWidth: 0,
 						'--menu-active-color': selectedBg,
@@ -332,7 +322,7 @@ const App = () => {
 
 			<Footer
 				style={{
-					background: hexToRgba(selectedBg, 0.88),
+					background: 'rgba(15, 23, 42, 0.92)',
 					width: '100%',
 					transition: 'background 0.4s ease',
 				}}
@@ -370,6 +360,7 @@ const App = () => {
 					</a>
 				</div>
 			</Footer>
+			<ChatWidget />
 		</Layout>
 		</AntApp>
 	);

@@ -2,7 +2,13 @@ import React from 'react';
 
 const About = () => {
 	return (
-		<div className='about-wrapper bg-[#3b82f6] h-full overflow-auto'>
+		<div
+			className='about-wrapper h-full overflow-auto'
+			style={{
+				background:
+					'radial-gradient(1100px 700px at 85% -10%, rgba(59,130,246,0.22), transparent 55%), #0f172a',
+			}}
+		>
 			<div className='p-8 text-[#fff]'>
 				<h1>O que eu usei aqui</h1>
 
