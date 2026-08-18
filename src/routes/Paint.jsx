@@ -10,10 +10,18 @@ import { usePageMeta } from '../lib/seo';
 
 const Paint = () => {
 	usePageMeta({
-		title: 'Paint — Desenhos para colorir | Wallace Martins Vieira',
+		title: 'Desenhos para Colorir Online | Wallace Martins Vieira',
 		description:
-			'Desenhos para colorir online: Mario, Sonic, Homem-Aranha e Turma da Mônica. Pinte, baixe e vetorize seus desenhos diretamente no navegador.',
+			'Desenhos para colorir online: Mario, Sonic, Homem-Aranha e Turma da Mônica. Pinte e baixe direto no navegador, de graça.',
 		path: '/paint',
+		jsonLd: {
+			'@context': 'https://schema.org',
+			'@type': 'BreadcrumbList',
+			itemListElement: [
+				{ '@type': 'ListItem', position: 1, name: 'Home', item: 'https://codedbywallace.dev/portfolio/' },
+				{ '@type': 'ListItem', position: 2, name: 'Paint', item: 'https://codedbywallace.dev/portfolio/paint' },
+			],
+		},
 	});
 
 	const { resetModifications, modifications, setCursor, config } =

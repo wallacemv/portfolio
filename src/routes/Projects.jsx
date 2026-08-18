@@ -74,11 +74,11 @@ const projects = [
 
 const Projects = () => {
 	usePageMeta({
-		title: 'Projetos — Wallace Martins Vieira | Desenvolvedor Full Stack',
+		title: 'Projetos | Wallace Martins Vieira — Desenvolvedor Full Stack',
 		description:
-			'Projetos de Wallace Martins Vieira: SexyBot (bots de Telegram com IA), Shop Commerce (e-commerce multi-tenant) e Photojobs (conexão entre clientes e fotógrafos).',
+			'Projetos desenvolvidos por Wallace Martins Vieira: SexyBot (bots de Telegram com IA), Shop Commerce (e-commerce multi-tenant) e Photojobs (clientes e fotógrafos).',
 		path: '/projects',
-		jsonLd: {
+		jsonLd: [{
 			'@context': 'https://schema.org',
 			'@type': 'ItemList',
 			name: 'Projetos de Wallace Martins Vieira',
@@ -90,7 +90,14 @@ const Projects = () => {
 				url: p.live || p.github,
 				...(p.github && { codeRepository: p.github }),
 			})),
-		},
+		}, {
+			'@context': 'https://schema.org',
+			'@type': 'BreadcrumbList',
+			itemListElement: [
+				{ '@type': 'ListItem', position: 1, name: 'Home', item: 'https://codedbywallace.dev/portfolio/' },
+				{ '@type': 'ListItem', position: 2, name: 'Projetos', item: 'https://codedbywallace.dev/portfolio/projects' },
+			],
+		}],
 	});
 
 	return (

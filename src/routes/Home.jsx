@@ -6,10 +6,23 @@ const randomBetween = (min, max) => Math.random() * (max - min) + min;
 
 const Home = () => {
 	usePageMeta({
-		title: 'Wallace Martins Vieira | Desenvolvedor Full Stack',
+		title: 'Wallace Martins Vieira — Desenvolvedor Full Stack | Node.js, TypeScript, Angular, Java',
 		description:
-			'Portfolio de Wallace Martins Vieira, desenvolvedor full stack com 15+ anos de experiência em Node.js, TypeScript, Angular, Java, React, Python e infraestrutura Kubernetes.',
+			'Portfolio de Wallace Martins Vieira, desenvolvedor full stack com 15+ anos de experiência em Node.js, TypeScript, Angular, Java, React e Kubernetes.',
 		path: '/',
+		jsonLd: {
+			'@context': 'https://schema.org',
+			'@type': 'WebPage',
+			name: 'Wallace Martins Vieira — Desenvolvedor Full Stack',
+			url: 'https://codedbywallace.dev/portfolio/',
+			description:
+				'Portfolio de Wallace Martins Vieira, desenvolvedor full stack com 15+ anos de experiência.',
+			isPartOf: {
+				'@type': 'WebSite',
+				name: 'Wallace Martins Vieira — Portfolio',
+				url: 'https://codedbywallace.dev/portfolio/',
+			},
+		},
 	});
 
 	const photoRef = useRef(null);

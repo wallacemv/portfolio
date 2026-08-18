@@ -83,10 +83,18 @@ const deploySteps = [
 
 const Infra = () => {
 	usePageMeta({
-		title: 'Infraestrutura e Deploy — Wallace Martins Vieira',
+		title: 'Infraestrutura e Deploy | Wallace Martins Vieira',
 		description:
-			'Como o portfolio e os projetos são servidos em produção: VPS Ubuntu, Kubernetes (k3s), Docker + containerd, Nginx com reverse proxy e SSL Let\u2019s Encrypt.',
+			'Como os projetos de Wallace Martins Vieira são servidos em produção: VPS Ubuntu, Kubernetes (k3s), Docker, Nginx e SSL Let\u2019s Encrypt.',
 		path: '/infra',
+		jsonLd: {
+			'@context': 'https://schema.org',
+			'@type': 'BreadcrumbList',
+			itemListElement: [
+				{ '@type': 'ListItem', position: 1, name: 'Home', item: 'https://codedbywallace.dev/portfolio/' },
+				{ '@type': 'ListItem', position: 2, name: 'Infraestrutura', item: 'https://codedbywallace.dev/portfolio/infra' },
+			],
+		},
 	});
 
 	return (
