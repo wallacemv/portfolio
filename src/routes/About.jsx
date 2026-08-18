@@ -1,6 +1,14 @@
 import React from 'react';
+import { usePageMeta } from '../lib/seo';
 
 const About = () => {
+	usePageMeta({
+		title: 'Sobre — Wallace Martins Vieira | Desenvolvedor Full Stack',
+		description:
+			'Stack e tecnologias usadas no portfolio de Wallace Martins Vieira: Vite, React, React Router, Ant Design, Tailwind CSS, WebSocket, Kute.js, Potrace e Docker.',
+		path: '/about',
+	});
+
 	return (
 		<div
 			className='about-wrapper h-full overflow-auto'

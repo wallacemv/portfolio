@@ -6,8 +6,16 @@ import { MainContext } from '../providers/mainProvider';
 import Actions from '../components/Actions';
 import { DeleteOutlined, FormatPainterFilled } from '@ant-design/icons';
 import { Button, Tooltip } from 'antd';
+import { usePageMeta } from '../lib/seo';
 
 const Paint = () => {
+	usePageMeta({
+		title: 'Paint — Desenhos para colorir | Wallace Martins Vieira',
+		description:
+			'Desenhos para colorir online: Mario, Sonic, Homem-Aranha e Turma da Mônica. Pinte, baixe e vetorize seus desenhos diretamente no navegador.',
+		path: '/paint',
+	});
+
 	const { resetModifications, modifications, setCursor, config } =
 		useContext(MainContext);
 

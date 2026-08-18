@@ -7,6 +7,7 @@ import {
 	GithubOutlined,
 	ExportOutlined,
 } from '@ant-design/icons';
+import { usePageMeta } from '../lib/seo';
 
 const projects = [
 	{
@@ -72,6 +73,26 @@ const projects = [
 ];
 
 const Projects = () => {
+	usePageMeta({
+		title: 'Projetos — Wallace Martins Vieira | Desenvolvedor Full Stack',
+		description:
+			'Projetos de Wallace Martins Vieira: SexyBot (bots de Telegram com IA), Shop Commerce (e-commerce multi-tenant) e Photojobs (conexão entre clientes e fotógrafos).',
+		path: '/projects',
+		jsonLd: {
+			'@context': 'https://schema.org',
+			'@type': 'ItemList',
+			name: 'Projetos de Wallace Martins Vieira',
+			itemListElement: projects.map((p, i) => ({
+				'@type': 'CreativeWork',
+				position: i + 1,
+				name: p.name,
+				description: p.description,
+				url: p.live || p.github,
+				...(p.github && { codeRepository: p.github }),
+			})),
+		},
+	});
+
 	return (
 		<div
 			className='projects-wrapper h-full overflow-auto'

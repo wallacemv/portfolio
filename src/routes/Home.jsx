@@ -1,9 +1,17 @@
 import { React, useEffect, useRef, useMemo } from 'react';
 import { TypeAnimation } from 'react-type-animation';
+import { usePageMeta } from '../lib/seo';
 
 const randomBetween = (min, max) => Math.random() * (max - min) + min;
 
 const Home = () => {
+	usePageMeta({
+		title: 'Wallace Martins Vieira | Desenvolvedor Full Stack',
+		description:
+			'Portfolio de Wallace Martins Vieira, desenvolvedor full stack com 15+ anos de experiência em Node.js, TypeScript, Angular, Java, React, Python e infraestrutura Kubernetes.',
+		path: '/',
+	});
+
 	const photoRef = useRef(null);
 	const innerCirclesRef = useRef([]);
 	const innerColors = [

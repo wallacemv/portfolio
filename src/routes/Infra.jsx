@@ -13,6 +13,7 @@ import {
 	ProjectOutlined,
 	DeploymentUnitOutlined,
 } from '@ant-design/icons';
+import { usePageMeta } from '../lib/seo';
 
 const apps = [
 	{
@@ -81,6 +82,13 @@ const deploySteps = [
 ];
 
 const Infra = () => {
+	usePageMeta({
+		title: 'Infraestrutura e Deploy — Wallace Martins Vieira',
+		description:
+			'Como o portfolio e os projetos são servidos em produção: VPS Ubuntu, Kubernetes (k3s), Docker + containerd, Nginx com reverse proxy e SSL Let\u2019s Encrypt.',
+		path: '/infra',
+	});
+
 	return (
 		<div
 			className='infra-wrapper h-full overflow-auto'
