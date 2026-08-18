@@ -8,7 +8,7 @@ const Home = () => {
 	usePageMeta({
 		title: 'Wallace Martins Vieira — Desenvolvedor Full Stack | Node.js, TypeScript, Angular, Java',
 		description:
-			'Portfolio de Wallace Martins Vieira, desenvolvedor full stack com 15+ anos de experiência em Node.js, TypeScript, Angular, Java, React e Kubernetes.',
+			'Wallace Martins Vieira, Specialist Full Stack Developer com mais de 15 anos no desenvolvimento de softwares escaláveis. Node.js, TypeScript, Angular, Java, Python e Kubernetes.',
 		path: '/',
 		jsonLd: {
 			'@context': 'https://schema.org',
@@ -151,7 +151,7 @@ const Home = () => {
 							<div className='text-sm text-white'>
 								<TypeAnimation
 									sequence={[
-										'Full Stack Developer | Node.js • TypeScript • Angular • Java',
+										'Specialist Full Stack Developer | Node.js • TypeScript • Angular • Java • Python • AI',
 									]}
 									speed={60}
 									repeat={1}
@@ -162,7 +162,7 @@ const Home = () => {
 							<div className='w-full sm:w-1/2 p-6 my-6 sm:my-12 rounded-lg bg-white/15 font-semibold text-[#ffffff] backdrop-blur-sm'>
 								<TypeAnimation
 									sequence={[
-										'15+ anos de experiência como desenvolvedor. Bacharel em Sistemas de Informação e Pós Graduado em Desenvolvimento de aplicações Java - SOA.',
+										'Mais de 15 anos no desenvolvimento de softwares escaláveis. Bacharel em Sistemas de Informação e Pós Graduado em Desenvolvimento de aplicações Java - SOA.',
 									]}
 									speed={50}
 									repeat={1}

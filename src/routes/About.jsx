@@ -64,7 +64,7 @@ const About = () => {
 	usePageMeta({
 		title: 'Sobre | Wallace Martins Vieira — Desenvolvedor Full Stack',
 		description:
-			'Wallace Martins Vieira, specialist full stack developer com 15+ anos de experiência. Bacharel em Sistemas de Informação pela Universidade Ibirapuera. Node.js, TypeScript, Angular, Java, React.',
+			'Wallace Martins Vieira, Specialist Full Stack Developer com 15+ anos no desenvolvimento de softwares escaláveis. Bacharel em Sistemas de Informação pela Universidade Ibirapuera. São Paulo.',
 		path: '/about',
 		jsonLd: [{
 			'@context': 'https://schema.org',
@@ -105,10 +105,11 @@ const About = () => {
 					}}
 				>
 					<p className='text-white/90 leading-relaxed'>
-						Sou desenvolvedor full stack com mais de 15 anos de experiência
-						construindo aplicações web e mobile: APIs em Node.js, NestJS e
-						Java (Spring Boot), front-ends em Angular e React, e apps
-						híbridos com Ionic/React Native. Bacharel em Sistemas de
+						Sou Specialist Full Stack Developer com mais de 15 anos de
+						experiência no desenvolvimento de softwares escaláveis, baseado
+						em São Paulo. Construo aplicações web e mobile: APIs em Node.js,
+						NestJS e Java (Spring Boot), front-ends em Angular e React, e
+						apps híbridos com Ionic/React Native. Bacharel em Sistemas de
 						Informação pela Universidade Ibirapuera e pós-graduado em
 						Desenvolvimento de Aplicações Java — SOA.
 					</p>
