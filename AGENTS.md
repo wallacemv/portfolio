@@ -5,7 +5,7 @@ Portfolio website with React + Vite + Ant Design, deployed on Kubernetes (k3s) o
 
 - **Vite base:** `/portfolio/` — always use `import.meta.env.BASE_URL` for image paths
 - **Dev:** `npm run dev` (port 5173)
-- **Deploy:** `npm run deploy` → `bash deploy/deploy.sh` (rsync → docker build → `ctr` import → kubectl apply/rollout)
+- **Deploy:** commit + push → `deploy/deploy.sh` roda **no servidor** (`git fetch` + `reset --hard origin/master` → docker build → `ctr` import → kubectl apply/rollout). Local: `npm run deploy` roda o script localmente e não funciona — o deploy é via SSH no `/opt/portfolio`.
 - **Live:** https://codedbywallace.dev/portfolio — host Nginx proxies `/portfolio/` to the k8s service `portfolio.default.svc.cluster.local:80` (config in the server's `sites-enabled/codedbywallace.dev`)
 
 ## UI Work Done (Jul 7, 2026)
@@ -28,7 +28,7 @@ Portfolio website with React + Vite + Ant Design, deployed on Kubernetes (k3s) o
 - New `/projects` route listing the main projects as cards (SexyBot, Shop Commerce, Photojobs): description, stack tags, GitHub + live links
 
 ### Infra Page
-- New `/infra` route explaining the production infra: VPS Ubuntu 22.04, k3s, Docker+containerd, Nginx host + Let's Encrypt, apps hosted (portfolio, websocket, sexybot, shop-commerce, photojobs), AI integrations (SexyBot and Shop Commerce use Google Gemini), and the deploy flow (rsync → docker build → ctr import → kubectl apply → rollout)
+- New `/infra` route explaining the production infra: VPS Ubuntu 22.04, k3s, Docker+containerd, Nginx host + Let's Encrypt, apps hosted (portfolio, websocket, sexybot, shop-commerce, photojobs), and the deploy flow (git pull → docker build → ctr import → kubectl apply → rollout)
 
 ### Chat Page
 - Removed `prompt()` on load; generates random username, saves to localStorage

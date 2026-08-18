@@ -59,8 +59,8 @@ const apps = [
 
 const deploySteps = [
 	{
-		step: 'rsync',
-		detail: 'Código local é enviado ao VPS via rsync (sem node_modules/dist).',
+		step: 'git pull',
+		detail: 'O código vem do GitHub (deploy key): no servidor, git fetch + reset --hard.',
 	},
 	{
 		step: 'docker build',
