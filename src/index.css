@@ -35,6 +35,11 @@ mesmo com a barra de endereço do navegador aberta. */
 	height: 100%;
 }
 
+/* Modal de nome no chat: placeholder legível no input dark */
+.ant-modal .ant-input::placeholder {
+	color: #94a3b8;
+}
+
 @keyframes chatNudgePulse {
 	0%,
 	100% {

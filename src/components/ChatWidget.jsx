@@ -525,16 +525,42 @@ const ChatWidget = () => {
 
 			<Modal
 				open={nameModalOpen}
-				title='Alterar nome de usuário'
+				title={
+					<span style={{ color: C.text, fontWeight: 600 }}>
+						Alterar nome de usuário
+					</span>
+				}
 				onOk={saveUsername}
 				onCancel={() => setNameModalOpen(false)}
 				okText='Salvar'
 				cancelText='Cancelar'
 				centered
+				styles={{
+					content: {
+						background: C.bg,
+						border: `1px solid ${C.line}`,
+						borderRadius: 12,
+					},
+					header: {
+						background: C.surface,
+						borderBottom: `1px solid ${C.line}`,
+						borderRadius: '12px 12px 0 0',
+					},
+					body: { color: C.text },
+					footer: {
+						background: C.bg,
+						borderTop: `1px solid ${C.line}`,
+					},
+				}}
 				okButtonProps={{ style: { background: C.mine } }}
+				cancelButtonProps={{
+					style: { background: C.surface, borderColor: C.line, color: C.text },
+				}}
 			>
 				<div className='flex flex-col gap-3'>
-					<Text type='secondary'>Como você quer aparecer no chat?</Text>
+					<Text style={{ color: C.muted }}>
+						Como você quer aparecer no chat?
+					</Text>
 					<Input
 						value={usernameInput}
 						onChange={(e) => setUsernameInput(e.target.value)}
@@ -542,6 +568,11 @@ const ChatWidget = () => {
 						placeholder='Seu nome'
 						maxLength={20}
 						autoFocus
+						style={{
+							background: C.surface,
+							borderColor: C.line,
+							color: C.text,
+						}}
 					/>
 				</div>
 			</Modal>
