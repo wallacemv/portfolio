@@ -353,47 +353,54 @@ const ChatWidget = () => {
 						}}
 					>
 						<div
-							className='flex items-center justify-between gap-2 p-3'
+							className='flex flex-col gap-1 p-3'
 							style={{ borderBottom: `1px solid ${C.line}`, background: C.surface }}
 						>
-							<div
-								style={{
-									display: 'flex',
-									alignItems: 'center',
-									gap: 8,
-									minWidth: 0,
-									flex: '1 1 auto',
-									overflow: 'hidden',
-								}}
-							>
-								<MessageOutlined
-									style={{ color: C.botLine, flexShrink: 0 }}
-								/>
-								<span
+							<div className='flex items-center justify-between gap-2'>
+								<div
 									style={{
-										color: C.text,
-										fontWeight: 600,
-										whiteSpace: 'nowrap',
+										display: 'flex',
+										alignItems: 'center',
+										gap: 8,
+										minWidth: 0,
+										flex: '1 1 auto',
 										overflow: 'hidden',
-										textOverflow: 'ellipsis',
 									}}
 								>
-									Fale com o Wallace
-								</span>
+									<MessageOutlined
+										style={{ color: C.botLine, flexShrink: 0 }}
+									/>
+									<span
+										style={{
+											color: C.text,
+											fontWeight: 600,
+											whiteSpace: 'nowrap',
+											overflow: 'hidden',
+											textOverflow: 'ellipsis',
+										}}
+									>
+										Fale com o Wallace
+									</span>
+								</div>
+								<Badge
+									status={isConnected ? 'success' : 'error'}
+									text={isConnected ? 'Online' : 'Offline'}
+									icon={
+										isConnected ? <WifiOutlined /> : <DisconnectOutlined />
+									}
+									style={{ color: C.muted, flexShrink: 0 }}
+								/>
 							</div>
-							<div
-								style={{
-									display: 'flex',
-									alignItems: 'center',
-									gap: 8,
-									flexShrink: 0,
-								}}
-							>
-								{username && (
+							{username && (
+								<div>
 									<Button
 										size='small'
 										type='text'
-										style={{ color: C.muted, maxWidth: 120 }}
+										style={{
+											color: C.muted,
+											maxWidth: '100%',
+											paddingInlineStart: 0,
+										}}
 										onClick={() => {
 											setUsernameInput(username);
 											setEditingName(true);
@@ -419,14 +426,8 @@ const ChatWidget = () => {
 											</span>
 										</span>
 									</Button>
-								)}
-								<Badge
-									status={isConnected ? 'success' : 'error'}
-									text={isConnected ? 'Online' : 'Offline'}
-									icon={isConnected ? <WifiOutlined /> : <DisconnectOutlined />}
-									style={{ color: C.muted }}
-								/>
-							</div>
+								</div>
+							)}
 						</div>
 
 						{!username || editingName ? (
