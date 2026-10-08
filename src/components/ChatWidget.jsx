@@ -112,7 +112,7 @@ const ChatWidget = () => {
 		try {
 			const sender =
 				messageData.type === 'bot'
-					? 'Wallace'
+					? 'Assistente do Wallace'
 					: messageData.type === 'system'
 						? 'Chat'
 						: messageData.username;
@@ -308,7 +308,7 @@ const ChatWidget = () => {
 						fontWeight: 600,
 					}}
 				>
-					{isBot ? '🤖 Wallace' : isMine ? 'Você' : message.username}
+					{isBot ? '🤖 Assistente do Wallace' : isMine ? 'Você' : message.username}
 				</Text>
 				<Text style={{ color: C.text, whiteSpace: 'pre-wrap' }}>{message.text}</Text>
 				<Text style={{ color: isMine ? '#c7d2fe' : C.muted, fontSize: '0.65em' }}>
@@ -503,7 +503,7 @@ const ChatWidget = () => {
 										<Text
 											style={{ color: C.botLine, fontSize: '0.8em', fontWeight: 600 }}
 										>
-											🤖 Wallace
+											🤖 Assistente do Wallace
 										</Text>
 										<Text style={{ color: C.muted, fontSize: '0.8em', marginLeft: 8 }}>
 											digitando...
