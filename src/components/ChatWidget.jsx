@@ -362,15 +362,30 @@ const ChatWidget = () => {
 									<Button
 										size='small'
 										type='text'
-										icon={<EditOutlined />}
-										style={{ color: C.muted, maxWidth: 130 }}
+										style={{ color: C.muted }}
 										onClick={() => {
 											setUsernameInput(username);
 											setNameModalOpen(true);
 										}}
 									>
-										<span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
-											{username}
+										<span
+											style={{
+												display: 'inline-flex',
+												alignItems: 'center',
+												gap: 6,
+											}}
+										>
+											<EditOutlined />
+											<span
+												style={{
+													maxWidth: 90,
+													overflow: 'hidden',
+													textOverflow: 'ellipsis',
+													whiteSpace: 'nowrap',
+												}}
+											>
+												{username}
+											</span>
 										</span>
 									</Button>
 								)}
@@ -525,11 +540,7 @@ const ChatWidget = () => {
 
 			<Modal
 				open={nameModalOpen}
-				title={
-					<span style={{ color: C.text, fontWeight: 600 }}>
-						Alterar nome de usuário
-					</span>
-				}
+				title='Alterar nome de usuário'
 				onOk={saveUsername}
 				onCancel={() => setNameModalOpen(false)}
 				okText='Salvar'
