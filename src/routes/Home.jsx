@@ -223,7 +223,7 @@ const Home = () => {
 					<div className='flex flex-col gap-6 w-full'>
 						<div className='relative z-50'>
 							<h2 className='text-2xl text-white font-bold mb-4'>
-								Experiências profissionais
+								Experiências profissionais recentes
 							</h2>
 							<div className='gap-4 flex flex-col sm:flex-row flex-wrap'>
 								{[

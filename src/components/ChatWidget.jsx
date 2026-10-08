@@ -475,6 +475,7 @@ const ChatWidget = () => {
 											onClick={() => {
 												setUsernameInput(username);
 												setEditingName(false);
+												setOpen(false);
 											}}
 											style={{
 												background: C.surface,
