@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Input, Button, Typography, Space, Badge, App } from 'antd';
+import { Input, Button, Typography, Space, Badge, App, Modal } from 'antd';
 import {
 	SendOutlined,
 	MessageOutlined,
@@ -43,7 +43,7 @@ const ChatWidget = () => {
 	const [inputMessage, setInputMessage] = useState('');
 	const [username, setUsername] = useState('');
 	const [usernameInput, setUsernameInput] = useState('');
-	const [editingUsername, setEditingUsername] = useState(false);
+	const [nameModalOpen, setNameModalOpen] = useState(false);
 	const [isConnected, setIsConnected] = useState(false);
 	const [isBotTyping, setIsBotTyping] = useState(false);
 	const [unreadCount, setUnreadCount] = useState(0);
@@ -237,7 +237,7 @@ const ChatWidget = () => {
 		setUsername(name);
 		setUsernameInput(name);
 		localStorage.setItem('chatUsername', name);
-		setEditingUsername(false);
+		setNameModalOpen(false);
 	};
 
 	const handleToggle = () => {
@@ -358,44 +358,22 @@ const ChatWidget = () => {
 								</Text>
 							</Space>
 							<Space size='small'>
-								{username &&
-									(editingUsername ? (
-										<Space.Compact>
-											<Input
-												size='small'
-												value={usernameInput}
-												onChange={(e) => setUsernameInput(e.target.value)}
-												onPressEnter={saveUsername}
-												style={{
-													width: 110,
-													background: C.bg,
-													borderColor: C.line,
-													color: C.text,
-												}}
-											/>
-											<Button
-												size='small'
-												type='primary'
-												onClick={saveUsername}
-												style={{ background: C.mine }}
-											>
-												OK
-											</Button>
-										</Space.Compact>
-									) : (
-										<Button
-											size='small'
-											type='text'
-											icon={<EditOutlined />}
-											style={{ color: C.muted }}
-											onClick={() => {
-												setUsernameInput(username);
-												setEditingUsername(true);
-											}}
-										>
+								{username && (
+									<Button
+										size='small'
+										type='text'
+										icon={<EditOutlined />}
+										style={{ color: C.muted, maxWidth: 130 }}
+										onClick={() => {
+											setUsernameInput(username);
+											setNameModalOpen(true);
+										}}
+									>
+										<span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
 											{username}
-										</Button>
-									))}
+										</span>
+									</Button>
+								)}
 								<Badge
 									status={isConnected ? 'success' : 'error'}
 									text={isConnected ? 'Online' : 'Offline'}
@@ -544,6 +522,29 @@ const ChatWidget = () => {
 					</div>
 				</div>
 			)}
+
+			<Modal
+				open={nameModalOpen}
+				title='Alterar nome de usuário'
+				onOk={saveUsername}
+				onCancel={() => setNameModalOpen(false)}
+				okText='Salvar'
+				cancelText='Cancelar'
+				centered
+				okButtonProps={{ style: { background: C.mine } }}
+			>
+				<div className='flex flex-col gap-3'>
+					<Text type='secondary'>Como você quer aparecer no chat?</Text>
+					<Input
+						value={usernameInput}
+						onChange={(e) => setUsernameInput(e.target.value)}
+						onPressEnter={saveUsername}
+						placeholder='Seu nome'
+						maxLength={20}
+						autoFocus
+					/>
+				</div>
+			</Modal>
 
 			{showNudge && !open && (
 				<button
