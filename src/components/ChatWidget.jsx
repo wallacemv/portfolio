@@ -459,29 +459,41 @@ const ChatWidget = () => {
 										color: C.text,
 									}}
 								/>
-								<Button
-									type='primary'
-									block
-									onClick={saveUsername}
-									disabled={!usernameInput.trim()}
-									style={{ background: C.mine }}
-								>
-									{username ? 'Salvar' : 'Começar a conversa'}
-								</Button>
-								{username && (
+								{username ? (
+									<div className='flex gap-2 w-full'>
+										<Button
+											type='primary'
+											className='flex-1'
+											onClick={saveUsername}
+											disabled={!usernameInput.trim()}
+											style={{ background: C.mine }}
+										>
+											Salvar
+										</Button>
+										<Button
+											className='flex-1'
+											onClick={() => {
+												setUsernameInput(username);
+												setEditingName(false);
+											}}
+											style={{
+												background: C.surface,
+												borderColor: C.line,
+												color: C.text,
+											}}
+										>
+											Cancelar
+										</Button>
+									</div>
+								) : (
 									<Button
+										type='primary'
 										block
-										onClick={() => {
-											setUsernameInput(username);
-											setEditingName(false);
-										}}
-										style={{
-											background: C.surface,
-											borderColor: C.line,
-											color: C.text,
-										}}
+										onClick={saveUsername}
+										disabled={!usernameInput.trim()}
+										style={{ background: C.mine }}
 									>
-										Cancelar
+										Começar a conversa
 									</Button>
 								)}
 							</div>
