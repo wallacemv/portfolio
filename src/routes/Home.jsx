@@ -135,6 +135,7 @@ const Home = () => {
 								position: 'absolute',
 								inset: 0,
 								margin: 0,
+								paddingRight: '1.5rem',
 								display: 'flex',
 								alignItems: 'center',
 								justifyContent: 'flex-end',
