@@ -392,14 +392,14 @@ const ChatWidget = () => {
 								/>
 							</div>
 							{username && (
-								<div>
+								<div className='flex justify-end'>
 									<Button
 										size='small'
 										type='text'
 										style={{
 											color: C.muted,
-											maxWidth: '100%',
-											paddingInlineStart: 0,
+											maxWidth: '90%',
+											paddingInline: 4,
 										}}
 										onClick={() => {
 											setUsernameInput(username);
