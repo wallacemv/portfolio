@@ -10,6 +10,7 @@ import {
 	BookOutlined,
 	LinkedinOutlined,
 	InstagramOutlined,
+	GithubOutlined,
 	MailOutlined,
 	ProjectOutlined,
 	CloudServerOutlined,
@@ -356,6 +357,15 @@ const App = () => {
 						style={{ color: '#ffffff' }}
 					>
 						<InstagramOutlined />
+					</a>
+
+					<a
+						href='https://github.com/wallacemv'
+						target='_blank'
+						className='animate-pulse'
+						style={{ color: '#ffffff' }}
+					>
+						<GithubOutlined />
 					</a>
 
 					<a

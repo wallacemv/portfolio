@@ -1,11 +1,4 @@
 import { Tag } from 'antd';
-import {
-	LinkedinOutlined,
-	MailOutlined,
-	GithubOutlined,
-	InstagramOutlined,
-	GlobalOutlined,
-} from '@ant-design/icons';
 import { usePageMeta } from '../lib/seo';
 
 const experience = [
@@ -133,51 +126,6 @@ const About = () => {
 						grande porte. Hoje mantenho projetos próprios em produção
 						(e-commerce, apps) em infraestrutura Kubernetes na nuvem.
 					</p>
-					<div className='flex flex-row gap-4 text-2xl mt-2'>
-						<a
-							href='https://www.linkedin.com/in/wallacemarttins'
-							target='_blank'
-							rel='noreferrer'
-							aria-label='LinkedIn'
-							style={{ color: '#fff' }}
-						>
-							<LinkedinOutlined />
-						</a>
-						<a
-							href='https://github.com/wallacemv'
-							target='_blank'
-							rel='noreferrer'
-							aria-label='GitHub'
-							style={{ color: '#fff' }}
-						>
-							<GithubOutlined />
-						</a>
-						<a
-							href='https://www.instagram.com/wallacemarttins'
-							target='_blank'
-							rel='noreferrer'
-							aria-label='Instagram'
-							style={{ color: '#fff' }}
-						>
-							<InstagramOutlined />
-						</a>
-						<a
-							href='mailto:wallacemv@gmail.com'
-							aria-label='Email'
-							style={{ color: '#fff' }}
-						>
-							<MailOutlined />
-						</a>
-						<a
-							href='https://codedbywallace.dev'
-							target='_blank'
-							rel='noreferrer'
-							aria-label='Site'
-							style={{ color: '#fff' }}
-						>
-							<GlobalOutlined />
-						</a>
-					</div>
 				</div>
 
 				<h2 className='text-2xl font-bold mb-3'>Formação acadêmica</h2>
