@@ -35,16 +35,17 @@ mesmo com a barra de endereço do navegador aberta. */
 	height: 100%;
 }
 
-/* Modal de nome no chat: título e placeholder legíveis no dark */
-.ant-modal .ant-modal-title {
-	color: #ffffff;
-	font-family: 'Chakra Petch', sans-serif;
-}
-.ant-modal .ant-modal-close {
-	color: #cbd5e1;
-}
-.ant-modal .ant-input::placeholder {
+/* Chat widget: placeholders e botão legíveis no dark */
+.chat-widget .ant-input::placeholder {
 	color: #94a3b8;
+}
+.chat-widget .ant-btn-primary {
+	color: #ffffff;
+}
+.chat-widget .ant-btn-primary:disabled {
+	color: #94a3b8;
+	background: #334155;
+	border-color: #475569;
 }
 
 @keyframes chatNudgePulse {

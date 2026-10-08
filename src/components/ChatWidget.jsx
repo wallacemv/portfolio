@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Input, Button, Typography, Space, Badge, App, Modal } from 'antd';
+import { Input, Button, Typography, Space, Badge, App } from 'antd';
 import {
 	SendOutlined,
 	MessageOutlined,
@@ -43,7 +43,7 @@ const ChatWidget = () => {
 	const [inputMessage, setInputMessage] = useState('');
 	const [username, setUsername] = useState('');
 	const [usernameInput, setUsernameInput] = useState('');
-	const [nameModalOpen, setNameModalOpen] = useState(false);
+	const [editingName, setEditingName] = useState(false);
 	const [isConnected, setIsConnected] = useState(false);
 	const [isBotTyping, setIsBotTyping] = useState(false);
 	const [unreadCount, setUnreadCount] = useState(0);
@@ -242,7 +242,7 @@ const ChatWidget = () => {
 		setUsername(name);
 		setUsernameInput(name);
 		localStorage.setItem('chatUsername', name);
-		setNameModalOpen(false);
+		setEditingName(false);
 	};
 
 	const handleToggle = () => {
@@ -330,7 +330,7 @@ const ChatWidget = () => {
 		<>
 			{open && (
 				<div
-					className='fixed flex flex-col'
+					className='chat-widget fixed flex flex-col'
 					style={{
 						right: 24,
 						bottom: 96,
@@ -370,7 +370,7 @@ const ChatWidget = () => {
 										style={{ color: C.muted }}
 										onClick={() => {
 											setUsernameInput(username);
-											setNameModalOpen(true);
+											setEditingName(true);
 										}}
 									>
 										<span
@@ -403,19 +403,21 @@ const ChatWidget = () => {
 							</Space>
 						</div>
 
-						{!username ? (
+						{!username || editingName ? (
 							<div
 								className='flex-1 flex flex-col items-center justify-center gap-4 p-6'
 								style={{ minHeight: 0 }}
 							>
 								<MessageOutlined style={{ fontSize: 32, color: C.botLine }} />
 								<Text style={{ color: C.text, fontSize: 16, fontWeight: 600 }}>
-									Como posso te chamar?
+									{username ? 'Alterar nome' : 'Como posso te chamar?'}
 								</Text>
 								<Text
 									style={{ color: C.muted, fontSize: 13, textAlign: 'center' }}
 								>
-									Digite seu nome para entrar na conversa
+									{username
+										? 'Como você quer aparecer no chat?'
+										: 'Digite seu nome para entrar na conversa'}
 								</Text>
 								<Input
 									value={usernameInput}
@@ -437,8 +439,24 @@ const ChatWidget = () => {
 									disabled={!usernameInput.trim()}
 									style={{ background: C.mine }}
 								>
-									Começar a conversa
+									{username ? 'Salvar' : 'Começar a conversa'}
 								</Button>
+								{username && (
+									<Button
+										block
+										onClick={() => {
+											setUsernameInput(username);
+											setEditingName(false);
+										}}
+										style={{
+											background: C.surface,
+											borderColor: C.line,
+											color: C.text,
+										}}
+									>
+										Cancelar
+									</Button>
+								)}
 							</div>
 						) : (
 							<>
@@ -542,56 +560,6 @@ const ChatWidget = () => {
 					</div>
 				</div>
 			)}
-
-			<Modal
-				open={nameModalOpen}
-				title='Alterar nome de usuário'
-				onOk={saveUsername}
-				onCancel={() => setNameModalOpen(false)}
-				okText='Salvar'
-				cancelText='Cancelar'
-				centered
-				styles={{
-					content: {
-						background: C.bg,
-						border: `1px solid ${C.line}`,
-						borderRadius: 12,
-					},
-					header: {
-						background: C.surface,
-						borderBottom: `1px solid ${C.line}`,
-						borderRadius: '12px 12px 0 0',
-					},
-					body: { color: C.text },
-					footer: {
-						background: C.bg,
-						borderTop: `1px solid ${C.line}`,
-					},
-				}}
-				okButtonProps={{ style: { background: C.mine } }}
-				cancelButtonProps={{
-					style: { background: C.surface, borderColor: C.line, color: C.text },
-				}}
-			>
-				<div className='flex flex-col gap-3'>
-					<Text style={{ color: C.muted }}>
-						Como você quer aparecer no chat?
-					</Text>
-					<Input
-						value={usernameInput}
-						onChange={(e) => setUsernameInput(e.target.value)}
-						onPressEnter={saveUsername}
-						placeholder='Seu nome'
-						maxLength={20}
-						autoFocus
-						style={{
-							background: C.surface,
-							borderColor: C.line,
-							color: C.text,
-						}}
-					/>
-				</div>
-			</Modal>
 
 			{showNudge && !open && (
 				<button
