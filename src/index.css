@@ -35,6 +35,16 @@ mesmo com a barra de endereço do navegador aberta. */
 	height: 100%;
 }
 
+@keyframes chatNudgePulse {
+	0%,
+	100% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-4px);
+	}
+}
+
 ::-webkit-scrollbar {
 	width: 12px;
 	height: 12px;

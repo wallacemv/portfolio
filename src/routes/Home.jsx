@@ -95,7 +95,7 @@ const Home = () => {
 			className='home-wrapper relative h-full overflow-auto'
 			style={{
 				background:
-					'radial-gradient(1100px 700px at 85% -10%, rgba(99,102,241,0.22), transparent 55%), #0f172a',
+					'radial-gradient(1100px 700px at 85% -10%, rgba(99,102,241,0.22), transparent 55%)',
 			}}
 		>
 			<div className='flex flex-col'>
@@ -159,7 +159,7 @@ const Home = () => {
 							</div>
 						</div>
 						<div className='flex flex-col'>
-							<div className='w-full sm:w-1/2 p-6 my-6 sm:my-12 rounded-lg bg-white/15 font-semibold text-[#ffffff] backdrop-blur-sm'>
+							<div className='w-full sm:w-1/2 p-6 my-6 sm:my-12 rounded-lg font-semibold text-[#ffffff] border border-white/15' style={{ backgroundColor: '#334155' }}>
 								<TypeAnimation
 									sequence={[
 										'Mais de 15 anos no desenvolvimento de softwares escaláveis. Bacharel em Sistemas de Informação e Pós Graduado em Desenvolvimento de aplicações Java - SOA.',
@@ -209,45 +209,79 @@ const Home = () => {
 										role: 'Desenvolvedor Fullstack - Nest.js, Angular',
 										company: 'Sem Parar',
 										period: 'Jan 2019 - Jul 2026',
-										desc: 'Node.js, TypeScript, Java, Nestjs, Angular, Ionic',
+										desc: 'APIs com Node.js/NestJS e Java, front-end Angular, apps híbridos Ionic em produto de mobilidade de grande porte.',
+										highlights: [
+											'Fullstack em produto de mobilidade (telemetria, tag e apps) que atende milhares de usuários',
+											'APIs e integrações em Node.js/NestJS e Java com sistemas legados e serviços externos',
+											'Angular e apps híbridos Ionic com entregas frequentes em ambiente de alta criticidade',
+										],
 										color: '#b94e98',
 									},
 									{
 										role: 'Desenvolvedor Java Sênior',
 										company: 'Telefonia Empresarial Vivo',
 										period: 'Ago 2017 - Jan 2019',
-										desc: 'Java, Angular, Oracle, SOA',
+										desc: 'Serviços e integrações Java (SOA/Oracle) e front-end Angular em telecom empresarial.',
+										highlights: [
+											'Serviços e integrações Java em arquitetura SOA com Oracle para telecom empresarial',
+											'APIs e sistemas que sustentam produtos de telefonia empresarial',
+										],
 										color: '#575dd4',
 									},
 									{
 										role: 'Desenvolvedor front-end (freelance)',
 										company: 'HDI Seguros',
 										period: 'Mar 2021 - Abr 2021',
-										desc: 'Node.js, TypeScript, Angular, HTML, Sass, React Native',
+										desc: 'Front-end TypeScript/Angular com Sass em portal do mercado de seguros.',
+										highlights: [
+											'Front-end com TypeScript, Angular e Sass para o mercado de seguros',
+											'Telas e componentes consumindo APIs do segurador',
+										],
 										color: '#99afff',
 									},
 									{
 										role: 'Desenvolvedor Mobile',
 										company: 'Elocc',
 										period: 'Jan 2017 - Ago 2017',
-										desc: 'Apache Cordova, Ionic, Javascript, HTML, CSS, Sass',
+										desc: 'Desenvolvimento de apps híbridos com Apache Cordova e Ionic.',
+										highlights: [
+											'Apps híbridos Android/iOS com Apache Cordova e Ionic',
+											'Desenvolvimento mobile com JavaScript, HTML e CSS',
+										],
 										color: '#99afff',
 									},
 								].map((exp) => (
 									<div
 										key={exp.company}
 										style={{
-											backgroundColor: 'rgba(255,255,255,0.06)',
+											backgroundColor: '#334155',
+											border: '1px solid rgba(255,255,255,0.15)',
 											borderLeft: `4px solid ${exp.color}`,
 										}}
-										className='flex flex-1 min-w-[200px] flex-col p-4 rounded-lg text-[#ffffff]'
+										className='flex flex-1 min-w-[200px] flex-col p-4 rounded-lg'
 									>
-										<div className='font-semibold'>{exp.role}</div>
-										<div className='text-sm opacity-80'>{exp.company}</div>
+										<div className='font-semibold text-white'>{exp.role}</div>
+										<div className='text-sm text-white/90'>{exp.company}</div>
 										{exp.period && (
-											<div className='text-xs opacity-60'>{exp.period}</div>
+											<div className='text-xs text-white/70'>{exp.period}</div>
 										)}
-										<div className='text-sm mt-1 opacity-70'>{exp.desc}</div>
+										<div className='text-sm mt-1 text-white/85'>{exp.desc}</div>
+										{exp.highlights && (
+											<ul className='mt-2 flex flex-col gap-1 list-none m-0 p-0'>
+												{exp.highlights.map((h) => (
+													<li
+														key={h}
+														className='text-sm text-white/85 flex gap-2'
+													>
+														<span
+															className='inline-block w-1.5 h-1.5 rounded-full mt-1.5 shrink-0'
+															style={{ backgroundColor: exp.color }}
+														/>
+														<span>{h}</span>
+													</li>
+												))}
+											</ul>
+										)}
 									</div>
 								))}
 							</div>

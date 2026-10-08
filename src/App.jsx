@@ -321,7 +321,10 @@ const App = () => {
 				</div>
 			</Content> */}
 
-			<Content className='content-wrapper flex-1 overflow-auto'>
+			<Content
+				className='content-wrapper flex-1 overflow-auto'
+				style={{ position: 'relative', zIndex: 2 }}
+			>
 				<Outlet />
 			</Content>
 

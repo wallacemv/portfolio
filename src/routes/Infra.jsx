@@ -6,9 +6,7 @@ import {
 	DockerOutlined,
 	GlobalOutlined,
 	LockOutlined,
-	RobotOutlined,
 	ShoppingCartOutlined,
-	CameraOutlined,
 	MessageOutlined,
 	ProjectOutlined,
 	DeploymentUnitOutlined,
@@ -29,32 +27,16 @@ const apps = [
 		icon: <MessageOutlined />,
 		url: 'wss://codedbywallace.dev/websocket',
 		color: '#22c55e',
-		desc: 'Chat em tempo real usado na página Chat Amizade.',
-		stack: ['Node.js'],
-	},
-	{
-		name: 'SexyBot',
-		icon: <RobotOutlined />,
-		url: 'https://codedbywallace.dev/sexybot/',
-		color: '#d946ef',
-		desc: 'Plataforma multi-tenant de gestão de modelos e bots do Telegram, com IA.',
-		stack: ['FastAPI', 'React 19', 'MySQL', 'Telegram Bot API', 'Gemini'],
+		desc: 'Chat em tempo real com o Wallace — bot com IA (Gemini) que responde como o dono do portfólio, com boas-vindas e notificação no navegador.',
+		stack: ['Node.js', 'WebSocket', 'Gemini'],
 	},
 	{
 		name: 'Shop Commerce',
 		icon: <ShoppingCartOutlined />,
 		url: 'https://codedbywallace.dev/shop-commerce/',
 		color: '#22d3ee',
-		desc: 'E-commerce multi-tenant com assistente de IA no admin.',
-		stack: ['FastAPI', 'React 19', 'MySQL', 'TanStack Query', 'Zod', 'Gemini'],
-	},
-	{
-		name: 'Photojobs',
-		icon: <CameraOutlined />,
-		url: 'https://codedbywallace.dev/photojobs/',
-		color: '#fbbf24',
-		desc: 'Plataforma para conectar clientes e fotógrafos/modelos.',
-		stack: ['FastAPI', 'React 19', 'Vite', 'Tailwind CSS', 'shadcn'],
+		desc: 'E-commerce multi-tenant: pagamentos (Mercado Pago/Stripe), WhatsApp, uploads em R2 e assistente de IA no admin.',
+		stack: ['FastAPI', 'React 19', 'MySQL', 'Redis', 'Cloudflare R2', 'TanStack Query', 'Zod', 'Gemini'],
 	},
 ];
 
@@ -102,7 +84,7 @@ const Infra = () => {
 			className='infra-wrapper h-full overflow-auto'
 			style={{
 				background:
-					'radial-gradient(1100px 700px at 85% -10%, rgba(20,184,166,0.22), transparent 55%), #0f172a',
+					'radial-gradient(1100px 700px at 85% -10%, rgba(20,184,166,0.22), transparent 55%)',
 			}}
 		>
 			<div className='p-6 sm:p-8 text-[#fff]'>
@@ -115,7 +97,8 @@ const Infra = () => {
 					<div
 						className='flex flex-col gap-3 p-4 rounded-lg text-[#ffffff]'
 						style={{
-							backgroundColor: 'rgba(255,255,255,0.06)',
+							backgroundColor: '#334155',
+							border: '1px solid rgba(255,255,255,0.15)',
 							borderLeft: '4px solid #14b8a6',
 						}}
 					>
@@ -143,7 +126,7 @@ const Infra = () => {
 							}, {
 								icon: <GlobalOutlined />,
 								title: 'Nginx (host)',
-								desc: 'Reverse proxy na porta 443 com prefixos por app (/portfolio, /shop-commerce, /sexybot, /photojobs) para os serviços via *.svc.cluster.local.',
+								desc: 'Reverse proxy na porta 443 com prefixos por app (/portfolio, /shop-commerce) para os serviços via *.svc.cluster.local.',
 							}, {
 								icon: <LockOutlined />,
 								title: 'SSL Let\u2019s Encrypt',
@@ -152,7 +135,7 @@ const Infra = () => {
 								<div
 									key={item.title}
 									className='flex flex-col gap-1 p-3 rounded-lg'
-									style={{ backgroundColor: '#ffffff12' }}
+									style={{ backgroundColor: '#475569', border: '1px solid rgba(255,255,255,0.14)' }}
 								>
 									<Space>
 										<span className='inline-flex text-lg text-white/90'>
@@ -169,7 +152,8 @@ const Infra = () => {
 					<div
 						className='flex flex-col gap-3 p-4 rounded-lg text-[#ffffff]'
 						style={{
-							backgroundColor: 'rgba(255,255,255,0.06)',
+							backgroundColor: '#334155',
+							border: '1px solid rgba(255,255,255,0.15)',
 							borderLeft: '4px solid #0ea5e9',
 						}}
 					>
@@ -188,8 +172,8 @@ const Infra = () => {
 									key={app.name}
 									className='flex flex-col sm:flex-row gap-3 sm:gap-4 p-3 rounded-lg'
 									style={{
-										backgroundColor: `${app.color}22`,
-										border: `1px solid ${app.color}66`,
+										backgroundColor: '#475569',
+										border: `1px solid ${app.color}99`,
 									}}
 								>
 									<div className='flex items-center gap-3 min-w-[180px]'>
@@ -218,7 +202,7 @@ const Infra = () => {
 												<Tag
 													key={tech}
 													style={{
-														background: `${app.color}33`,
+														background: '#475569',
 														border: `1px solid ${app.color}88`,
 														color: '#fff',
 														borderRadius: '999px',
@@ -239,7 +223,8 @@ const Infra = () => {
 					<div
 						className='flex flex-col gap-3 p-4 rounded-lg text-[#ffffff]'
 						style={{
-							backgroundColor: 'rgba(255,255,255,0.06)',
+							backgroundColor: '#334155',
+							border: '1px solid rgba(255,255,255,0.15)',
 							borderLeft: '4px solid #f59e0b',
 						}}
 					>
@@ -260,7 +245,7 @@ const Infra = () => {
 										style={{
 											minWidth: '28px',
 											height: '28px',
-											backgroundColor: '#ffffff25',
+											backgroundColor: '#475569',
 											border: '1px solid #ffffff55',
 										}}
 									>

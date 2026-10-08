@@ -15,7 +15,7 @@ const NotFound = () => {
 			className='notfound-wrapper h-full overflow-auto flex items-center justify-center'
 			style={{
 				background:
-					'radial-gradient(1100px 700px at 50% -10%, rgba(99,102,241,0.22), transparent 55%), #0f172a',
+					'radial-gradient(1100px 700px at 50% -10%, rgba(99,102,241,0.22), transparent 55%)',
 			}}
 		>
 			<div className='flex flex-col items-center gap-4 text-[#fff] p-8 text-center'>

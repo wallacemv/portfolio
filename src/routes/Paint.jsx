@@ -152,7 +152,7 @@ const Paint = () => {
 			className='paint-wrapper relative h-full'
 			style={{
 				background:
-					'radial-gradient(1100px 700px at 85% -10%, rgba(239,68,68,0.22), transparent 55%), #0f172a',
+					'radial-gradient(1100px 700px at 85% -10%, rgba(239,68,68,0.22), transparent 55%)',
 			}}
 		>
 			<div

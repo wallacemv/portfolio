@@ -25,10 +25,10 @@ Portfolio website with React + Vite + Ant Design, deployed on Kubernetes (k3s) o
 - Removed ImageTracerJS and Pica (unused deps)
 
 ### Projects Page
-- New `/projects` route listing the main projects as cards (SexyBot, Shop Commerce, Photojobs): description, stack tags, GitHub + live links
+- New `/projects` route listing the main projects as cards (Shop Commerce): description, stack tags, GitHub + live links (SexyBot e Photojobs removidos em Oct 8, 2026)
 
 ### Infra Page
-- New `/infra` route explaining the production infra: VPS Ubuntu 22.04, k3s, Docker+containerd, Nginx host + Let's Encrypt, apps hosted (portfolio, websocket, sexybot, shop-commerce, photojobs), and the deploy flow (git pull → docker build → ctr import → kubectl apply → rollout)
+- New `/infra` route explaining the production infra: VPS Ubuntu 22.04, k3s, Docker+containerd, Nginx host + Let's Encrypt, apps hosted (portfolio, websocket, shop-commerce), and the deploy flow (git pull → docker build → ctr import → kubectl apply → rollout)
 
 ### Chat Page
 - Removed `prompt()` on load; generates random username, saves to localStorage
