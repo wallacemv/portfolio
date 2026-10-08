@@ -23,7 +23,16 @@ const C = {
 	botLine: '#22c55e',
 };
 
-const NUDGE_KEY = 'chatNudged';
+const NUDGE_PHRASES = [
+	'Fale comigo!',
+	'Oi, posso ajudar?',
+	'Bora conversar?',
+	'Tô por aqui!',
+	'Pergunta sobre meus projetos!',
+	'Psiu, tem dúvida?',
+	'Vamos bater um papo?',
+	'Chama!',
+];
 
 const ChatWidget = () => {
 	const { message } = App.useApp();
@@ -47,8 +56,6 @@ const ChatWidget = () => {
 		openRef.current = open;
 		if (open) {
 			setUnreadCount(0);
-			setShowNudge(false);
-			sessionStorage.setItem(NUDGE_KEY, '1');
 		}
 	}, [open]);
 
@@ -56,12 +63,37 @@ const ChatWidget = () => {
 		usernameRef.current = username;
 	}, [username]);
 
-	// Balãozinho "Fale comigo!" — 1x por sessão
+	// Balãozinho "Fale comigo!" — aparece em intervalos aleatórios enquanto o chat está fechado
 	useEffect(() => {
-		if (sessionStorage.getItem(NUDGE_KEY)) return;
-		const t = setTimeout(() => setShowNudge(true), 1500);
-		return () => clearTimeout(t);
-	}, []);
+		if (open) {
+			setShowNudge(false);
+			return;
+		}
+		let alive = true;
+		let showT = null;
+		let hideT = null;
+
+		const schedule = (delay) => {
+			if (!alive) return;
+			showT = setTimeout(() => {
+				if (!alive) return;
+				setNudgeText(NUDGE_PHRASES[Math.floor(Math.random() * NUDGE_PHRASES.length)]);
+				setShowNudge(true);
+				hideT = setTimeout(() => {
+					if (!alive) return;
+					setShowNudge(false);
+					schedule(6000 + Math.random() * 9000);
+				}, 4500);
+			}, delay);
+		};
+
+		schedule(2500 + Math.random() * 5000);
+		return () => {
+			alive = false;
+			clearTimeout(showT);
+			clearTimeout(hideT);
+		};
+	}, [open]);
 
 	const scrollToBottom = () => {
 		messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -98,21 +130,17 @@ const ChatWidget = () => {
 		scrollToBottom();
 	}, [messages]);
 
+	// Sem username salvo → tela de cadastro; nada de User### aleatório
 	useEffect(() => {
 		const storedUsername = localStorage.getItem('chatUsername');
 		if (storedUsername) {
 			setUsername(storedUsername);
 			setUsernameInput(storedUsername);
-		} else {
-			const newUsername = `User${Math.floor(Math.random() * 1000)}`;
-			setUsername(newUsername);
-			setUsernameInput(newUsername);
-			localStorage.setItem('chatUsername', newUsername);
 		}
 	}, []);
 
 	useEffect(() => {
-		if (!open) return;
+		if (!open || !username) return;
 
 		let disposed = false;
 		let retryTimer = null;
@@ -124,7 +152,10 @@ const ChatWidget = () => {
 			websocketRef.current = ws;
 
 			ws.onopen = () => {
-				if (!disposed) setIsConnected(true);
+				if (disposed) return;
+				setIsConnected(true);
+				// registra a entrada na hora (servidor broadcasta "X entrou")
+				ws.send(JSON.stringify({ type: 'join', username: usernameRef.current }));
 			};
 
 			ws.onmessage = (event) => {
@@ -181,7 +212,7 @@ const ChatWidget = () => {
 			setIsBotTyping(false);
 			setMessages([]);
 		};
-	}, [open]);
+	}, [open, username]);
 
 	const sendMessage = () => {
 		if (!inputMessage.trim() || !isConnected) return;
@@ -200,7 +231,8 @@ const ChatWidget = () => {
 	};
 
 	const saveUsername = () => {
-		const name = usernameInput.trim() || `User${Math.floor(Math.random() * 1000)}`;
+		const name = usernameInput.trim();
+		if (!name) return;
 		setUsername(name);
 		setUsernameInput(name);
 		localStorage.setItem('chatUsername', name);
@@ -223,11 +255,14 @@ const ChatWidget = () => {
 		let currentDate = null;
 
 		msgs.forEach((msg) => {
-			const date = new Date(msg.timestamp).toLocaleDateString('pt-BR', {
-				year: 'numeric',
-				month: 'long',
-				day: 'numeric',
-			});
+			const d = new Date(msg.timestamp);
+			const date = isNaN(d)
+				? 'Hoje'
+				: d.toLocaleDateString('pt-BR', {
+						year: 'numeric',
+						month: 'long',
+						day: 'numeric',
+					});
 			if (date !== currentDate) {
 				currentDate = date;
 				groups.push({ type: 'date', label: date, id: `date-${date}` });
@@ -277,7 +312,9 @@ const ChatWidget = () => {
 				</Text>
 				<Text style={{ color: C.text, whiteSpace: 'pre-wrap' }}>{message.text}</Text>
 				<Text style={{ color: isMine ? '#c7d2fe' : C.muted, fontSize: '0.65em' }}>
-					{new Date(message.timestamp).toLocaleTimeString()}
+					{isNaN(new Date(message.timestamp))
+						? ''
+						: new Date(message.timestamp).toLocaleTimeString()}
 				</Text>
 			</div>
 		);
@@ -320,43 +357,44 @@ const ChatWidget = () => {
 								</Text>
 							</Space>
 							<Space size='small'>
-								{editingUsername ? (
-									<Space.Compact>
-										<Input
-											size='small'
-											value={usernameInput}
-											onChange={(e) => setUsernameInput(e.target.value)}
-											onPressEnter={saveUsername}
-											style={{
-												width: 110,
-												background: C.bg,
-												borderColor: C.line,
-												color: C.text,
-											}}
-										/>
+								{username &&
+									(editingUsername ? (
+										<Space.Compact>
+											<Input
+												size='small'
+												value={usernameInput}
+												onChange={(e) => setUsernameInput(e.target.value)}
+												onPressEnter={saveUsername}
+												style={{
+													width: 110,
+													background: C.bg,
+													borderColor: C.line,
+													color: C.text,
+												}}
+											/>
+											<Button
+												size='small'
+												type='primary'
+												onClick={saveUsername}
+												style={{ background: C.mine }}
+											>
+												OK
+											</Button>
+										</Space.Compact>
+									) : (
 										<Button
 											size='small'
-											type='primary'
-											onClick={saveUsername}
-											style={{ background: C.mine }}
+											type='text'
+											icon={<EditOutlined />}
+											style={{ color: C.muted }}
+											onClick={() => {
+												setUsernameInput(username);
+												setEditingUsername(true);
+											}}
 										>
-											OK
+											{username}
 										</Button>
-									</Space.Compact>
-								) : (
-									<Button
-										size='small'
-										type='text'
-										icon={<EditOutlined />}
-										style={{ color: C.muted }}
-										onClick={() => {
-											setUsernameInput(username);
-											setEditingUsername(true);
-										}}
-									>
-										{username}
-									</Button>
-								)}
+									))}
 								<Badge
 									status={isConnected ? 'success' : 'error'}
 									text={isConnected ? 'Online' : 'Offline'}
@@ -366,10 +404,49 @@ const ChatWidget = () => {
 							</Space>
 						</div>
 
-						<div
-							className='flex-1 overflow-y-auto flex flex-col gap-2 p-3'
-							style={{ minHeight: 0 }}
-						>
+						{!username ? (
+							<div
+								className='flex-1 flex flex-col items-center justify-center gap-4 p-6'
+								style={{ minHeight: 0 }}
+							>
+								<MessageOutlined style={{ fontSize: 32, color: C.botLine }} />
+								<Text style={{ color: C.text, fontSize: 16, fontWeight: 600 }}>
+									Como posso te chamar?
+								</Text>
+								<Text
+									style={{ color: C.muted, fontSize: 13, textAlign: 'center' }}
+								>
+									Digite seu nome para entrar na conversa
+								</Text>
+								<Input
+									value={usernameInput}
+									onChange={(e) => setUsernameInput(e.target.value)}
+									onPressEnter={saveUsername}
+									placeholder='Seu nome'
+									maxLength={20}
+									autoFocus
+									style={{
+										background: C.surface,
+										borderColor: C.line,
+										color: C.text,
+									}}
+								/>
+								<Button
+									type='primary'
+									block
+									onClick={saveUsername}
+									disabled={!usernameInput.trim()}
+									style={{ background: C.mine }}
+								>
+									Começar a conversa
+								</Button>
+							</div>
+						) : (
+							<>
+								<div
+									className='flex-1 overflow-y-auto flex flex-col gap-2 p-3'
+									style={{ minHeight: 0 }}
+								>
 							{groupMessagesByDate(messages).map((item) => {
 								if (item.type === 'date') {
 									return (
@@ -461,6 +538,8 @@ const ChatWidget = () => {
 								style={{ background: C.mine, color: '#fff' }}
 							/>
 						</div>
+							</>
+						)}
 					</div>
 				</div>
 			)}

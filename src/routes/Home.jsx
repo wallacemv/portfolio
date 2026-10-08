@@ -1,8 +1,11 @@
-import { React, useEffect, useRef, useMemo } from 'react';
+import { React, useEffect, useRef, useMemo, useState } from 'react';
 import { TypeAnimation } from 'react-type-animation';
 import { usePageMeta } from '../lib/seo';
 
 const randomBetween = (min, max) => Math.random() * (max - min) + min;
+
+const ASCII_COLS = 72;
+const ASCII_RAMP = ' .:-=+*#%@';
 
 const Home = () => {
 	usePageMeta({
@@ -27,6 +30,33 @@ const Home = () => {
 
 	const photoRef = useRef(null);
 	const innerCirclesRef = useRef([]);
+	const [ascii, setAscii] = useState('');
+
+	// Foto em ASCII: amostra paint.webp num canvas 72xN e mapeia luminância pro ramp
+	useEffect(() => {
+		const img = new Image();
+		img.src = `${import.meta.env.BASE_URL}images/paint.webp`;
+		img.onload = () => {
+			const rows = Math.max(1, Math.round(ASCII_COLS * (img.height / img.width) * 0.55));
+			const canvas = document.createElement('canvas');
+			canvas.width = ASCII_COLS;
+			canvas.height = rows;
+			const ctx = canvas.getContext('2d');
+			ctx.filter = 'grayscale(1) brightness(1.15) contrast(1.15)';
+			ctx.drawImage(img, 0, 0, ASCII_COLS, rows);
+			const { data } = ctx.getImageData(0, 0, ASCII_COLS, rows);
+			let out = '';
+			for (let y = 0; y < rows; y++) {
+				for (let x = 0; x < ASCII_COLS; x++) {
+					const i = (y * ASCII_COLS + x) * 4;
+					const lum = (0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2]) / 255;
+					out += ASCII_RAMP[Math.min(ASCII_RAMP.length - 1, Math.floor(lum * ASCII_RAMP.length))];
+				}
+				out += '\n';
+			}
+			setAscii(out);
+		};
+	}, []);
 	const innerColors = [
 		'#e2e8f01a',
 		'#cbd5e120',
@@ -113,13 +143,26 @@ const Home = () => {
 							opacity: 0.5,
 						}}
 					>
-						<img
-							className='absolute inset-0 w-full h-full object-cover'
-							style={{
-								filter: 'grayscale(1) contrast(1.05) brightness(0.9)',
-							}}
-							src={`${import.meta.env.BASE_URL}images/paint.webp`}
-						/>
+						<pre
+						aria-hidden='true'
+						style={{
+							position: 'absolute',
+							inset: 0,
+							margin: 0,
+							display: 'flex',
+							alignItems: 'center',
+							justifyContent: 'center',
+							fontFamily: 'monospace',
+							fontSize: `calc(min(250px, 50vw) / ${ASCII_COLS * 0.6})`,
+							lineHeight: 1,
+							color: '#e2e8f0',
+							whiteSpace: 'pre',
+							overflow: 'hidden',
+							pointerEvents: 'none',
+						}}
+					>
+						{ascii}
+					</pre>
 						{innerCirclesConfig.map((c) => (
 							<div
 								key={c.id}
