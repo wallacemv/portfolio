@@ -131,12 +131,17 @@ const ChatWidget = () => {
 		scrollToBottom();
 	}, [messages]);
 
-	// Sem username salvo → tela de cadastro; nada de User### aleatório
+	// Sem username salvo → tela de cadastro dentro do chat; nomes antigos
+	// gerados automaticamente (User###) são limpos para perguntar de novo
 	useEffect(() => {
-		const storedUsername = localStorage.getItem('chatUsername');
-		if (storedUsername) {
-			setUsername(storedUsername);
-			setUsernameInput(storedUsername);
+		let stored = localStorage.getItem('chatUsername');
+		if (stored && /^User\d+$/.test(stored)) {
+			localStorage.removeItem('chatUsername');
+			stored = null;
+		}
+		if (stored) {
+			setUsername(stored);
+			setUsernameInput(stored);
 		}
 	}, []);
 
