@@ -38,6 +38,7 @@ const ChatWidget = () => {
 	const { message } = App.useApp();
 	const [open, setOpen] = useState(false);
 	const [showNudge, setShowNudge] = useState(false);
+	const [nudgeText, setNudgeText] = useState('Fale comigo!');
 	const [messages, setMessages] = useState([]);
 	const [inputMessage, setInputMessage] = useState('');
 	const [username, setUsername] = useState('');
@@ -569,7 +570,7 @@ const ChatWidget = () => {
 						animation: 'chatNudgePulse 2s ease-in-out infinite',
 					}}
 				>
-					Fale comigo!
+					{nudgeText}
 					<span
 						style={{
 							position: 'absolute',
