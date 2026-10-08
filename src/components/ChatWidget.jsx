@@ -398,7 +398,7 @@ const ChatWidget = () => {
 										type='text'
 										style={{
 											color: C.muted,
-											maxWidth: '90%',
+											maxWidth: '100%',
 											paddingInline: 4,
 										}}
 										onClick={() => {
