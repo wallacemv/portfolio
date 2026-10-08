@@ -126,7 +126,7 @@ const Home = () => {
 							right: '0',
 							top: '50%',
 							transform: 'translateY(-50%)',
-							opacity: 0.5,
+							opacity: 0.85,
 						}}
 					>
 						<pre
@@ -142,7 +142,7 @@ const Home = () => {
 								fontFamily: 'monospace',
 								fontSize: `calc(min(400px, 60vw) / ${ASCII_COLS * 0.6})`,
 								lineHeight: 1,
-								color: '#e2e8f0',
+								color: '#ffffff',
 								whiteSpace: 'pre',
 								overflow: 'hidden',
 								pointerEvents: 'none',
