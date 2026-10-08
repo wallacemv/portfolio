@@ -134,6 +134,7 @@ const Home = () => {
 							style={{
 								position: 'absolute',
 								inset: 0,
+								paddingRight: '1.5rem',
 								margin: 0,
 								display: 'flex',
 								alignItems: 'center',
