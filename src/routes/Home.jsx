@@ -134,11 +134,10 @@ const Home = () => {
 							style={{
 								position: 'absolute',
 								inset: 0,
-								paddingRight: '1.5rem',
 								margin: 0,
 								display: 'flex',
 								alignItems: 'center',
-								justifyContent: 'center',
+								justifyContent: 'flex-end',
 								fontFamily: 'monospace',
 								fontSize: `calc(min(400px, 60vw) / ${ASCII_COLS * 0.6})`,
 								lineHeight: 1,
