@@ -87,7 +87,7 @@ const ChatWidget = () => {
 			}, delay);
 		};
 
-		schedule(2500 + Math.random() * 5000);
+		schedule(500); // aparece já de cara
 		return () => {
 			alive = false;
 			clearTimeout(showT);

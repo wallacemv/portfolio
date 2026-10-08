@@ -188,6 +188,7 @@ const Home = () => {
 							<div className='grid grid-cols-2 gap-2 text-white'>
 								{[
 									'Node.js',
+									'NestJS',
 									'TypeScript',
 									'JavaScript',
 									'Java',
@@ -200,6 +201,12 @@ const Home = () => {
 									'Spring Boot',
 									'Python',
 									'SQL',
+									'MySQL',
+									'Oracle',
+									'Redis',
+									'Docker',
+									'Kubernetes',
+									'IA Generativa (LLM/MCP)',
 									'Git',
 								].map((skill) => (
 									<div key={skill} className='text-lg font-medium'>
