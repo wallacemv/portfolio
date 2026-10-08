@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Input, Button, Typography, Space, Badge, App } from 'antd';
+import { Input, Button, Typography, Badge, App } from 'antd';
 import {
 	SendOutlined,
 	MessageOutlined,
@@ -356,18 +356,44 @@ const ChatWidget = () => {
 							className='flex items-center justify-between gap-2 p-3'
 							style={{ borderBottom: `1px solid ${C.line}`, background: C.surface }}
 						>
-							<Space>
-								<MessageOutlined style={{ color: C.botLine }} />
-								<Text strong style={{ color: C.text }}>
+							<div
+								style={{
+									display: 'flex',
+									alignItems: 'center',
+									gap: 8,
+									minWidth: 0,
+									flex: '1 1 auto',
+									overflow: 'hidden',
+								}}
+							>
+								<MessageOutlined
+									style={{ color: C.botLine, flexShrink: 0 }}
+								/>
+								<span
+									style={{
+										color: C.text,
+										fontWeight: 600,
+										whiteSpace: 'nowrap',
+										overflow: 'hidden',
+										textOverflow: 'ellipsis',
+									}}
+								>
 									Fale com o Wallace
-								</Text>
-							</Space>
-							<Space size='small'>
+								</span>
+							</div>
+							<div
+								style={{
+									display: 'flex',
+									alignItems: 'center',
+									gap: 8,
+									flexShrink: 0,
+								}}
+							>
 								{username && (
 									<Button
 										size='small'
 										type='text'
-										style={{ color: C.muted }}
+										style={{ color: C.muted, maxWidth: 120 }}
 										onClick={() => {
 											setUsernameInput(username);
 											setEditingName(true);
@@ -378,12 +404,12 @@ const ChatWidget = () => {
 												display: 'inline-flex',
 												alignItems: 'center',
 												gap: 6,
+												minWidth: 0,
 											}}
 										>
-											<EditOutlined />
+											<EditOutlined style={{ flexShrink: 0 }} />
 											<span
 												style={{
-													maxWidth: 90,
 													overflow: 'hidden',
 													textOverflow: 'ellipsis',
 													whiteSpace: 'nowrap',
@@ -400,7 +426,7 @@ const ChatWidget = () => {
 									icon={isConnected ? <WifiOutlined /> : <DisconnectOutlined />}
 									style={{ color: C.muted }}
 								/>
-							</Space>
+							</div>
 						</div>
 
 						{!username || editingName ? (
