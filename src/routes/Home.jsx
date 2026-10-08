@@ -2,7 +2,7 @@ import { React, useEffect, useMemo, useState } from 'react';
 import { TypeAnimation } from 'react-type-animation';
 import { usePageMeta } from '../lib/seo';
 
-const ASCII_COLS = 72;
+const ASCII_COLS = 110;
 const ASCII_RAMP = ' .:-=+*#%@';
 
 const Home = () => {
@@ -43,7 +43,7 @@ const Home = () => {
 			canvas.width = ASCII_COLS;
 			canvas.height = rows;
 			const ctx = canvas.getContext('2d');
-			ctx.filter = 'grayscale(1) brightness(1.15) contrast(1.15)';
+			ctx.filter = 'grayscale(1) contrast(1.4) brightness(1.05)';
 			ctx.drawImage(img, 0, 0, ASCII_COLS, rows);
 			const { data } = ctx.getImageData(0, 0, ASCII_COLS, rows);
 			let out = '';
@@ -121,7 +121,7 @@ const Home = () => {
 					<div
 						className='absolute overflow-hidden pointer-events-none'
 						style={{
-							width: 'min(400px, 60vw)',
+							width: 'min(500px, 50vw)',
 							aspectRatio: '1',
 							right: '0',
 							top: '50%',
@@ -140,7 +140,7 @@ const Home = () => {
 								alignItems: 'center',
 								justifyContent: 'flex-end',
 								fontFamily: 'monospace',
-								fontSize: `calc(min(400px, 60vw) / ${ASCII_COLS * 0.6})`,
+								fontSize: `calc(min(500px, 50vw) / ${ASCII_COLS * 0.6})`,
 								lineHeight: 1,
 								color: '#ffffff',
 								whiteSpace: 'pre',
