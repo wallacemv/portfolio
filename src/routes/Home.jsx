@@ -1,15 +1,14 @@
-import { React, useEffect, useRef, useMemo, useState } from 'react';
+import { React, useEffect, useMemo, useState } from 'react';
 import { TypeAnimation } from 'react-type-animation';
 import { usePageMeta } from '../lib/seo';
-
-const randomBetween = (min, max) => Math.random() * (max - min) + min;
 
 const ASCII_COLS = 72;
 const ASCII_RAMP = ' .:-=+*#%@';
 
 const Home = () => {
 	usePageMeta({
-		title: 'Wallace Martins Vieira — Desenvolvedor Full Stack | Node.js, TypeScript, Angular, Java',
+		title:
+			'Wallace Martins Vieira — Desenvolvedor Full Stack | Node.js, TypeScript, Angular, Java',
 		description:
 			'Wallace Martins Vieira, Specialist Full Stack Developer com mais de 15 anos no desenvolvimento de softwares escaláveis. Node.js, TypeScript, Angular, Java, Python e Kubernetes.',
 		path: '/',
@@ -28,16 +27,18 @@ const Home = () => {
 		},
 	});
 
-	const photoRef = useRef(null);
-	const innerCirclesRef = useRef([]);
 	const [ascii, setAscii] = useState('');
+	const [typed, setTyped] = useState(0);
 
 	// Foto em ASCII: amostra paint.webp num canvas 72xN e mapeia luminância pro ramp
 	useEffect(() => {
 		const img = new Image();
 		img.src = `${import.meta.env.BASE_URL}images/paint.webp`;
 		img.onload = () => {
-			const rows = Math.max(1, Math.round(ASCII_COLS * (img.height / img.width) * 0.55));
+			const rows = Math.max(
+				1,
+				Math.round(ASCII_COLS * (img.height / img.width) * 0.55),
+			);
 			const canvas = document.createElement('canvas');
 			canvas.width = ASCII_COLS;
 			canvas.height = rows;
@@ -49,76 +50,62 @@ const Home = () => {
 			for (let y = 0; y < rows; y++) {
 				for (let x = 0; x < ASCII_COLS; x++) {
 					const i = (y * ASCII_COLS + x) * 4;
-					const lum = (0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2]) / 255;
-					out += ASCII_RAMP[Math.min(ASCII_RAMP.length - 1, Math.floor(lum * ASCII_RAMP.length))];
+					const lum =
+						(0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2]) / 255;
+					out +=
+						ASCII_RAMP[
+							Math.min(
+								ASCII_RAMP.length - 1,
+								Math.floor(lum * ASCII_RAMP.length),
+							)
+						];
 				}
 				out += '\n';
 			}
 			setAscii(out);
 		};
 	}, []);
-	const innerColors = [
-		'#e2e8f01a',
-		'#cbd5e120',
-		'#94a3b81f',
-		'#f1f5f91a',
-	];
-	const innerCirclesConfig = useMemo(() => {
-		return Array.from({ length: 4 }, (_, i) => ({
-			id: i,
-			size: randomBetween(12, 24),
-			color: innerColors[i],
-			x: randomBetween(20, 80),
-			y: randomBetween(20, 80),
-			vx: randomBetween(-0.4, 0.4),
-			vy: randomBetween(-0.4, 0.4),
-		}));
-	}, []);
 
+	// Efeito de digitacao: revela os caracteres como se uma máquina estivesse
+	// datilografando (respeta prefers-reduced-motion)
 	useEffect(() => {
-		const circles = innerCirclesConfig.map((c) => ({
-			...c,
-			el: null,
-		}));
-
-		innerCirclesRef.current.forEach((el) => {
-			if (!el) return;
-			const id = parseInt(el.dataset.id);
-			const circle = circles.find((c) => c.id === id);
-			if (circle) circle.el = el;
-		});
-
-		let animId;
-
-		const animate = () => {
-			const photo = photoRef.current;
-			if (!photo) {
-				animId = requestAnimationFrame(animate);
-				return;
-			}
-			const pw = photo.offsetWidth;
-			const ph = photo.offsetHeight;
-
-			circles.forEach((c) => {
-				if (!c.el) return;
-
-				c.x += c.vx;
-				c.y += c.vy;
-
-				const ew = c.el.offsetWidth;
-				const eh = c.el.offsetHeight;
-
-				if (c.x + ew >= pw || c.x <= 0) c.vx *= -1;
-				if (c.y + eh >= ph || c.y <= 0) c.vy *= -1;
-
-				c.el.style.transform = `translate(${c.x}px, ${c.y}px)`;
+		if (!ascii) return;
+		const total = ascii.length;
+		const reduce =
+			typeof matchMedia === 'function' &&
+			matchMedia('(prefers-reduced-motion: reduce)').matches;
+		if (reduce) {
+			setTyped(total);
+			return;
+		}
+		setTyped(0);
+		const step = Math.max(1, Math.ceil(total / 120));
+		const id = setInterval(() => {
+			setTyped((t) => {
+				const n = t + step;
+				if (n >= total) {
+					clearInterval(id);
+					return total;
+				}
+				return n;
 			});
-			animId = requestAnimationFrame(animate);
-		};
+		}, 25);
+		return () => clearInterval(id);
+	}, [ascii]);
 
-		animId = requestAnimationFrame(animate);
-		return () => cancelAnimationFrame(animId);
-	}, [innerCirclesConfig]);
+	// Prefixo digitado + espaços até o fim de cada linha → bloco com tamanho
+	// fixo, nada pula enquanto digita
+	const displayAscii = useMemo(() => {
+		if (!ascii) return '';
+		const origLines = ascii.split('\n');
+		const typedLines = ascii.slice(0, typed).split('\n');
+		return origLines
+			.map((line, i) => {
+				const t = typedLines[i] || '';
+				return t + ' '.repeat(Math.max(0, line.length - t.length));
+			})
+			.join('\n');
+	}, [ascii, typed]);
 
 	return (
 		<div
@@ -132,10 +119,9 @@ const Home = () => {
 				{/**left */}
 				<div className='flex flex-col p-4 sm:p-6 relative overflow-hidden pic'>
 					<div
-						ref={photoRef}
-						className='absolute rounded-full overflow-hidden pointer-events-none border-solid border-[6px] sm:border-[12px] border-[#94a3b8]'
+						className='absolute overflow-hidden pointer-events-none'
 						style={{
-							width: 'min(250px, 50vw)',
+							width: 'min(400px, 60vw)',
 							aspectRatio: '1',
 							right: '0',
 							top: '50%',
@@ -144,43 +130,25 @@ const Home = () => {
 						}}
 					>
 						<pre
-						aria-hidden='true'
-						style={{
-							position: 'absolute',
-							inset: 0,
-							margin: 0,
-							display: 'flex',
-							alignItems: 'center',
-							justifyContent: 'center',
-							fontFamily: 'monospace',
-							fontSize: `calc(min(250px, 50vw) / ${ASCII_COLS * 0.6})`,
-							lineHeight: 1,
-							color: '#e2e8f0',
-							whiteSpace: 'pre',
-							overflow: 'hidden',
-							pointerEvents: 'none',
-						}}
-					>
-						{ascii}
-					</pre>
-						{innerCirclesConfig.map((c) => (
-							<div
-								key={c.id}
-								data-id={c.id}
-								ref={(el) => {
-									if (el) innerCirclesRef.current[c.id] = el;
-								}}
-								className='absolute rounded-full'
-								style={{
-									top: 0,
-									left: 0,
-									width: `${c.size}rem`,
-									height: `${c.size}rem`,
-									backgroundColor: c.color,
-									zIndex: 50 + c.id,
-								}}
-							/>
-						))}
+							aria-hidden='true'
+							style={{
+								position: 'absolute',
+								inset: 0,
+								margin: 0,
+								display: 'flex',
+								alignItems: 'center',
+								justifyContent: 'center',
+								fontFamily: 'monospace',
+								fontSize: `calc(min(400px, 60vw) / ${ASCII_COLS * 0.6})`,
+								lineHeight: 1,
+								color: '#e2e8f0',
+								whiteSpace: 'pre',
+								overflow: 'hidden',
+								pointerEvents: 'none',
+							}}
+						>
+							{displayAscii}
+						</pre>
 					</div>
 					<div className='flex flex-col flex-nowrap relative z-10'>
 						<div className='flex flex-col'>
@@ -202,7 +170,10 @@ const Home = () => {
 							</div>
 						</div>
 						<div className='flex flex-col'>
-							<div className='w-full sm:w-1/2 p-6 my-6 sm:my-12 rounded-lg font-semibold text-[#ffffff] border border-white/15' style={{ backgroundColor: '#334155' }}>
+							<div
+								className='w-full sm:w-1/2 p-6 my-6 sm:my-12 rounded-lg font-semibold text-[#ffffff] border border-white/15'
+								style={{ backgroundColor: '#334155' }}
+							>
 								<TypeAnimation
 									sequence={[
 										'Mais de 15 anos no desenvolvimento de softwares escaláveis. Bacharel em Sistemas de Informação e Pós Graduado em Desenvolvimento de aplicações Java - SOA.',
