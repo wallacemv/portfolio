@@ -17,7 +17,9 @@
  *   PRERENDER_DEBUG_PORT  porta do CDP (default PRERENDER_PORT + 1)
  *   PRERENDER_ROUTES    rotas separadas por vírgula (default /,/about,/projects,/infra,/paint)
  *   PRERENDER_MIN_TEXT  mínimo de caracteres de texto por rota (default 200)
- *   PRERENDER_SETTLE    ms de espera após o mount, para efeitos de SEO (default 600)
+ *   PRERENDER_STABLE_TIMEOUT   espera máxima pela estabilização do texto (default 12000 ms)
+ *   PRERENDER_STABLE_SAMPLES   amostras idênticas consecutivas para considerar estável (default 3)
+ *   PRERENDER_STABLE_INTERVAL  intervalo entre amostras (default 250 ms)
  */
 
 import { spawn } from 'node:child_process';
@@ -31,7 +33,9 @@ const BASE = '/portfolio';
 const PORT = Number(process.env.PRERENDER_PORT || 4180);
 const DEBUG_PORT = Number(process.env.PRERENDER_DEBUG_PORT || PORT + 1);
 const MIN_TEXT = Number(process.env.PRERENDER_MIN_TEXT || 200);
-const SETTLE_MS = Number(process.env.PRERENDER_SETTLE || 600);
+const STABLE_TIMEOUT_MS = Number(process.env.PRERENDER_STABLE_TIMEOUT || 12000);
+const STABLE_SAMPLES = Number(process.env.PRERENDER_STABLE_SAMPLES || 3);
+const STABLE_INTERVAL_MS = Number(process.env.PRERENDER_STABLE_INTERVAL || 250);
 const ROUTES = (process.env.PRERENDER_ROUTES || '/,/about,/projects,/infra,/paint')
 	.split(',')
 	.map((r) => r.trim())
@@ -189,6 +193,29 @@ async function waitForReady(cdp, route) {
 	throw new Error(`rota ${route} não ficou pronta em 25s (último estado: ${JSON.stringify(last)})`);
 }
 
+/**
+ * Espera o texto de `#root` parar de mudar (a home digita o papel em ~4 s;
+ * capturar antes disso grava o hero truncado no HTML entregue ao crawler).
+ */
+async function waitForStableText(cdp, route) {
+	const until = Date.now() + STABLE_TIMEOUT_MS;
+	let last = null;
+	let stable = 0;
+	while (Date.now() < until) {
+		const text = (await evaluate(cdp, `(() => (document.querySelector('#root')?.innerText ?? '').replace(/\\s+/g, ' ').trim())()`)) ?? '';
+		if (text && text === last) {
+			stable += 1;
+			if (stable >= STABLE_SAMPLES) return text;
+		} else {
+			stable = 0;
+		}
+		last = text;
+		await sleep(STABLE_INTERVAL_MS);
+	}
+	console.warn(`   aviso: texto de ${route} não estabilizou em ${STABLE_TIMEOUT_MS} ms; seguindo com o último estado`);
+	return last ?? '';
+}
+
 async function main() {
 	if (typeof WebSocket === 'undefined') throw new Error('Node 22+ necessário (WebSocket global ausente)');
 	if (!existsSync(join(DIST, 'index.html'))) throw new Error('dist/index.html não existe — rode `npm run build` antes');
@@ -239,9 +266,8 @@ async function main() {
 			const url = `http://127.0.0.1:${PORT}${BASE}${route === '/' ? '/' : route}`;
 			await cdp.send('Page.navigate', { url });
 			const state = await waitForReady(cdp, route);
-			await sleep(SETTLE_MS);
+			const text = await waitForStableText(cdp, route);
 			const html = await evaluate(cdp, 'document.documentElement.outerHTML');
-			const text = (await evaluate(cdp, `(() => (document.querySelector('#root')?.innerText ?? '').replace(/\\s+/g, ' ').trim())()`)) ?? '';
 			const canonical = (await evaluate(cdp, `(() => document.querySelector('link[rel="canonical"]')?.href ?? '')()`)) ?? '';
 			snapshots.push({ route, html: `<!DOCTYPE html>\n${html}`, text, canonical, title: state.title });
 		}
@@ -275,13 +301,25 @@ async function main() {
 		console.log(`Prerender ok: ${snapshots.length} rota(s) em ${DIST}`);
 	} finally {
 		cdp?.close();
-		try {
-			chrome?.kill('SIGKILL');
-		} catch {
-			// processo já morto
+		if (chrome) {
+			// espera o processo morrer antes de apagar o profile: apagar antes gera ENOTEMPTY
+			await new Promise((r) => {
+				const done = () => r();
+				chrome.once('exit', done);
+				try {
+					chrome.kill('SIGKILL');
+				} catch {
+					// processo já morto
+				}
+				setTimeout(done, 3000);
+			});
 		}
 		await new Promise((r) => server.close(r));
-		rmSync(profileDir, { recursive: true, force: true });
+		try {
+			rmSync(profileDir, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 });
+		} catch {
+			// profile temporário no /tmp: falha de limpeza não pode derrubar o build
+		}
 	}
 }
 
