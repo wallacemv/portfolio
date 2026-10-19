@@ -1,9 +1,11 @@
-FROM node:18-alpine AS build
+FROM node:22-alpine AS build
 WORKDIR /app
+# Chromium fica só neste estágio: a imagem final continua nginx:alpine, sem navegador.
+RUN apk add --no-cache chromium
 COPY package*.json ./
 RUN npm ci
 COPY . .
-RUN npm run build
+RUN npm run build && npm run prerender
 
 FROM nginx:alpine
 COPY --from=build /app/dist /usr/share/nginx/html
