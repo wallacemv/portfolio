@@ -1,6 +1,11 @@
 import { React, useEffect, useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { TypeAnimation } from 'react-type-animation';
+import { ArrowRightOutlined } from '@ant-design/icons';
 import { usePageMeta } from '../lib/seo';
+import CompetencyGroups from '../components/CompetencyGroups';
+import { profile } from '../data/profile';
+import { experience } from '../data/experience';
 
 const ASCII_COLS = 110;
 const ASCII_RAMP = ' .:-=+*#%@';
@@ -8,17 +13,17 @@ const ASCII_RAMP = ' .:-=+*#%@';
 const Home = () => {
 	usePageMeta({
 		title:
-			'Wallace Martins Vieira — Desenvolvedor Full Stack | Node.js, TypeScript, Angular, Java',
+			'Wallace Martins Vieira — Fullstack Engineer | Node.js, TypeScript, Angular, Java',
 		description:
-			'Wallace Martins Vieira, Specialist Full Stack Developer com mais de 15 anos no desenvolvimento de softwares escaláveis. Node.js, TypeScript, Angular, Java, Python e Kubernetes.',
+			'Wallace Martins Vieira, Fullstack Engineer com mais de 15 anos no desenvolvimento de softwares escaláveis. Node.js, TypeScript, Angular, Java, Python e Kubernetes.',
 		path: '/',
 		jsonLd: {
 			'@context': 'https://schema.org',
 			'@type': 'WebPage',
-			name: 'Wallace Martins Vieira — Desenvolvedor Full Stack',
+			name: 'Wallace Martins Vieira — Fullstack Engineer',
 			url: 'https://codedbywallace.dev/portfolio/',
 			description:
-				'Portfolio de Wallace Martins Vieira, desenvolvedor full stack com 15+ anos de experiência.',
+				'Portfolio de Wallace Martins Vieira, Fullstack Engineer com 15+ anos de experiência.',
 			isPartOf: {
 				'@type': 'WebSite',
 				name: 'Wallace Martins Vieira — Portfolio',
@@ -119,7 +124,7 @@ const Home = () => {
 				{/**left */}
 				<div className='flex flex-col p-4 sm:p-6 relative overflow-hidden pic'>
 					<div
-						className='absolute overflow-hidden pointer-events-none'
+						className='hidden sm:block absolute overflow-hidden pointer-events-none'
 						style={{
 							width: 'min(500px, 50vw)',
 							aspectRatio: '1',
@@ -155,16 +160,14 @@ const Home = () => {
 						<div className='flex flex-col'>
 							<div className='text-2xl sm:text-4xl text-white font-bold'>
 								<TypeAnimation
-									sequence={['Wallace Martins Vieira']}
+									sequence={[profile.name]}
 									speed={30}
 									repeat={1}
 								/>
 							</div>
 							<div className='text-sm text-white'>
 								<TypeAnimation
-									sequence={[
-										'Specialist Full Stack Developer | Node.js • TypeScript • Angular • Java • Python • AI',
-									]}
+									sequence={[profile.role]}
 									speed={60}
 									repeat={1}
 								/>
@@ -172,48 +175,24 @@ const Home = () => {
 						</div>
 						<div className='flex flex-col'>
 							<div
-								className='w-full sm:w-1/2 p-6 my-6 sm:my-12 rounded-lg font-semibold text-[#ffffff] border border-white/15'
+								className='w-full sm:w-2/3 p-6 my-6 sm:my-12 rounded-lg font-semibold text-[#ffffff] border border-white/15'
 								style={{ backgroundColor: '#334155' }}
 							>
-								<TypeAnimation
-									sequence={[
-										'Mais de 15 anos no desenvolvimento de softwares escaláveis. Bacharel em Sistemas de Informação e Pós Graduado em Desenvolvimento de aplicações Java - SOA.',
-									]}
-									speed={50}
-									repeat={1}
-								/>
+								<p className='text-base leading-relaxed'>{profile.pitch}</p>
+								<Link
+									to='/about'
+									className='group inline-flex items-center gap-1.5 mt-3 text-sm font-medium text-white/80 hover:text-white underline underline-offset-4'
+								>
+									Ver trajetória completa
+									<ArrowRightOutlined className='text-[10px] transition-transform duration-200 group-hover:translate-x-0.5 motion-reduce:transition-none' />
+								</Link>
 							</div>
 						</div>
-						<div className='flex flex-row flex-1'>
-							<div className='grid grid-cols-2 gap-2 text-white'>
-								{[
-									'Node.js',
-									'NestJS',
-									'TypeScript',
-									'JavaScript',
-									'Java',
-									'Angular',
-									'React.js',
-									'React Native',
-									'Ionic',
-									'HTML, CSS, Sass',
-									'PHP',
-									'Spring Boot',
-									'Python',
-									'SQL',
-									'MySQL',
-									'Oracle',
-									'Redis',
-									'Docker',
-									'Kubernetes',
-									'IA Generativa (LLM/MCP)',
-									'Git',
-								].map((skill) => (
-									<div key={skill} className='text-lg font-medium'>
-										{skill}
-									</div>
-								))}
-							</div>
+						<div className='mt-6 sm:mt-8'>
+							<h2 className='text-xl sm:text-2xl text-white font-bold mb-3'>
+								Principais competências
+							</h2>
+							<CompetencyGroups />
 						</div>
 					</div>
 				</div>
@@ -226,53 +205,7 @@ const Home = () => {
 								Experiências profissionais recentes
 							</h2>
 							<div className='gap-4 flex flex-col sm:flex-row flex-wrap'>
-								{[
-									{
-										role: 'Desenvolvedor Fullstack - Nest.js, Angular',
-										company: 'Sem Parar',
-										period: 'Jan 2019 - Jul 2026',
-										desc: 'APIs com Node.js/NestJS e Java, front-end Angular, apps híbridos Ionic em produto de mobilidade de grande porte.',
-										highlights: [
-											'Fullstack em produto de mobilidade (telemetria, tag e apps) que atende milhares de usuários',
-											'APIs e integrações em Node.js/NestJS e Java com sistemas legados e serviços externos',
-											'Angular e apps híbridos Ionic com entregas frequentes em ambiente de alta criticidade',
-										],
-										color: '#b94e98',
-									},
-									{
-										role: 'Desenvolvedor Java Sênior',
-										company: 'Telefonia Empresarial Vivo',
-										period: 'Ago 2017 - Jan 2019',
-										desc: 'Serviços e integrações Java (SOA/Oracle) e front-end Angular em telecom empresarial.',
-										highlights: [
-											'Serviços e integrações Java em arquitetura SOA com Oracle para telecom empresarial',
-											'APIs e sistemas que sustentam produtos de telefonia empresarial',
-										],
-										color: '#575dd4',
-									},
-									{
-										role: 'Desenvolvedor front-end (freelance)',
-										company: 'HDI Seguros',
-										period: 'Mar 2021 - Abr 2021',
-										desc: 'Front-end TypeScript/Angular com Sass em portal do mercado de seguros.',
-										highlights: [
-											'Front-end com TypeScript, Angular e Sass para o mercado de seguros',
-											'Telas e componentes consumindo APIs do segurador',
-										],
-										color: '#99afff',
-									},
-									{
-										role: 'Desenvolvedor Mobile',
-										company: 'Elocc',
-										period: 'Jan 2017 - Ago 2017',
-										desc: 'Desenvolvimento de apps híbridos com Apache Cordova e Ionic.',
-										highlights: [
-											'Apps híbridos Android/iOS com Apache Cordova e Ionic',
-											'Desenvolvimento mobile com JavaScript, HTML e CSS',
-										],
-										color: '#99afff',
-									},
-								].map((exp) => (
+								{experience.slice(0, 4).map((exp) => (
 									<div
 										key={exp.company}
 										style={{
@@ -288,24 +221,17 @@ const Home = () => {
 											<div className='text-xs text-white/70'>{exp.period}</div>
 										)}
 										<div className='text-sm mt-1 text-white/85'>{exp.desc}</div>
-										{exp.highlights && (
-											<ul className='mt-2 flex flex-col gap-1 list-none m-0 p-0'>
-												{exp.highlights.map((h) => (
-													<li
-														key={h}
-														className='text-sm text-white/85 flex gap-2'
-													>
-														<span
-															className='inline-block w-1.5 h-1.5 rounded-full mt-1.5 shrink-0'
-															style={{ backgroundColor: exp.color }}
-														/>
-														<span>{h}</span>
-													</li>
-												))}
-											</ul>
-										)}
 									</div>
 								))}
+								<div className='flex flex-1 min-w-[200px] items-center'>
+									<Link
+										to='/about'
+										className='group inline-flex items-center gap-1.5 text-sm text-white/80 hover:text-white underline underline-offset-4'
+									>
+										Saiba mais
+										<ArrowRightOutlined className='text-[10px] transition-transform duration-200 group-hover:translate-x-0.5 motion-reduce:transition-none' />
+									</Link>
+								</div>
 							</div>
 						</div>
 					</div>
