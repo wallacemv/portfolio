@@ -8,8 +8,10 @@
  *
  * Sem dependências novas: sobe um servidor estático do `dist`, dirige um
  * Chrome/Chromium headless via CDP cru (WebSocket global do Node 22+) e salva
- * o HTML capturado. Se qualquer rota sair sem canonical correto ou com pouco
- * texto, o script falha (exit 1) em vez de publicar página vazia.
+ * o HTML capturado. Cada página recebe também o grafo da pessoa (competências
+ * e histórico profissional, montado a partir de `src/data`), e o script falha
+ * (exit 1) se alguma rota sair sem canonical correto ou com pouco texto, em vez
+ * de publicar página vazia.
  *
  * Env:
  *   CHROME_BIN          binário do navegador (default: candidatos do sistema)
@@ -27,9 +29,13 @@ import { createServer } from 'node:http';
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, extname, join, resolve } from 'node:path';
+import { allSkills } from '../src/data/competencies.js';
+import { experience } from '../src/data/experience.js';
 
 const DIST = resolve(process.cwd(), 'dist');
 const BASE = '/portfolio';
+const SITE_ORIGIN = 'https://codedbywallace.dev';
+const PERSON_ID = `${SITE_ORIGIN}${BASE}/#wallace`;
 const PORT = Number(process.env.PRERENDER_PORT || 4180);
 const DEBUG_PORT = Number(process.env.PRERENDER_DEBUG_PORT || PORT + 1);
 const MIN_TEXT = Number(process.env.PRERENDER_MIN_TEXT || 200);
@@ -77,6 +83,35 @@ const MIME = {
 };
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+/**
+ * Grafo da pessoa, em todas as páginas: competências completas (`knowsAbout`)
+ * e o histórico profissional como papéis (`worksFor` + `OrganizationRole`),
+ * gerado dos dados do site para crawler e LLM lerem o currículo inteiro sem
+ * depender de manter uma cópia à mão no `index.html`.
+ */
+const PERSON_JSONLD = JSON.stringify({
+	'@context': 'https://schema.org',
+	'@type': 'Person',
+	'@id': PERSON_ID,
+	alternateName: 'Wallace Martins',
+	jobTitle: 'Fullstack Engineer',
+	knowsAbout: allSkills,
+	knowsLanguage: ['pt-BR', 'en'],
+	worksFor: experience.map((exp) => ({
+		'@type': 'OrganizationRole',
+		roleName: exp.role,
+		startDate: exp.start,
+		endDate: exp.end,
+		worksFor: { '@type': 'Organization', name: exp.company },
+	})),
+});
+
+const PERSON_SCRIPT = `<script type="application/ld+json" data-seo="person-history">${PERSON_JSONLD}</script>`;
+
+function injectPersonGraph(html) {
+	return html.replace('</head>', `${PERSON_SCRIPT}\n</head>`);
+}
 
 function resolveChrome() {
 	const found = CHROME_CANDIDATES.find((p) => existsSync(p));
@@ -269,7 +304,7 @@ async function main() {
 			const text = await waitForStableText(cdp, route);
 			const html = await evaluate(cdp, 'document.documentElement.outerHTML');
 			const canonical = (await evaluate(cdp, `(() => document.querySelector('link[rel="canonical"]')?.href ?? '')()`)) ?? '';
-			snapshots.push({ route, html: `<!DOCTYPE html>\n${html}`, text, canonical, title: state.title });
+			snapshots.push({ route, html: injectPersonGraph(`<!DOCTYPE html>\n${html}`), text, canonical, title: state.title });
 		}
 
 		// 2) valida tudo e só então escreve
@@ -284,6 +319,9 @@ async function main() {
 			}
 			if (/<div id="root">\s*<\/div>/.test(snap.html)) {
 				problems.push(`${snap.route}: #root saiu vazio`);
+			}
+			if (!snap.html.includes(PERSON_SCRIPT)) {
+				problems.push(`${snap.route}: grafo da pessoa (competências + histórico) não foi injetado no <head>`);
 			}
 		}
 		if (problems.length) {

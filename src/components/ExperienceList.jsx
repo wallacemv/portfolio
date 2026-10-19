@@ -35,6 +35,9 @@ const ExperienceList = () => (
 						))}
 					</ul>
 				)}
+				{exp.stack && (
+					<p className='text-xs text-white/60 mt-2'>{exp.stack.join(' · ')}</p>
+				)}
 			</div>
 		))}
 	</div>

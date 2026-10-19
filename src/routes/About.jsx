@@ -2,7 +2,6 @@ import { Tag } from 'antd';
 import { usePageMeta } from '../lib/seo';
 import CompetencyGroups from '../components/CompetencyGroups';
 import ExperienceList from '../components/ExperienceList';
-import { allSkills } from '../data/competencies';
 import { profile } from '../data/profile';
 
 const EDUCATION = [
@@ -51,18 +50,6 @@ const About = () => {
 			description:
 				'Biografia, competências, formação, idiomas e experiência profissional de Wallace Martins Vieira, Fullstack Engineer.',
 			mainEntity: { '@id': 'https://codedbywallace.dev/portfolio/#wallace' },
-		}, {
-			'@context': 'https://schema.org',
-			'@type': 'Person',
-			'@id': 'https://codedbywallace.dev/portfolio/#wallace',
-			name: 'Wallace Martins Vieira',
-			jobTitle: 'Fullstack Engineer',
-			url: 'https://codedbywallace.dev/portfolio/',
-			knowsAbout: allSkills,
-			alumniOf: [
-				{ '@type': 'CollegeOrUniversity', name: 'Universidade Ibirapuera' },
-				{ '@type': 'CollegeOrUniversity', name: 'FIAP' },
-			],
 		}, {
 			'@context': 'https://schema.org',
 			'@type': 'BreadcrumbList',
