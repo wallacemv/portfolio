@@ -18,9 +18,7 @@ export const competencies = [
 			'Hibernate',
 			'Spring Batch',
 			'PHP',
-			'Laravel',
 			'Python',
-			'Django',
 			'FastAPI',
 			'Microsserviços',
 			'APIs RESTful',
@@ -37,6 +35,7 @@ export const competencies = [
 		items: [
 			'AI-Assisted Development',
 			'Claude Code',
+			'OpenCode',
 			'LLM Integration',
 			'Agentic Workflows',
 			'AI Pair-Programming',
