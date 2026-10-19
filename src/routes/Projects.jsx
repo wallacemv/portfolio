@@ -39,7 +39,7 @@ const projects = [
 
 const Projects = () => {
 	usePageMeta({
-		title: 'Projetos | Wallace Martins Vieira — Desenvolvedor Full Stack',
+		title: 'Projetos | Wallace Martins Vieira — Fullstack Engineer',
 		description:
 			'Projetos desenvolvidos por Wallace Martins Vieira: Shop Commerce (e-commerce multi-tenant).',
 		path: '/projects',
