@@ -51,7 +51,6 @@ export const competencies = [
 			'AWS',
 			'Lambda',
 			'DynamoDB',
-			'Bedrock',
 			'SQS/SNS',
 			'EC2',
 			'S3',
