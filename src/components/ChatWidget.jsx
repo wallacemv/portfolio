@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Input, Button, Typography, Badge, App } from 'antd';
+import { useState, useEffect, useRef } from 'react';
+import { Input, Button, Typography, Badge } from 'antd';
 import {
 	SendOutlined,
 	MessageOutlined,
@@ -35,7 +35,6 @@ const NUDGE_PHRASES = [
 ];
 
 const ChatWidget = () => {
-	const { message } = App.useApp();
 	const [open, setOpen] = useState(false);
 	const [showNudge, setShowNudge] = useState(false);
 	const [nudgeText, setNudgeText] = useState('Fale comigo!');
@@ -184,13 +183,20 @@ const ChatWidget = () => {
 					setIsBotTyping(false);
 				}
 
-				if (messageData.username !== usernameRef.current) {
-					setMessages((prevMessages) => [...prevMessages, messageData]);
+				// O servidor não devolve a própria mensagem (o cliente já a mostra na
+				// hora); o filtro existe só para esse eco e é por tipo de mensagem — se
+				// fosse por nome, um visitante chamado "Wallace" perderia as respostas
+				// do assistente (que também assina "Wallace").
+				const isOwnEcho =
+					messageData.type === 'user' &&
+					messageData.username === usernameRef.current;
+				if (isOwnEcho) return;
 
-					if (!openRef.current) {
-						setUnreadCount((c) => c + 1);
-						notifyIncoming(messageData);
-					}
+				setMessages((prevMessages) => [...prevMessages, messageData]);
+
+				if (!openRef.current) {
+					setUnreadCount((c) => c + 1);
+					notifyIncoming(messageData);
 				}
 			};
 
