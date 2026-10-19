@@ -33,7 +33,8 @@ Portfolio website with React + Vite + Ant Design, deployed on Kubernetes (k3s) o
 ### Chat Page
 - Removed `prompt()` on load; generates random username, saves to localStorage
 - Username editing: EditOutlined icon → inline input + OK button
-- Chat is now a floating widget (`src/components/ChatWidget.jsx`), FAB bottom-right, global on all pages; WebSocket connects on open, disconnects on close; only error toasts. `/chat` route and menu item removed.
+- Chat is now a floating widget (`src/components/ChatWidget.jsx`), FAB bottom-right, global on all pages; WebSocket connects on open, disconnects on close. `/chat` route and menu item removed.
+- **Conversa individual (Oct 19, 2026):** cada visitante fala só com o assistente (Gemini) do outro lado do `wss://codedbywallace.dev/websocket` — o servidor não faz broadcast, não manda histórico de outras pessoas e não publica presença ("X entrou/saiu"). O widget manda `{type:'join', username}` ao abrir e recebe o welcome personalizado; a própria mensagem é renderizada localmente (o filtro de eco é por `type:'user'` + nome, nunca só por nome — o assistente também assina "Wallace"). E2E: `.scratch/check-chat-widget.mjs` (Chrome headless via CDP, contra produção).
 
 ### Design harmonization (Aug 17, 2026)
 - Single dark palette: all pages on `#0f172a` base with a subtle per-page radial tint (indigo, purple, teal, red, blue)
