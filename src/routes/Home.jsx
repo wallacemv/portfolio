@@ -1,4 +1,4 @@
-import { React, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { TypeAnimation } from 'react-type-animation';
 import { ArrowRightOutlined } from '@ant-design/icons';
@@ -8,6 +8,10 @@ import { profile } from '../data/profile';
 import { experience } from '../data/experience';
 
 const ASCII_COLS = 110;
+// Largura do rosto: ancorado no topo da coluna esquerda (o herói). Antes ele
+// era centralizado na coluna inteira, mas os grupos de competências a
+// esticaram e o rosto caía atrás dos pills.
+const ASCII_WIDTH = 'min(380px, 30vw)';
 const ASCII_RAMP = ' .:-=+*#%@';
 
 const Home = () => {
@@ -126,11 +130,10 @@ const Home = () => {
 					<div
 						className='hidden sm:block absolute overflow-hidden pointer-events-none'
 						style={{
-							width: 'min(500px, 50vw)',
+							width: ASCII_WIDTH,
 							aspectRatio: '1',
 							right: '0',
-							top: '50%',
-							transform: 'translateY(-50%)',
+							top: '0',
 							opacity: 0.85,
 						}}
 					>
@@ -145,7 +148,7 @@ const Home = () => {
 								alignItems: 'center',
 								justifyContent: 'flex-end',
 								fontFamily: 'monospace',
-								fontSize: `calc(min(500px, 50vw) / ${ASCII_COLS * 0.6})`,
+								fontSize: `calc(${ASCII_WIDTH} / ${ASCII_COLS * 0.6})`,
 								lineHeight: 1,
 								color: '#ffffff',
 								whiteSpace: 'pre',
