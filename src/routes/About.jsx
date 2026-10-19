@@ -40,7 +40,7 @@ const About = () => {
 	usePageMeta({
 		title: 'Sobre | Wallace Martins Vieira — Fullstack Engineer',
 		description:
-			'Wallace Martins Vieira, Fullstack Engineer com 15+ anos em backend e fullstack: microsserviços, APIs RESTful de alta disponibilidade, mensageria e cloud native em AWS e GCP.',
+			'Wallace Martins Vieira, Fullstack Engineer com 15+ anos em backend e fullstack: microsserviços, APIs RESTful de alta disponibilidade, mensageria, containers e orquestração (Docker e Kubernetes).',
 		path: '/about',
 		jsonLd: [{
 			'@context': 'https://schema.org',
