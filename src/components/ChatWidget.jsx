@@ -8,6 +8,7 @@ import {
 	EditOutlined,
 	CloseOutlined,
 } from '@ant-design/icons';
+import { maskAbuse, sanitizeUsername } from '../lib/moderation';
 
 const { Text } = Typography;
 
@@ -34,6 +35,35 @@ const NUDGE_PHRASES = [
 	'Chama!',
 ];
 
+// Conversa no localStorage: fechar o chat não apaga, trocar de apelido apaga.
+const CONVERSATION_KEY = 'chatConversation';
+const MAX_STORED_MESSAGES = 100; // o que fica guardado no aparelho
+// O que o servidor aceita como contexto (MAX_CONTEXT dele)
+const SERVER_CONTEXT_MESSAGES = 20;
+
+// Lê a conversa salva por este apelido, já mascarada (defesa extra: o texto
+// gravado já sai mascarado do sendMessage, mas re-mascarar é idempotente).
+function loadConversation(currentName) {
+	try {
+		const raw = localStorage.getItem(CONVERSATION_KEY);
+		if (!raw) return [];
+		const saved = JSON.parse(raw);
+		if (!saved || saved.username !== currentName || !Array.isArray(saved.messages)) {
+			return [];
+		}
+		return saved.messages
+			.filter((m) => m && typeof m.text === 'string')
+			.map((m) => ({
+				...m,
+				text: maskAbuse(m.text),
+				username: m.type === 'bot' ? 'Wallace' : currentName,
+			}))
+			.slice(-MAX_STORED_MESSAGES);
+	} catch {
+		return [];
+	}
+}
+
 const ChatWidget = () => {
 	const [open, setOpen] = useState(false);
 	const [showNudge, setShowNudge] = useState(false);
@@ -49,6 +79,7 @@ const ChatWidget = () => {
 	const typingTimeoutRef = useRef(null);
 	const websocketRef = useRef(null);
 	const messagesEndRef = useRef(null);
+	const messagesRef = useRef([]);
 	const usernameRef = useRef(username);
 	const openRef = useRef(open);
 
@@ -127,8 +158,24 @@ const ChatWidget = () => {
 	};
 
 	useEffect(() => {
+		messagesRef.current = messages;
 		scrollToBottom();
 	}, [messages]);
+
+	// Persiste a conversa no localStorage a cada mensagem. Mensagem vazia não
+	// grava (o cleanup do connect zera o state ao fechar, e a conversa salva
+	// tem que sobreviver a isso).
+	useEffect(() => {
+		if (!username || messages.length === 0) return;
+		try {
+			localStorage.setItem(
+				CONVERSATION_KEY,
+				JSON.stringify({ username, messages: messages.slice(-MAX_STORED_MESSAGES) }),
+			);
+		} catch {
+			/* storage cheio/bloqueado — conversa fica só nesta sessão */
+		}
+	}, [messages, username]);
 
 	// Sem username salvo → tela de cadastro dentro do chat; nomes antigos
 	// gerados automaticamente (User###) são limpos para perguntar de novo
@@ -138,15 +185,33 @@ const ChatWidget = () => {
 			localStorage.removeItem('chatUsername');
 			stored = null;
 		}
-		if (stored) {
-			setUsername(stored);
-			setUsernameInput(stored);
+		if (!stored) return;
+		// apelido salvo antes da moderação pode conter palavrão
+		const safe = sanitizeUsername(stored);
+		if (!safe) {
+			localStorage.removeItem('chatUsername');
+			return;
 		}
+		if (safe !== stored) localStorage.setItem('chatUsername', safe);
+		setUsername(safe);
+		setUsernameInput(safe);
 	}, []);
 
 	useEffect(() => {
 		if (!open || !username) return;
 
+		// Conversa salva → volta para a tela e viaja para o servidor, que
+		// reconstrói o contexto do Gemini (é o que faz a conversa continuar de
+		// onde parou sem o servidor guardar nada).
+		//
+		// O histórico vai no próprio join (o servidor precisa dele ANTES de decidir
+		// se manda welcome) — por isso o estado é preenchido aqui, com o
+		// messagesRef à mão, e não num efeito separado.
+		const restored = loadConversation(username);
+		if (restored.length) {
+			messagesRef.current = restored; // evita a corrida com o onopen do ws
+			setMessages(restored);
+		}
 		let disposed = false;
 		let retryTimer = null;
 		let ws = null;
@@ -159,18 +224,22 @@ const ChatWidget = () => {
 			ws.onopen = () => {
 				if (disposed) return;
 				setIsConnected(true);
-				// registra a entrada na hora (servidor broadcasta "X entrou")
-				ws.send(JSON.stringify({ type: 'join', username: usernameRef.current }));
+				// Um único frame: nome + conversa salva. O servidor, se a conversa
+				// vier preenchida, retoma o contexto e NÃO manda welcome de novo —
+				// por isso o histórico vai aqui, e não num {type:'resume'} depois
+				// (que perdia a corrida com o welcome).
+				ws.send(
+					JSON.stringify({
+						type: 'join',
+						username: usernameRef.current,
+						history: messagesRef.current.slice(-SERVER_CONTEXT_MESSAGES),
+					}),
+				);
 			};
 
 			ws.onmessage = (event) => {
 				if (disposed) return;
 				const messageData = JSON.parse(event.data);
-
-				if (messageData.type === 'history') {
-					setMessages(messageData.messages);
-					return;
-				}
 
 				if (messageData.type === 'typing') {
 					setIsBotTyping(true);
@@ -229,9 +298,12 @@ const ChatWidget = () => {
 	const sendMessage = () => {
 		if (!inputMessage.trim() || !isConnected) return;
 
+		// palavrão/ofensa vira mascarado antes de renderizar, de ir pro servidor
+		// e de parar no localStorage — o servidor faz o mesmo do lado dele
+		const text = maskAbuse(inputMessage);
 		const messageObject = {
 			username,
-			text: inputMessage,
+			text,
 			type: 'user',
 			timestamp: new Date().toISOString(),
 		};
@@ -243,8 +315,19 @@ const ChatWidget = () => {
 	};
 
 	const saveUsername = () => {
-		const name = usernameInput.trim();
+		const name = sanitizeUsername(usernameInput);
 		if (!name) return;
+		const changed = name !== username;
+		if (changed) {
+			// outro apelido é outra conversa: nada de herdar histórico
+			try {
+				localStorage.removeItem(CONVERSATION_KEY);
+			} catch {
+				/* sem storage */
+			}
+			messagesRef.current = [];
+			setMessages([]);
+		}
 		setUsername(name);
 		setUsernameInput(name);
 		localStorage.setItem('chatUsername', name);
