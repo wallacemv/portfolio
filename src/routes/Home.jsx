@@ -127,8 +127,15 @@ const Home = () => {
 		<div
 			className='home-wrapper relative h-full overflow-auto'
 			style={{
-				background:
+				background: [
+					// névoa original do hero — mantida intacta
 					'radial-gradient(1100px 700px at 85% -10%, rgba(99,102,241,0.22), transparent 55%)',
+					// névoas extras: roxo junto ao título, ciano no meio, rosa embaixo
+					'radial-gradient(760px 520px at 12% 2%, rgba(168,85,247,0.16), transparent 62%)',
+					'radial-gradient(900px 460px at 58% 34%, rgba(56,189,248,0.10), transparent 60%)',
+					'radial-gradient(680px 520px at 4% 88%, rgba(244,114,182,0.08), transparent 65%)',
+				].join(', '),
+				backgroundRepeat: 'no-repeat',
 			}}
 		>
 			<div className='flex flex-col'>
@@ -139,8 +146,10 @@ const Home = () => {
 						style={{
 							width: ASCII_WIDTH,
 							aspectRatio: '1',
-							right: '0',
-							top: '0',
+							// absolute se posiciona pela padding box: sem esse offset o
+							// retrato come os 24px do sm:p-6 e encosta na borda da seção
+							right: '1.5rem',
+							top: '1.5rem',
 							borderRadius: '50%',
 							overflow: 'hidden',
 							opacity: 0.95,
