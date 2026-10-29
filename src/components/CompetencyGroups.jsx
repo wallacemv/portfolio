@@ -67,8 +67,6 @@ const CompetencyGroups = () => {
 									style={{
 										// entrada em cascata, teto de 700ms para não atrasar o fim da lista
 										'--skill-delay': `${Math.min(pillIndex * 22, 700)}ms`,
-										// fase própria do brilho: vizinhos não brilham juntos
-										'--skill-sheen': `${(pillIndex * 179) % 6800}ms`,
 									}}
 								>
 									{item}

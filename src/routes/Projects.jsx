@@ -1,4 +1,3 @@
-import React from 'react';
 import { Tag, Space } from 'antd';
 import {
 	ShoppingCartOutlined,
@@ -14,25 +13,35 @@ const projects = [
 		description:
 			'Plataforma de e-commerce multi-tenant: cada loja com catálogo, carrinho, pedidos, cupons e avaliações próprios, tema/design system customizável por loja e checkout transacional com baixa de estoque. Pagamentos com Mercado Pago e Stripe (Pix, cartão e entrega), uploads de mídia em Cloudflare R2, atribuição de tráfego (UTM/share com GA4), notificações de pedido por WhatsApp (Evolution API) e relatórios exportáveis. Assistente de IA (Gemini) no admin ajuda a configurar a loja: explica as telas, escreve descrições e cadastra produtos, categorias, cupons e tema por chat.',
 		stack: [
+			'Python 3.11',
 			'FastAPI',
 			'SQLAlchemy async',
-			'MySQL 8',
 			'Alembic',
+			'MySQL 8',
 			'Redis',
-			'React 19',
-			'TypeScript',
-			'Vite',
-			'Tailwind CSS',
-			'shadcn',
-			'TanStack Query',
-			'Zod',
+			'JWT + Argon2',
 			'Mercado Pago',
 			'Stripe',
+			'React 19',
+			'TypeScript',
+			'React Router 7',
+			'TanStack Query',
+			'Zod',
+			'Tailwind CSS 4',
+			'shadcn + Radix',
+			'Tiptap',
+			'Vite',
+			'Docker',
+			'Kubernetes',
 			'Cloudflare R2',
 			'Gemini',
+			'WhatsApp (Evolution API)',
 		],
 		github: 'https://github.com/wallacemv/shop-commerce',
 		live: 'https://codedbywallace.dev/shop-commerce/',
+		// loja de exemplo real, com catálogo e tema próprios
+		demo: 'https://codedbywallace.dev/shop-commerce/loja/monocromo/',
+		demoLabel: 'Loja de exemplo',
 		color: '#22d3ee',
 	},
 ];
@@ -132,6 +141,19 @@ const Projects = () => {
 							</div>
 
 							<div className='text-white/90'>{project.description}</div>
+
+							{project.demo && (
+								<a
+									href={project.demo}
+									target='_blank'
+									rel='noreferrer'
+									className='group inline-flex items-center gap-1.5 self-start text-sm font-medium text-white/85 hover:text-white underline underline-offset-4'
+									aria-label={`${project.demoLabel} do ${project.name}`}
+								>
+									<ExportOutlined className='text-[11px] transition-transform duration-200 group-hover:translate-x-0.5 motion-reduce:transition-none' />
+									{project.demoLabel} — loja monocromo
+								</a>
+							)}
 
 							<div className='flex flex-wrap gap-2'>
 								{project.stack.map((tech) => (

@@ -130,10 +130,11 @@ const Home = () => {
 				background: [
 					// névoa original do hero — mantida intacta
 					'radial-gradient(1100px 700px at 85% -10%, rgba(99,102,241,0.22), transparent 55%)',
-					// névoas extras: roxo junto ao título, ciano no meio, rosa embaixo
-					'radial-gradient(760px 520px at 12% 2%, rgba(168,85,247,0.16), transparent 62%)',
-					'radial-gradient(900px 460px at 58% 34%, rgba(56,189,248,0.10), transparent 60%)',
-					'radial-gradient(680px 520px at 4% 88%, rgba(244,114,182,0.08), transparent 65%)',
+					// névoas extras, todas no mesmo indigo da original (só muda
+					// posição/intensidade), para não pintar o fundo de arco-íris
+					'radial-gradient(760px 520px at 12% 2%, rgba(99,102,241,0.14), transparent 62%)',
+					'radial-gradient(900px 460px at 58% 34%, rgba(99,102,241,0.10), transparent 60%)',
+					'radial-gradient(680px 520px at 4% 88%, rgba(99,102,241,0.07), transparent 65%)',
 				].join(', '),
 				backgroundRepeat: 'no-repeat',
 			}}
