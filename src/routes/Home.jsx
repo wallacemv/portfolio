@@ -7,12 +7,18 @@ import CompetencyGroups from '../components/CompetencyGroups';
 import { profile } from '../data/profile';
 import { experience } from '../data/experience';
 
-const ASCII_COLS = 110;
+const ASCII_COLS = 120;
 // Largura do rosto: ancorado no topo da coluna esquerda (o herói). Antes ele
 // era centralizado na coluna inteira, mas os grupos de competências a
 // esticaram e o rosto caía atrás dos pills.
 const ASCII_WIDTH = 'min(380px, 30vw)';
 const ASCII_RAMP = ' .:-=+*#%@';
+// Fonte do retrato em ASCII (quadrada, recortada centralizada).
+const ASCII_SRC = 'ascii-portrait.webp';
+// Largura/altura de um glifo monoespaçado. Com 0.6 e line-height 1.2 o bloco
+// de caracteres fica exatamente quadrado e preenche a máscara redonda.
+const GLYPH_RATIO = 0.6;
+const LINE_HEIGHT = 1.2;
 
 const Home = () => {
 	usePageMeta({
@@ -39,21 +45,22 @@ const Home = () => {
 	const [ascii, setAscii] = useState('');
 	const [typed, setTyped] = useState(0);
 
-	// Foto em ASCII: amostra paint.webp num canvas 72xN e mapeia luminância pro ramp
+	// Foto em ASCII: amostra ascii-portrait.webp num canvas ASCII_COLS x N
+	// (recorte quadrado centralizado) e mapeia a luminância pro ramp
 	useEffect(() => {
 		const img = new Image();
-		img.src = `${import.meta.env.BASE_URL}images/paint.webp`;
+		img.src = `${import.meta.env.BASE_URL}images/${ASCII_SRC}`;
 		img.onload = () => {
-			const rows = Math.max(
-				1,
-				Math.round(ASCII_COLS * (img.height / img.width) * 0.55),
-			);
+			const size = Math.min(img.width, img.height);
+			const sx = (img.width - size) / 2;
+			const sy = (img.height - size) / 2;
+			const rows = Math.max(1, Math.round(ASCII_COLS / 2));
 			const canvas = document.createElement('canvas');
 			canvas.width = ASCII_COLS;
 			canvas.height = rows;
 			const ctx = canvas.getContext('2d');
-			ctx.filter = 'grayscale(1) contrast(1.4) brightness(1.05)';
-			ctx.drawImage(img, 0, 0, ASCII_COLS, rows);
+			ctx.filter = 'grayscale(1) contrast(1.35) brightness(1.08)';
+			ctx.drawImage(img, sx, sy, size, size, 0, 0, ASCII_COLS, rows);
 			const { data } = ctx.getImageData(0, 0, ASCII_COLS, rows);
 			let out = '';
 			for (let y = 0; y < rows; y++) {
@@ -128,13 +135,21 @@ const Home = () => {
 				{/**left */}
 				<div className='flex flex-col p-4 sm:p-6 relative overflow-hidden pic'>
 					<div
-						className='hidden sm:block absolute overflow-hidden pointer-events-none'
+						className='hidden sm:block absolute pointer-events-none'
 						style={{
 							width: ASCII_WIDTH,
 							aspectRatio: '1',
 							right: '0',
 							top: '0',
-							opacity: 0.85,
+							borderRadius: '50%',
+							overflow: 'hidden',
+							opacity: 0.95,
+							// borda suave: o ASCII redondo derrete no fundo em vez de
+							// terminar num corte seco (o quadrado antigo)
+							WebkitMaskImage:
+								'radial-gradient(circle at 50% 50%, #000 68%, transparent 100%)',
+							maskImage:
+								'radial-gradient(circle at 50% 50%, #000 68%, transparent 100%)',
 						}}
 					>
 						<pre
@@ -143,13 +158,12 @@ const Home = () => {
 								position: 'absolute',
 								inset: 0,
 								margin: 0,
-								paddingRight: '1.5rem',
 								display: 'flex',
 								alignItems: 'center',
-								justifyContent: 'flex-end',
+								justifyContent: 'center',
 								fontFamily: 'monospace',
-								fontSize: `calc(${ASCII_WIDTH} / ${ASCII_COLS * 0.6})`,
-								lineHeight: 1,
+								fontSize: `calc(${ASCII_WIDTH} / ${ASCII_COLS * GLYPH_RATIO})`,
+								lineHeight: LINE_HEIGHT,
 								color: '#ffffff',
 								whiteSpace: 'pre',
 								overflow: 'hidden',
