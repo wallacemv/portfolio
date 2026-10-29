@@ -5,7 +5,7 @@ Portfolio website with React + Vite + Ant Design, deployed on Kubernetes (k3s) o
 
 - **Vite base:** `/portfolio/` — always use `import.meta.env.BASE_URL` for image paths
 - **Dev:** `npm run dev` (port 5173)
-- **Deploy:** commit + push → `deploy/deploy.sh` roda **no servidor** (`git fetch` + `reset --hard origin/master` → docker build → `ctr` import → kubectl apply/rollout). Local: `npm run deploy` roda o script localmente e não funciona — o deploy é via SSH no `/opt/portfolio`.
+- **Deploy:** commit + push → `deploy/deploy.sh` roda **no servidor** (`git fetch` + `reset --hard origin/main` → docker build → `ctr` import → kubectl apply/rollout). Local: `npm run deploy` roda o script localmente e não funciona — o deploy é via SSH no `/opt/portfolio`.
 - **Live:** https://codedbywallace.dev/portfolio — host Nginx proxies `/portfolio/` to the k8s service `portfolio.default.svc.cluster.local:80` (config in the server's `sites-enabled/codedbywallace.dev`)
 
 ## UI Work Done (Jul 7, 2026)

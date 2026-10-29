@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Rascunho do agente: scripts de verificacao, planos, progresso, logs
+.scratch/
+.tmp/

@@ -5,11 +5,11 @@ Site estático — sem backend/DB/secrets. O servidor puxa do GitHub (deploy key
 ## Fluxo
 
 ```bash
-# local: commit + push (branch master)
-git add -A && git commit -m "..." && git push origin master
+# local: commit + push (branch main)
+git add -A && git commit -m "..." && git push origin main
 
 # servidor (VPS 104.251.211.44, root)
-cd /opt/portfolio && ./deploy/deploy.sh        # deploy do origin/master
+cd /opt/portfolio && ./deploy/deploy.sh        # deploy do origin/main
 REF=v1.2.0 ./deploy/deploy.sh
 ```
 

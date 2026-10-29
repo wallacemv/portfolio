@@ -14,7 +14,7 @@
 #
 set -euo pipefail
 
-REF="${REF:-origin/master}"
+REF="${REF:-origin/main}"
 MAIN_DOMAIN="${MAIN_DOMAIN:-codedbywallace.dev}"
 
 cd "$(dirname "$0")/.."
