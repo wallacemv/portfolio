@@ -6,7 +6,7 @@
 // Usa o Chromium do Playwright (já usado no prerender) para imprimir um HTML
 // A4 estilizado. O PDF gerado é commitado — quem baixa não depende de build.
 import { createRequire } from 'node:module';
-import { readFileSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 const require = createRequire(import.meta.url);
@@ -112,6 +112,8 @@ const html = `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">
 <title>Wallace Martins Vieira — Currículo</title><style>${css}</style></head>
 <body>${toHtml(md)}</body></html>`;
 
+// `.tmp/` é ignorado pelo git — num clone limpo a pasta não existe.
+mkdirSync(resolve(ROOT, '.tmp'), { recursive: true });
 writeFileSync(HTML, html);
 
 const browser = await chromium.launch();
