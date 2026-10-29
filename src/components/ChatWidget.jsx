@@ -12,6 +12,41 @@ import { maskAbuse, sanitizeUsername } from '../lib/moderation';
 
 const { Text } = Typography;
 
+// O assistente manda links (CV em PDF, LinkedIn, loja de exemplo) e eles têm que
+// ser clicáveis: transforma URL solta e markdown [texto](url) em <a>.
+const LINK_RE = /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)|(https?:\/\/[^\s<>()]+)/g;
+const TRAILING_PUNCTUATION = /[.,;:!?]+$/;
+
+function renderMessageText(text) {
+	const nodes = [];
+	const raw = String(text ?? '');
+	let last = 0;
+	let match;
+
+	LINK_RE.lastIndex = 0;
+	while ((match = LINK_RE.exec(raw)) !== null) {
+		if (match.index > last) nodes.push(raw.slice(last, match.index));
+		const [, label, mdUrl, bareUrl] = match;
+		const trailing = bareUrl ? (bareUrl.match(TRAILING_PUNCTUATION) || [''])[0] : '';
+		const url = (mdUrl || bareUrl).slice(0, (mdUrl || bareUrl).length - trailing.length);
+		nodes.push(
+			<a
+				key={`link-${match.index}`}
+				href={url}
+				target='_blank'
+				rel='noreferrer'
+				style={{ color: '#93c5fd', textDecoration: 'underline', wordBreak: 'break-word' }}
+			>
+				{label || url}
+			</a>,
+		);
+		if (trailing) nodes.push(trailing);
+		last = match.index + match[0].length;
+	}
+	if (last < raw.length) nodes.push(raw.slice(last));
+	return nodes;
+}
+
 // Paleta do portfolio
 const C = {
 	bg: '#0f172a',
@@ -405,7 +440,9 @@ const ChatWidget = () => {
 				>
 					{isBot ? '🤖 Assistente do Wallace' : isMine ? 'Você' : message.username}
 				</Text>
-				<Text style={{ color: C.text, whiteSpace: 'pre-wrap' }}>{message.text}</Text>
+				<Text style={{ color: C.text, whiteSpace: 'pre-wrap' }}>
+					{renderMessageText(message.text)}
+				</Text>
 				<Text style={{ color: isMine ? '#c7d2fe' : C.muted, fontSize: '0.65em' }}>
 					{isNaN(new Date(message.timestamp))
 						? ''

@@ -47,3 +47,9 @@ Portfolio website with React + Vite + Ant Design, deployed on Kubernetes (k3s) o
 
 ## Dependencies
 - `potrace` is used; `imagetracerjs` and `pica` unused but still in `package.json`
+
+## CV (`public/cv/`)
+- `pt.md` é a **fonte única** do currículo (servido em `/portfolio/cv/pt.md`); o servidor do chat busca esse arquivo no boot e usa uma cópia em `node-websocket-server-main/assets/pt.md` como fallback
+- `wallace-martins-vieira.pdf` é gerado a partir do `pt.md` por `npm run cv:pdf` (`scripts/build-cv-pdf.mjs`, Chromium do Playwright) e **commitado** — rode de novo sempre que o `pt.md` mudar
+- Link de download: "Baixar currículo em PDF" na página Sobre; o assistente do chat também manda a URL quando pedem o CV
+- O widget do chat transforma URL solta e `[texto](url)` em link clicável (`renderMessageText`)

@@ -1,4 +1,5 @@
 import { Tag } from 'antd';
+import { DownloadOutlined } from '@ant-design/icons';
 import { usePageMeta } from '../lib/seo';
 import CompetencyGroups from '../components/CompetencyGroups';
 import ExperienceList from '../components/ExperienceList';
@@ -84,6 +85,16 @@ const About = () => {
 							{paragraph}
 						</p>
 					))}
+					<a
+						href={`${import.meta.env.BASE_URL}cv/wallace-martins-vieira.pdf`}
+						target='_blank'
+						rel='noreferrer'
+						download
+						className='group inline-flex items-center gap-1.5 self-start text-sm font-medium text-white/85 hover:text-white underline underline-offset-4'
+					>
+						<DownloadOutlined className='text-[12px]' />
+						Baixar currículo em PDF
+					</a>
 				</div>
 
 				<h2 className='text-2xl font-bold mb-3'>Principais competências</h2>
