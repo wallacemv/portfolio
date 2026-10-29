@@ -79,7 +79,6 @@ export const competencies = [
 			'Elasticsearch',
 			'RabbitMQ',
 			'Kafka',
-			'MQTT',
 			'JMS',
 		],
 	},
