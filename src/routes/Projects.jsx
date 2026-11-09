@@ -53,7 +53,7 @@ const projects = [
 		description:
 			'Planejador de roteiros com viés social: o usuário cria rotas com várias paradas no mapa, otimiza a ordem, compartilha, segue perfis, curte, comenta, copia roteiros de outras pessoas e descobre roteiros por perto. Busca geográfica com PostGIS e busca semântica por embeddings (pgvector + Ollama), moderação de comentários por LLM local e autenticação JWT com refresh token rotativo. App mobile em Expo/React Native (também publicado na web) consumindo um backend Spring Boot, com tipos TypeScript gerados do contrato OpenAPI.',
 		stack: [
-			'Java 20',
+			'Java 21',
 			'Spring Boot 4',
 			'Spring Security + JWT',
 			'PostgreSQL 16',
