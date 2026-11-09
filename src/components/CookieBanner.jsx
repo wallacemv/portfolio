@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { GA_ID, getConsent, setConsent } from '../lib/analytics';
 
 // Banner de consentimento (LGPD). Só aparece se há analytics configurado e o
@@ -45,7 +46,10 @@ const CookieBanner = () => {
 			<p style={{ margin: 0, fontSize: 14, lineHeight: 1.5 }}>
 				Uso cookies do Google Analytics para entender como o site é usado:
 				páginas visitadas, abertura do assistente e download do currículo.
-				Nada é coletado antes da sua escolha.
+				Nada é coletado antes da sua escolha.{' '}
+				<Link to='/privacy' style={{ color: '#a5b4fc', textDecoration: 'underline' }}>
+					Política de privacidade
+				</Link>
 			</p>
 			<div style={{ display: 'flex', gap: 8, marginTop: 12, justifyContent: 'flex-end' }}>
 				<button

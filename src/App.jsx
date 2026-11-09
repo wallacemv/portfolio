@@ -414,25 +414,37 @@ const App = () => {
 					</a>
 				</div>
 			</Footer>
-			{GA_ID && (
-				<button
-					type='button'
-					onClick={() => window.dispatchEvent(new Event('cookie-settings'))}
-					style={{
-						position: 'fixed',
-						left: 8,
-						bottom: 4,
-						zIndex: 3,
-						background: 'transparent',
-						border: 0,
-						color: 'rgba(255,255,255,0.45)',
-						fontSize: 11,
-						cursor: 'pointer',
-					}}
-				>
-					Cookies
-				</button>
-			)}
+			<div
+				style={{
+					position: 'fixed',
+					left: 8,
+					bottom: 4,
+					zIndex: 3,
+					display: 'flex',
+					gap: 10,
+					fontSize: 11,
+				}}
+			>
+				<Link to='/privacy' style={{ color: 'rgba(255,255,255,0.45)' }}>
+					Privacidade
+				</Link>
+				{GA_ID && (
+					<button
+						type='button'
+						onClick={() => window.dispatchEvent(new Event('cookie-settings'))}
+						style={{
+							background: 'transparent',
+							border: 0,
+							padding: 0,
+							color: 'rgba(255,255,255,0.45)',
+							fontSize: 11,
+							cursor: 'pointer',
+						}}
+					>
+						Cookies
+					</button>
+				)}
+			</div>
 			<CookieBanner />
 			<ChatWidget />
 		</Layout>
