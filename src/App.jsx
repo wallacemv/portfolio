@@ -3,6 +3,8 @@ import { Layout, Menu, theme, App as AntApp } from 'antd';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import './App.css';
 import ChatWidget from './components/ChatWidget';
+import CookieBanner from './components/CookieBanner';
+import { GA_ID, getConsent, loadAnalytics, trackEvent, trackPageView } from './lib/analytics';
 
 import {
 	HomeOutlined,
@@ -288,6 +290,40 @@ const App = () => {
 
 	const selectedBg = pageColors[location.pathname] || '#6366f1';
 
+	// Analytics (só com consentimento): carrega se já aceito e registra cada navegação.
+	useEffect(() => {
+		if (getConsent() === 'granted') loadAnalytics();
+		trackPageView(location.pathname);
+		const onConsent = () => {
+			if (getConsent() === 'granted') {
+				loadAnalytics();
+				trackPageView(window.location.pathname);
+			}
+		};
+		window.addEventListener('cookie-consent', onConsent);
+		return () => window.removeEventListener('cookie-consent', onConsent);
+	}, [location.pathname]);
+
+	// Cliques em links externos (GitHub, LinkedIn, demos dos projetos...).
+	useEffect(() => {
+		const onClick = (e) => {
+			const a = e.target.closest && e.target.closest('a[href]');
+			if (!a) return;
+			try {
+				const url = new URL(a.href, window.location.href);
+				if (url.protocol === 'mailto:') {
+					trackEvent('contact_click', { link_url: 'mailto' });
+				} else if (url.origin !== window.location.origin || !url.pathname.startsWith('/portfolio')) {
+					trackEvent('outbound_click', { link_url: url.href });
+				}
+			} catch {
+				/* href inválido */
+			}
+		};
+		document.addEventListener('click', onClick);
+		return () => document.removeEventListener('click', onClick);
+	}, []);
+
 	return (
 		<AntApp style={{ height: '100%' }}>
 		<Layout className='flex flex-col h-full bg-[#0f172a]'>
@@ -378,6 +414,26 @@ const App = () => {
 					</a>
 				</div>
 			</Footer>
+			{GA_ID && (
+				<button
+					type='button'
+					onClick={() => window.dispatchEvent(new Event('cookie-settings'))}
+					style={{
+						position: 'fixed',
+						left: 8,
+						bottom: 4,
+						zIndex: 3,
+						background: 'transparent',
+						border: 0,
+						color: 'rgba(255,255,255,0.45)',
+						fontSize: 11,
+						cursor: 'pointer',
+					}}
+				>
+					Cookies
+				</button>
+			)}
+			<CookieBanner />
 			<ChatWidget />
 		</Layout>
 		</AntApp>

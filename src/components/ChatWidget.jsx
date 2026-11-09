@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { trackEvent } from '../lib/analytics';
 import { Input, Button, Typography, Badge } from 'antd';
 import {
 	SendOutlined,
@@ -370,7 +371,10 @@ const ChatWidget = () => {
 	};
 
 	const handleToggle = () => {
-		if (!open) requestNotificationPermission();
+		if (!open) {
+			requestNotificationPermission();
+			trackEvent('chat_open', { source: 'fab' });
+		}
 		setOpen((o) => !o);
 	};
 
@@ -731,6 +735,7 @@ const ChatWidget = () => {
 				<button
 					onClick={() => {
 						requestNotificationPermission();
+						trackEvent('chat_open', { source: 'nudge' });
 						setOpen(true);
 					}}
 					aria-label='Fale comigo — abrir chat'

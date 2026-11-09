@@ -1,6 +1,7 @@
 import { Tag } from 'antd';
 import { DownloadOutlined } from '@ant-design/icons';
 import { usePageMeta } from '../lib/seo';
+import { trackEvent } from '../lib/analytics';
 import CompetencyGroups from '../components/CompetencyGroups';
 import ExperienceList from '../components/ExperienceList';
 import { profile } from '../data/profile';
@@ -90,6 +91,7 @@ const About = () => {
 						target='_blank'
 						rel='noreferrer'
 						download
+						onClick={() => trackEvent('cv_download', { file_name: 'wallace-martins-vieira.pdf' })}
 						className='group inline-flex items-center gap-1.5 self-start text-sm font-medium text-white/85 hover:text-white underline underline-offset-4'
 					>
 						<DownloadOutlined className='text-[12px]' />
