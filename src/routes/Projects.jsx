@@ -44,6 +44,7 @@ const projects = [
 		// loja de exemplo real, com catálogo e tema próprios
 		demo: 'https://codedbywallace.dev/shop-commerce/loja/monocromo/',
 		demoLabel: 'Loja de exemplo',
+		demoText: 'Loja de exemplo — loja monocromo',
 		color: '#22d3ee',
 	},
 	{
@@ -76,6 +77,9 @@ const projects = [
 		github: 'https://github.com/wallacemv/toury-mobile',
 		githubApi: 'https://github.com/wallacemv/toury-api',
 		live: 'https://codedbywallace.dev/toury/',
+		demo: 'https://codedbywallace.dev/toury/',
+		demoLabel: 'App web',
+		demoText: 'Abrir o app web',
 		color: '#a855f7',
 	},
 ];
@@ -193,11 +197,11 @@ const Projects = () => {
 									href={project.demo}
 									target='_blank'
 									rel='noreferrer'
-									className='group inline-flex items-center gap-1.5 self-start text-sm font-medium text-white/85 hover:text-white underline underline-offset-4'
+									className='group inline-flex items-center gap-1.5 self-start mb-2 text-sm font-medium text-white/85 hover:text-white underline underline-offset-4'
 									aria-label={`${project.demoLabel} do ${project.name}`}
 								>
 									<ExportOutlined className='text-[11px] transition-transform duration-200 group-hover:translate-x-0.5 motion-reduce:transition-none' />
-									{project.demoLabel} — loja monocromo
+									{project.demoText}
 								</a>
 							)}
 
