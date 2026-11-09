@@ -1,6 +1,8 @@
 import { Tag, Space } from 'antd';
 import {
 	ShoppingCartOutlined,
+	EnvironmentOutlined,
+	CodeOutlined,
 	GithubOutlined,
 	ExportOutlined,
 } from '@ant-design/icons';
@@ -44,13 +46,45 @@ const projects = [
 		demoLabel: 'Loja de exemplo',
 		color: '#22d3ee',
 	},
+	{
+		name: 'Toury',
+		icon: <EnvironmentOutlined />,
+		description:
+			'Planejador de roteiros com viés social: o usuário cria rotas com várias paradas no mapa, otimiza a ordem, compartilha, segue perfis, curte, comenta, copia roteiros de outras pessoas e descobre roteiros por perto. Busca geográfica com PostGIS e busca semântica por embeddings (pgvector + Ollama), moderação de comentários por LLM local e autenticação JWT com refresh token rotativo. App mobile em Expo/React Native (também publicado na web) consumindo um backend Spring Boot, com tipos TypeScript gerados do contrato OpenAPI.',
+		stack: [
+			'Java 20',
+			'Spring Boot 4',
+			'Spring Security + JWT',
+			'PostgreSQL 16',
+			'PostGIS',
+			'pgvector',
+			'Flyway',
+			'OpenAPI',
+			'Ollama',
+			'Testcontainers',
+			'Expo',
+			'React Native',
+			'React 19',
+			'TypeScript',
+			'NativeWind',
+			'React Navigation',
+			'TanStack Query',
+			'Zustand',
+			'Docker',
+			'Kubernetes',
+		],
+		github: 'https://github.com/wallacemv/toury-mobile',
+		githubApi: 'https://github.com/wallacemv/toury-api',
+		live: 'https://codedbywallace.dev/toury/',
+		color: '#a855f7',
+	},
 ];
 
 const Projects = () => {
 	usePageMeta({
 		title: 'Projetos | Wallace Martins Vieira — Fullstack Engineer',
 		description:
-			'Projetos desenvolvidos por Wallace Martins Vieira: Shop Commerce (e-commerce multi-tenant).',
+			'Projetos desenvolvidos por Wallace Martins Vieira: Shop Commerce (e-commerce multi-tenant) e Toury (planejador de roteiros social).',
 		path: '/projects',
 		jsonLd: [{
 			'@context': 'https://schema.org',
@@ -120,9 +154,21 @@ const Projects = () => {
 											rel='noreferrer'
 											className='text-white hover:text-white/70'
 											style={{ fontSize: '22px' }}
-											aria-label={`GitHub do ${project.name}`}
+											aria-label={`GitHub ${project.githubApi ? 'do app ' : 'do '}${project.name}`}
 										>
 											<GithubOutlined />
+										</a>
+									)}
+									{project.githubApi && (
+										<a
+											href={project.githubApi}
+											target='_blank'
+											rel='noreferrer'
+											className='text-white hover:text-white/70'
+											style={{ fontSize: '22px' }}
+											aria-label={`GitHub da API do ${project.name}`}
+										>
+											<CodeOutlined />
 										</a>
 									)}
 									{project.live && (
