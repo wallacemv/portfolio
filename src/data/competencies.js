@@ -86,7 +86,6 @@ export const competencies = [
 		label: 'Frontend',
 		items: [
 			'React.js',
-			'Next.js',
 			'Vue.js',
 			'Angular',
 			'AngularJS',
