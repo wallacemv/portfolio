@@ -4,7 +4,9 @@ import ImageMagnifier from './ImageMagnifier';
 import potrace from 'potrace';
 import { MainContext } from '../providers/mainProvider';
 
-const Canvas = ({ imageSource, canvasRef }) => {
+const Canvas = ({ imageSource, canvasRef, box }) => {
+	// tamanho interno do canvas (resolução do desenho); o tamanho exibido é calculado para caber em `box`
+	const [dims, setDims] = React.useState(null);
 	const preset = {
 		ltres: 1,
 		qtres: 1,
@@ -52,8 +54,14 @@ const Canvas = ({ imageSource, canvasRef }) => {
 			canvasRef.current.height
 		);
 
-		const x = event.nativeEvent.offsetX;
-		const y = event.nativeEvent.offsetY;
+		// o canvas pode estar escalado por CSS: converte do tamanho exibido para a resolução interna
+		const rect = canvasRef.current.getBoundingClientRect();
+		const x = Math.floor(
+			(event.nativeEvent.offsetX * canvasRef.current.width) / rect.width
+		);
+		const y = Math.floor(
+			(event.nativeEvent.offsetY * canvasRef.current.height) / rect.height
+		);
 
 		let oldColor = canvasImageHook.getPixelColor(
 			x,
@@ -110,6 +118,7 @@ const Canvas = ({ imageSource, canvasRef }) => {
 
 			canvas.width = width;
 			canvas.height = height;
+			setDims({ w: width, h: height });
 
 			var posterizer = new potrace.Potrace({
 				background: '#ffffff',
@@ -155,12 +164,18 @@ const Canvas = ({ imageSource, canvasRef }) => {
 		};
 	}, [imageSource]);
 
+	let displayStyle = {};
+	if (dims && box && box.w > 0 && box.h > 0) {
+		const scale = Math.min(box.w / dims.w, box.h / dims.h);
+		displayStyle = { width: dims.w * scale, height: dims.h * scale };
+	}
+
 	return (
 		<>
 			<ImageMagnifier>
 				<canvas
 					ref={canvasRef}
-					style={{ cursor: 'crosshair' }}
+					style={{ cursor: 'crosshair', display: 'block', ...displayStyle }}
 					onClick={handleClick}
 				/>
 			</ImageMagnifier>

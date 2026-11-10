@@ -2,7 +2,6 @@ import { Tag, Space } from 'antd';
 import {
 	ShoppingCartOutlined,
 	EnvironmentOutlined,
-	CodeOutlined,
 	GithubOutlined,
 	ExportOutlined,
 } from '@ant-design/icons';
@@ -75,7 +74,6 @@ const projects = [
 			'Kubernetes',
 		],
 		github: 'https://github.com/wallacemv/toury-mobile',
-		githubApi: 'https://github.com/wallacemv/toury-api',
 		live: 'https://codedbywallace.dev/toury/',
 		demo: 'https://codedbywallace.dev/toury/',
 		demoLabel: 'App web',
@@ -131,8 +129,8 @@ const Projects = () => {
 						<div
 							key={project.name}
 							style={{
-								backgroundColor: '#334155',
-								border: '1px solid rgba(255,255,255,0.15)',
+								backgroundColor: 'var(--surface)',
+								border: '1px solid var(--border)',
 								borderLeft: `4px solid ${project.color}`,
 							}}
 							className='flex flex-col gap-3 p-4 rounded-lg text-[#ffffff]'
@@ -158,33 +156,9 @@ const Projects = () => {
 											rel='noreferrer'
 											className='text-white hover:text-white/70'
 											style={{ fontSize: '22px' }}
-											aria-label={`GitHub ${project.githubApi ? 'do app ' : 'do '}${project.name}`}
+											aria-label={`GitHub do ${project.name}`}
 										>
 											<GithubOutlined />
-										</a>
-									)}
-									{project.githubApi && (
-										<a
-											href={project.githubApi}
-											target='_blank'
-											rel='noreferrer'
-											className='text-white hover:text-white/70'
-											style={{ fontSize: '22px' }}
-											aria-label={`GitHub da API do ${project.name}`}
-										>
-											<CodeOutlined />
-										</a>
-									)}
-									{project.live && (
-										<a
-											href={project.live}
-											target='_blank'
-											rel='noreferrer'
-											className='text-white hover:text-white/70'
-											style={{ fontSize: '22px' }}
-											aria-label={`Demo do ${project.name}`}
-										>
-											<ExportOutlined />
 										</a>
 									)}
 								</Space>
@@ -210,9 +184,9 @@ const Projects = () => {
 									<Tag
 										key={tech}
 										style={{
-											background: '#475569',
+											background: 'var(--surface-2)',
 											border: `1px solid ${project.color}88`,
-											color: '#fff',
+											color: 'var(--text)',
 											borderRadius: '999px',
 											padding: '2px 12px',
 											fontWeight: 500,

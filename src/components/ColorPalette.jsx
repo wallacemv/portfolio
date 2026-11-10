@@ -25,7 +25,10 @@ const ColorPalette = (props, ref, canvasRef) => {
 	return (
 		<div className='color-palette-wrapper flex flex-row flex-wrap gap-2'>
 			<Tooltip title='Cor customizada'>
-				<ColorPicker format='hex' onChange={changeColor} />
+				{/* span: o ColorPicker não repassa ref, e o Tooltip cairia em findDOMNode (deprecado) */}
+				<span className='inline-flex'>
+					<ColorPicker format='hex' onChange={changeColor} />
+				</span>
 			</Tooltip>
 			{hexColors.map((color, index) => (
 				<Button

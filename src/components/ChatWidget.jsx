@@ -6,7 +6,7 @@ import {
 	MessageOutlined,
 	WifiOutlined,
 	DisconnectOutlined,
-	EditOutlined,
+	SettingOutlined,
 	CloseOutlined,
 } from '@ant-design/icons';
 import { maskAbuse, sanitizeUsername } from '../lib/moderation';
@@ -36,7 +36,7 @@ function renderMessageText(text) {
 				href={url}
 				target='_blank'
 				rel='noreferrer'
-				style={{ color: '#93c5fd', textDecoration: 'underline', wordBreak: 'break-word' }}
+				style={{ color: 'var(--chat-link)', textDecoration: 'underline', wordBreak: 'break-word' }}
 			>
 				{label || url}
 			</a>,
@@ -49,15 +49,16 @@ function renderMessageText(text) {
 }
 
 // Paleta do portfolio
+// Cores vêm de tokens CSS (index.css) para acompanhar o tema claro/escuro.
 const C = {
-	bg: '#0f172a',
-	surface: '#334155',
-	line: 'rgba(255,255,255,0.15)',
-	text: '#ffffff',
-	muted: '#94a3b8',
+	bg: 'var(--chat-bg)',
+	surface: 'var(--chat-surface)',
+	line: 'var(--chat-line)',
+	text: 'var(--chat-text)',
+	muted: 'var(--chat-muted)',
 	mine: '#6366f1',
-	botBg: '#064e3b',
-	botLine: '#22c55e',
+	botBg: 'var(--chat-bot-bg)',
+	botLine: 'var(--chat-bot-line)',
 };
 
 const NUDGE_PHRASES = [
@@ -108,7 +109,7 @@ const ChatWidget = () => {
 	const [inputMessage, setInputMessage] = useState('');
 	const [username, setUsername] = useState('');
 	const [usernameInput, setUsernameInput] = useState('');
-	const [editingName, setEditingName] = useState(false);
+	const [settingsOpen, setSettingsOpen] = useState(false);
 	const [isConnected, setIsConnected] = useState(false);
 	const [isBotTyping, setIsBotTyping] = useState(false);
 	const [unreadCount, setUnreadCount] = useState(0);
@@ -305,11 +306,12 @@ const ChatWidget = () => {
 				}
 			};
 
-			ws.onclose = () => {
+			ws.onclose = (event) => {
 				if (disposed) return;
 				setIsConnected(false);
-				// reconecta enquanto o popup estiver aberto (pod restart, rede caiu)
-				retryTimer = setTimeout(connect, 3000);
+				// reconecta enquanto o popup estiver aberto (pod restart, rede caiu).
+				// 1013 = servidor recusou por excesso de conexões deste IP: espera mais.
+				retryTimer = setTimeout(connect, event.code === 1013 ? 30000 : 3000);
 			};
 
 			ws.onerror = () => {
@@ -367,7 +369,7 @@ const ChatWidget = () => {
 		setUsername(name);
 		setUsernameInput(name);
 		localStorage.setItem('chatUsername', name);
-		setEditingName(false);
+		setSettingsOpen(false);
 	};
 
 	const handleToggle = () => {
@@ -458,6 +460,14 @@ const ChatWidget = () => {
 
 	return (
 		<>
+			{/* Só no mobile (CSS): escurece e desfoca o fundo; tocar fora fecha o chat. */}
+			{open && (
+				<div
+					className='chat-overlay'
+					onClick={() => setOpen(false)}
+					aria-hidden='true'
+				/>
+			)}
 			{open && (
 				<div
 					className='chat-widget fixed flex flex-col'
@@ -467,7 +477,7 @@ const ChatWidget = () => {
 						width: 'min(360px, calc(100vw - 48px))',
 						height: 480,
 						maxHeight: 'calc(100vh - 130px)',
-						zIndex: 1000,
+						zIndex: 10001,
 					}}
 				>
 					<div
@@ -484,7 +494,7 @@ const ChatWidget = () => {
 					>
 						<div
 							className='flex flex-col gap-1 p-3'
-							style={{ borderBottom: `1px solid ${C.line}`, background: C.surface }}
+							style={{ position: 'relative', borderBottom: `1px solid ${C.line}`, background: C.surface }}
 						>
 							<div className='flex items-center justify-between gap-2'>
 								<div
@@ -509,7 +519,7 @@ const ChatWidget = () => {
 											textOverflow: 'ellipsis',
 										}}
 									>
-										Fale com o Wallace
+										Fale com meu assistente
 									</span>
 								</div>
 								<Badge
@@ -520,61 +530,105 @@ const ChatWidget = () => {
 									}
 									style={{ color: C.muted, flexShrink: 0 }}
 								/>
-							</div>
-							{username && (
-								<div className='flex justify-end'>
+								{username && (
 									<Button
-										size='small'
 										type='text'
-										style={{
-											color: C.muted,
-											maxWidth: '100%',
-											paddingInline: 4,
-										}}
+										size='small'
+										icon={<SettingOutlined />}
 										onClick={() => {
 											setUsernameInput(username);
-											setEditingName(true);
+											setSettingsOpen((v) => !v);
 										}}
-									>
-										<span
-											style={{
-												display: 'inline-flex',
-												alignItems: 'center',
-												gap: 6,
-												minWidth: 0,
-											}}
+										aria-label='Configurações do chat'
+										aria-expanded={settingsOpen}
+										title='Configurações'
+										style={{ color: settingsOpen ? C.text : C.muted, flexShrink: 0 }}
+									/>
+								)}
+								<Button
+									type='text'
+									size='small'
+									icon={<CloseOutlined />}
+									onClick={() => setOpen(false)}
+									aria-label='Fechar chat (cabeçalho)'
+									title='Fechar'
+									style={{ color: C.muted, flexShrink: 0 }}
+								/>
+							</div>
+							{username && settingsOpen && (
+								<div
+									role='dialog'
+									aria-label='Configurações do chat'
+									onKeyDown={(e) => {
+										if (e.key === 'Escape') setSettingsOpen(false);
+									}}
+									style={{
+										position: 'absolute',
+										top: 'calc(100% + 6px)',
+										right: 8,
+										zIndex: 5,
+										width: 'min(280px, calc(100% - 16px))',
+										background: C.bg,
+										border: `1px solid ${C.line}`,
+										borderRadius: 10,
+										padding: 12,
+										boxShadow: '0 12px 32px rgba(0,0,0,0.4)',
+									}}
+								>
+									<Text style={{ color: C.text, fontWeight: 600 }}>Configurações</Text>
+									<div style={{ marginTop: 10, marginBottom: 4 }}>
+										<Text style={{ color: C.muted, fontSize: 12 }}>Seu nome no chat</Text>
+									</div>
+									<Input
+										value={usernameInput}
+										onChange={(e) => setUsernameInput(e.target.value)}
+										onPressEnter={saveUsername}
+										placeholder='Seu nome'
+										maxLength={20}
+										autoFocus
+										style={{ background: C.surface, borderColor: C.line, color: C.text }}
+									/>
+									<Text style={{ color: C.muted, fontSize: 11, display: 'block', marginTop: 6 }}>
+										Trocar o nome começa uma nova conversa.
+									</Text>
+									<div className='flex gap-2' style={{ marginTop: 10 }}>
+										<Button
+											type='primary'
+											className='flex-1'
+											onClick={saveUsername}
+											disabled={!usernameInput.trim()}
+											style={{ background: C.mine }}
 										>
-											<EditOutlined style={{ flexShrink: 0 }} />
-											<span
-												style={{
-													overflow: 'hidden',
-													textOverflow: 'ellipsis',
-													whiteSpace: 'nowrap',
-												}}
-											>
-												{username}
-											</span>
-										</span>
-									</Button>
+											Salvar
+										</Button>
+										<Button
+											className='flex-1'
+											onClick={() => {
+												setUsernameInput(username);
+												setSettingsOpen(false);
+											}}
+											style={{ background: C.surface, borderColor: C.line, color: C.text }}
+										>
+											Cancelar
+										</Button>
+									</div>
 								</div>
 							)}
 						</div>
 
-						{!username || editingName ? (
+						{!username ? (
 							<div
 								className='flex-1 flex flex-col items-center justify-center gap-4 p-6'
 								style={{ minHeight: 0 }}
 							>
 								<MessageOutlined style={{ fontSize: 32, color: C.botLine }} />
 								<Text style={{ color: C.text, fontSize: 16, fontWeight: 600 }}>
-									{username ? 'Alterar nome' : 'Como posso te chamar?'}
+									Como posso te chamar?
 								</Text>
 								<Text
 									style={{ color: C.muted, fontSize: 13, textAlign: 'center' }}
 								>
-									{username
-										? 'Como você quer aparecer no chat?'
-										: 'Digite seu nome para entrar na conversa'}
+									Digite seu nome para entrar na conversa
 								</Text>
 								<Input
 									value={usernameInput}
@@ -589,34 +643,6 @@ const ChatWidget = () => {
 										color: C.text,
 									}}
 								/>
-								{username ? (
-									<div className='flex gap-2 w-full'>
-										<Button
-											type='primary'
-											className='flex-1'
-											onClick={saveUsername}
-											disabled={!usernameInput.trim()}
-											style={{ background: C.mine }}
-										>
-											Salvar
-										</Button>
-										<Button
-											className='flex-1'
-											onClick={() => {
-												setUsernameInput(username);
-												setEditingName(false);
-												setOpen(false);
-											}}
-											style={{
-												background: C.surface,
-												borderColor: C.line,
-												color: C.text,
-											}}
-										>
-											Cancelar
-										</Button>
-									</div>
-								) : (
 									<Button
 										type='primary'
 										block
@@ -626,7 +652,6 @@ const ChatWidget = () => {
 									>
 										Começar a conversa
 									</Button>
-								)}
 							</div>
 						) : (
 							<>
@@ -799,7 +824,7 @@ const ChatWidget = () => {
 					position: 'fixed',
 					right: 24,
 					bottom: 24,
-					zIndex: 1001,
+					zIndex: 10002,
 					width: 56,
 					height: 56,
 					background: '#22c55e',

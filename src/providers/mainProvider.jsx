@@ -8,7 +8,7 @@ export const MainProvider = (props) => {
 	const [cursor, setCursor] = useState(0);
 	const [config, setConfig] = useState({
 		uploadLimit: 30,
-		maxWidth: 500,
+		maxWidth: 900,
 	});
 
 	const resetModifications = () => {

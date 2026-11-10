@@ -31,6 +31,20 @@ const Paint = () => {
 
 	const canvasRef = useRef(null);
 
+	// área disponível para o desenho: ele é ampliado para caber nela, sem gerar scroll
+	const canvasBoxRef = useRef(null);
+	const [canvasBox, setCanvasBox] = useState(null);
+	useEffect(() => {
+		const el = canvasBoxRef.current;
+		if (!el) return undefined;
+		const measure = () =>
+			setCanvasBox({ w: el.clientWidth, h: el.clientHeight - 32 });
+		measure();
+		const ro = new ResizeObserver(measure);
+		ro.observe(el);
+		return () => ro.disconnect();
+	}, []);
+
 	const images = [
 		{
 			url: 'images/turma-da-monica-para-colorir-20.jpg',
@@ -149,7 +163,7 @@ const Paint = () => {
 
 	return (
 		<div
-			className='paint-wrapper relative h-full'
+			className='paint-wrapper relative h-full overflow-hidden'
 			style={{
 				background:
 					'radial-gradient(1100px 700px at 85% -10%, rgba(239,68,68,0.22), transparent 55%)',
@@ -169,6 +183,7 @@ const Paint = () => {
 					style={{
 						width: '100%',
 						height: '100%',
+						display: 'block',
 					}}
 					id='visual'
 					viewBox='0 0 900 600'
@@ -210,10 +225,18 @@ const Paint = () => {
 					</div>
 				</div>
 
-				<div className='canvas-wrapper flex flex-1 flex-col justify-center items-center py-4'>
-					<div>
+				<div
+					ref={canvasBoxRef}
+					className='canvas-wrapper relative flex-1 py-4'
+					style={{ minHeight: 240 }}
+				>
+					<div className='absolute inset-0 flex justify-center items-center overflow-hidden'>
 						{selectedImage && (
-							<Canvas imageSource={selectedImage} canvasRef={canvasRef} />
+							<Canvas
+								imageSource={selectedImage}
+								canvasRef={canvasRef}
+								box={canvasBox}
+							/>
 						)}
 					</div>
 				</div>
@@ -223,12 +246,9 @@ const Paint = () => {
 					{selectedImage && <Actions canvasRef={canvasRef} />}
 				</div>
 
-				<div className='flex flex-1'></div>
-				<div className='text-right mt-4'>
-					<span className='text-xs text-white'>
-						Para o Bernardo, com carinho ❤️
-					</span>
-				</div>
+				<span className='absolute top-4 right-4 text-xs text-white'>
+					Para o Bernardo, com carinho ❤️
+				</span>
 			</div>
 		</div>
 	);

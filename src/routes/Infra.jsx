@@ -29,7 +29,7 @@ const apps = [
 		icon: <MessageOutlined />,
 		url: 'wss://codedbywallace.dev/websocket',
 		color: '#22c55e',
-		desc: 'Chat em tempo real com o Wallace — bot com IA (Gemini) que responde como o dono do portfólio, com boas-vindas e notificação no navegador.',
+		desc: 'Servidor do assistente do chat: cada visitante conversa em uma sessão individual com o assistente do Wallace (Gemini), que responde sobre carreira, projetos, stack e disponibilidade com base no currículo e envia o PDF quando pedido. Há moderação de conteúdo nas duas pontas: palavrões e ofensas, tanto nas mensagens quanto nas respostas, são mascarados.',
 		stack: ['Node.js', 'ws', 'Gemini', 'Kubernetes'],
 	},
 	{
@@ -108,15 +108,15 @@ const Infra = () => {
 			<div className='p-6 sm:p-8 text-[#fff]'>
 				<h1 className='text-3xl font-bold mb-2'>Infraestrutura</h1>
 				<p className='text-white/80 mb-6'>
-					Como os projetos são servidos em produção.
+					Como os meus projetos são servidos em produção.
 				</p>
 
 				<div className='flex flex-col gap-4'>
 					<div
 						className='flex flex-col gap-3 p-4 rounded-lg text-[#ffffff]'
 						style={{
-							backgroundColor: '#334155',
-							border: '1px solid rgba(255,255,255,0.15)',
+							backgroundColor: 'var(--surface)',
+							border: '1px solid var(--border)',
 							borderLeft: '4px solid #14b8a6',
 						}}
 					>
@@ -153,7 +153,7 @@ const Infra = () => {
 								<div
 									key={item.title}
 									className='flex flex-col gap-1 p-3 rounded-lg'
-									style={{ backgroundColor: '#475569', border: '1px solid rgba(255,255,255,0.14)' }}
+									style={{ backgroundColor: 'var(--surface-2)', border: '1px solid var(--border)' }}
 								>
 									<Space>
 										<span className='inline-flex text-lg text-white/90'>
@@ -170,8 +170,8 @@ const Infra = () => {
 					<div
 						className='flex flex-col gap-3 p-4 rounded-lg text-[#ffffff]'
 						style={{
-							backgroundColor: '#334155',
-							border: '1px solid rgba(255,255,255,0.15)',
+							backgroundColor: 'var(--surface)',
+							border: '1px solid var(--border)',
 							borderLeft: '4px solid #0ea5e9',
 						}}
 					>
@@ -190,7 +190,7 @@ const Infra = () => {
 									key={app.name}
 									className='flex flex-col sm:flex-row gap-3 sm:gap-4 p-3 rounded-lg'
 									style={{
-										backgroundColor: '#475569',
+										backgroundColor: 'var(--surface-2)',
 										border: `1px solid ${app.color}99`,
 									}}
 								>
@@ -224,9 +224,9 @@ const Infra = () => {
 												<Tag
 													key={tech}
 													style={{
-														background: '#475569',
+														background: 'var(--surface-2)',
 														border: `1px solid ${app.color}88`,
-														color: '#fff',
+														color: 'var(--text)',
 														borderRadius: '999px',
 														padding: '0 10px',
 														fontSize: '11px',
@@ -245,8 +245,8 @@ const Infra = () => {
 					<div
 						className='flex flex-col gap-3 p-4 rounded-lg text-[#ffffff]'
 						style={{
-							backgroundColor: '#334155',
-							border: '1px solid rgba(255,255,255,0.15)',
+							backgroundColor: 'var(--surface)',
+							border: '1px solid var(--border)',
 							borderLeft: '4px solid #f59e0b',
 						}}
 					>
@@ -267,7 +267,7 @@ const Infra = () => {
 										style={{
 											minWidth: '28px',
 											height: '28px',
-											backgroundColor: '#475569',
+											backgroundColor: 'var(--surface-2)',
 											border: '1px solid #ffffff55',
 										}}
 									>

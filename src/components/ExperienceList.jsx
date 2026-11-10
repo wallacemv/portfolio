@@ -10,8 +10,8 @@ const ExperienceList = () => (
 			<div
 				key={`${exp.company}-${exp.period}`}
 				style={{
-					backgroundColor: '#334155',
-					border: '1px solid rgba(255,255,255,0.15)',
+					backgroundColor: 'var(--surface)',
+					border: '1px solid var(--border)',
 					borderLeft: `4px solid ${exp.color}`,
 				}}
 				className='flex flex-1 flex-col p-4 rounded-lg'

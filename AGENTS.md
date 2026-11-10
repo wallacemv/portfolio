@@ -43,7 +43,7 @@ Portfolio website with React + Vite + Ant Design, deployed on Kubernetes (k3s) o
 - Floating bubbles now light translucent tones (were dark, invisible on dark bg)
 - Home: photo filter sobered (was psychedelic), experience cards neutral with colored left border
 - Shapes page removed (menu, route, file); its sine-flow wave animation moved into the Paint page background (rAF)
-- About menu label is now "Sobre"
+- About menu label is now "Sobre mim"
 
 ## Dependencies
 - `potrace` is used; `imagetracerjs` and `pica` unused but still in `package.json`

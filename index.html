@@ -6,6 +6,19 @@
   <link rel="icon" type="image/svg+xml" href="%BASE_URL%vite.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#0f172a" />
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('theme');
+        if (t !== 'light' && t !== 'dark') {
+          t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        }
+        document.documentElement.dataset.theme = t;
+      } catch (e) {
+        document.documentElement.dataset.theme = 'dark';
+      }
+    })();
+  </script>
 
   <title>Wallace Martins Vieira — Fullstack Engineer | Node.js, TypeScript, Angular, Java</title>
   <meta name="description"
@@ -106,7 +119,7 @@
       </p>
       <p>
         Páginas:
-        <a class="underline" href="/portfolio/about">Sobre</a>,
+        <a class="underline" href="/portfolio/about">Sobre mim</a>,
         <a class="underline" href="/portfolio/projects">Projetos</a> e
         <a class="underline" href="/portfolio/infra">Infraestrutura</a>.
       </p>

@@ -40,7 +40,7 @@ const SITE_STACK = [
 
 const About = () => {
 	usePageMeta({
-		title: 'Sobre | Wallace Martins Vieira — Fullstack Engineer',
+		title: 'Sobre mim | Wallace Martins Vieira — Fullstack Engineer',
 		description:
 			'Wallace Martins Vieira, Fullstack Engineer com 15+ anos em backend e fullstack: microsserviços, APIs RESTful de alta disponibilidade, mensageria, containers e orquestração (Docker e Kubernetes).',
 		path: '/about',
@@ -57,7 +57,7 @@ const About = () => {
 			'@type': 'BreadcrumbList',
 			itemListElement: [
 				{ '@type': 'ListItem', position: 1, name: 'Home', item: 'https://codedbywallace.dev/portfolio/' },
-				{ '@type': 'ListItem', position: 2, name: 'Sobre', item: 'https://codedbywallace.dev/portfolio/about' },
+				{ '@type': 'ListItem', position: 2, name: 'Sobre mim', item: 'https://codedbywallace.dev/portfolio/about' },
 			],
 		}],
 	});
@@ -71,13 +71,13 @@ const About = () => {
 			}}
 		>
 			<div className='p-6 sm:p-8 text-[#fff]'>
-				<h1 className='text-3xl font-bold mb-4'>Sobre</h1>
+				<h1 className='text-3xl font-bold mb-4'>Sobre mim</h1>
 
 				<div
 					className='flex flex-col gap-3 p-4 rounded-lg mb-6'
 					style={{
-						backgroundColor: '#334155',
-						border: '1px solid rgba(255,255,255,0.15)',
+						backgroundColor: 'var(--surface)',
+						border: '1px solid var(--border)',
 						borderLeft: '4px solid #3b82f6',
 					}}
 				>
@@ -116,8 +116,8 @@ const About = () => {
 							key={item.title}
 							className='flex-1 flex flex-col gap-1 p-4 rounded-lg'
 							style={{
-								backgroundColor: '#334155',
-								border: '1px solid rgba(255,255,255,0.15)',
+								backgroundColor: 'var(--surface)',
+								border: '1px solid var(--border)',
 								borderLeft: '4px solid #60a5fa',
 							}}
 						>
@@ -135,8 +135,8 @@ const About = () => {
 							key={item.language}
 							className='flex-1 flex flex-col gap-1 p-4 rounded-lg'
 							style={{
-								backgroundColor: '#334155',
-								border: '1px solid rgba(255,255,255,0.15)',
+								backgroundColor: 'var(--surface)',
+								border: '1px solid var(--border)',
 								borderLeft: '4px solid #93c5fd',
 							}}
 						>
@@ -152,9 +152,9 @@ const About = () => {
 						<Tag
 							key={tech}
 							style={{
-								background: '#475569',
+								background: 'var(--surface-2)',
 								border: '1px solid #6366f188',
-								color: '#fff',
+								color: 'var(--text)',
 								borderRadius: '999px',
 								padding: '2px 12px',
 							}}

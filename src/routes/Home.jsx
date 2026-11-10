@@ -174,7 +174,7 @@ const Home = () => {
 								fontFamily: 'monospace',
 								fontSize: `calc(${ASCII_WIDTH} / ${ASCII_COLS * GLYPH_RATIO})`,
 								lineHeight: LINE_HEIGHT,
-								color: '#ffffff',
+								color: 'var(--text)',
 								whiteSpace: 'pre',
 								overflow: 'hidden',
 								pointerEvents: 'none',
@@ -203,7 +203,7 @@ const Home = () => {
 						<div className='flex flex-col'>
 							<div
 								className='w-full sm:w-2/3 p-6 my-6 sm:my-12 rounded-lg font-semibold text-[#ffffff] border border-white/15'
-								style={{ backgroundColor: '#334155' }}
+								style={{ backgroundColor: 'var(--surface)' }}
 							>
 								<p className='text-base leading-relaxed'>{profile.pitch}</p>
 								<Link
@@ -236,8 +236,8 @@ const Home = () => {
 									<div
 										key={exp.company}
 										style={{
-											backgroundColor: '#334155',
-											border: '1px solid rgba(255,255,255,0.15)',
+											backgroundColor: 'var(--surface)',
+											border: '1px solid var(--border)',
 											borderLeft: `4px solid ${exp.color}`,
 										}}
 										className='flex flex-1 min-w-[200px] flex-col p-4 rounded-lg'

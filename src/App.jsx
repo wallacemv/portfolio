@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import { useTheme } from './providers/themeProvider';
 import { Layout, Menu, theme, App as AntApp } from 'antd';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import './App.css';
@@ -16,6 +17,8 @@ import {
 	MailOutlined,
 	ProjectOutlined,
 	CloudServerOutlined,
+	MoonOutlined,
+	SunOutlined,
 } from '@ant-design/icons';
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -225,7 +228,7 @@ const FloatingCircles = () => {
 	}, [handleBubbleClick]);
 
 	return (
-		<div className='fixed inset-0 pointer-events-none' style={{ zIndex: 1 }}>
+		<div className='floating-circles fixed inset-0 pointer-events-none' style={{ zIndex: 1 }}>
 			{circlesConfig.map((c) => (
 				<div
 					key={c.id}
@@ -285,7 +288,7 @@ const menuItems = [
 
 	{
 		key: '/about',
-		label: <Link to='/about'>Sobre</Link>,
+		label: <Link to='/about'>Sobre mim</Link>,
 		icon: <ContactsOutlined />,
 	},
 ];
@@ -294,6 +297,7 @@ const App = () => {
 	const [collapsed, setCollapsed] = useState(true);
 
 	const location = useLocation();
+	const { theme: themeMode, toggleTheme } = useTheme();
 
 	const {
 		token: { colorBgContainer, colorPrimaryBg },
@@ -337,7 +341,7 @@ const App = () => {
 
 	return (
 		<AntApp style={{ height: '100%' }}>
-		<Layout className='flex flex-col h-full bg-[#0f172a]'>
+		<Layout className='flex flex-col h-full' style={{ background: 'var(--bg)' }}>
 			<FloatingCircles />
 			<Header
 				style={{
@@ -348,18 +352,38 @@ const App = () => {
 				}}
 			>
 				<Menu
-					theme='dark'
+					theme={themeMode}
 					mode='horizontal'
 					selectedKeys={[location.pathname]}
 					items={menuItems}
 					style={{
-						background: 'rgba(15, 23, 42, 0.92)',
-						borderBottom: '1px solid rgba(255,255,255,0.06)',
+						background: 'var(--header-bg)',
+						borderBottom: '1px solid var(--border-soft)',
 						flex: 1,
 						minWidth: 0,
 						'--menu-active-color': selectedBg,
 					}}
 				/>
+				<button
+					type='button'
+					onClick={() => {
+						toggleTheme();
+						trackEvent('theme_change', { theme: themeMode === 'dark' ? 'light' : 'dark' });
+					}}
+					aria-label={themeMode === 'dark' ? 'Mudar para o tema claro' : 'Mudar para o tema escuro'}
+					title={themeMode === 'dark' ? 'Tema claro' : 'Tema escuro'}
+					style={{
+						background: 'var(--header-bg)',
+						borderBottom: '1px solid var(--border-soft)',
+						border: 0,
+						color: 'var(--text)',
+						cursor: 'pointer',
+						fontSize: 18,
+						padding: '0 18px',
+					}}
+				>
+					{themeMode === 'dark' ? <SunOutlined /> : <MoonOutlined />}
+				</button>
 			</Header>
 			{/* <Content className='content-wrapper flex-col flex flex-1'>
 				<div className='outlet-wrapper flex flex-1 flex-col  h-full overflow-auto'>
@@ -380,8 +404,8 @@ const App = () => {
 
 			<Footer
 				style={{
-					background: 'rgba(30, 41, 59, 0.95)',
-					borderTop: '1px solid rgba(255,255,255,0.08)',
+					background: 'var(--footer-bg)',
+					borderTop: '1px solid var(--border-soft)',
 					width: '100%',
 				}}
 				className='drop-shadow p-4 justify-end'
@@ -391,7 +415,7 @@ const App = () => {
 						href='mailto:wallacemv@gmail.com'
 						target='_blank'
 						className='animate-pulse'
-						style={{ color: '#ffffff' }}
+						style={{ color: 'var(--text)' }}
 					>
 						<span style={{ fontSize: '12px' }} className='mr-2'>
 							wallacemv@gmail.com
@@ -403,7 +427,7 @@ const App = () => {
 						href='https://www.instagram.com/wallacemarttins'
 						target='_blank'
 						className='animate-pulse'
-						style={{ color: '#ffffff' }}
+						style={{ color: 'var(--text)' }}
 					>
 						<InstagramOutlined />
 					</a>
@@ -412,7 +436,7 @@ const App = () => {
 						href='https://github.com/wallacemv'
 						target='_blank'
 						className='animate-pulse'
-						style={{ color: '#ffffff' }}
+						style={{ color: 'var(--text)' }}
 					>
 						<GithubOutlined />
 					</a>
@@ -421,43 +445,36 @@ const App = () => {
 						href='https://www.linkedin.com/in/wallacemarttins'
 						target='_blank'
 						className='animate-pulse'
-						style={{ color: '#ffffff' }}
+						style={{ color: 'var(--text)' }}
 					>
 						<LinkedinOutlined />
 					</a>
 				</div>
+				<div
+					className='flex flex-row gap-4 justify-center mt-2'
+					style={{ fontSize: 12 }}
+				>
+					<Link to='/privacy' style={{ color: 'rgb(var(--text-rgb) / 0.7)' }}>
+						Política de privacidade
+					</Link>
+					{GA_ID && (
+						<button
+							type='button'
+							onClick={() => window.dispatchEvent(new Event('cookie-settings'))}
+							style={{
+								background: 'transparent',
+								border: 0,
+								padding: 0,
+								color: 'rgb(var(--text-rgb) / 0.7)',
+								fontSize: 12,
+								cursor: 'pointer',
+							}}
+						>
+							Cookies
+						</button>
+					)}
+				</div>
 			</Footer>
-			<div
-				style={{
-					position: 'fixed',
-					left: 8,
-					bottom: 4,
-					zIndex: 3,
-					display: 'flex',
-					gap: 10,
-					fontSize: 11,
-				}}
-			>
-				<Link to='/privacy' style={{ color: 'rgba(255,255,255,0.45)' }}>
-					Privacidade
-				</Link>
-				{GA_ID && (
-					<button
-						type='button'
-						onClick={() => window.dispatchEvent(new Event('cookie-settings'))}
-						style={{
-							background: 'transparent',
-							border: 0,
-							padding: 0,
-							color: 'rgba(255,255,255,0.45)',
-							fontSize: 11,
-							cursor: 'pointer',
-						}}
-					>
-						Cookies
-					</button>
-				)}
-			</div>
 			<CookieBanner />
 			<ChatWidget />
 		</Layout>

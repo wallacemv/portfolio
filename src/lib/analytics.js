@@ -35,10 +35,13 @@ export const clearConsent = () => {
 	window.dispatchEvent(new Event('cookie-consent'));
 };
 
-const gtag = (...args) => {
+// O gtag.js só processa o objeto `arguments` no dataLayer — empurrar um array
+// comum (rest params) faz todos os eventos serem ignorados em silêncio.
+function gtag() {
 	window.dataLayer = window.dataLayer || [];
-	window.dataLayer.push(args);
-};
+	// eslint-disable-next-line prefer-rest-params
+	window.dataLayer.push(arguments);
+}
 
 export const loadAnalytics = () => {
 	if (!GA_ID || loaded || typeof document === 'undefined') return;

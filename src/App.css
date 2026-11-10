@@ -5,7 +5,7 @@
 }
 
 .ant-menu-horizontal > .ant-menu-item-selected {
-	background: rgba(255, 255, 255, 0.08) !important;
+	background: var(--border-soft) !important;
 	border-bottom-color: var(--menu-active-color) !important;
 	box-shadow: none !important;
 }
@@ -25,4 +25,11 @@
 
 .ant-message-notice-content {
 	color: #ffffff !important;
+}
+/* A sublinha padrão do antd (::after) duplica a borda colorida do item ativo e
+   aparece escura no tema claro. */
+.ant-menu-horizontal > .ant-menu-item::after,
+.ant-menu-horizontal > .ant-menu-submenu::after {
+	display: none !important;
+	border-bottom: 0 !important;
 }

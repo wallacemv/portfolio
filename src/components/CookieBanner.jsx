@@ -32,10 +32,10 @@ const CookieBanner = () => {
 				left: 16,
 				right: 16,
 				bottom: 16,
-				zIndex: 1000,
+				zIndex: 10100,
 				maxWidth: 560,
 				margin: '0 auto',
-				background: 'rgba(15,23,42,0.97)',
+				background: '#0f172a',
 				border: '1px solid rgba(255,255,255,0.15)',
 				borderRadius: 12,
 				padding: 16,
@@ -44,8 +44,7 @@ const CookieBanner = () => {
 			}}
 		>
 			<p style={{ margin: 0, fontSize: 14, lineHeight: 1.5 }}>
-				Uso cookies do Google Analytics para entender como o site é usado:
-				páginas visitadas, abertura do assistente e download do currículo.
+				Uso cookies do Google Analytics para entender como o site é usado.
 				Nada é coletado antes da sua escolha.{' '}
 				<Link to='/privacy' style={{ color: '#a5b4fc', textDecoration: 'underline' }}>
 					Política de privacidade
