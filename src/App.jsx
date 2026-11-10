@@ -72,6 +72,14 @@ const FloatingCircles = () => {
 			if (circle) circle.el = el;
 		});
 
+		// Entrada: uma bolha por vez, com fade-in (sem movimento se o usuário prefere menos animação).
+		const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+		const revealTimers = circles.map((c, i) =>
+			setTimeout(() => {
+				if (c.el && !c.popping) c.el.style.opacity = '1';
+			}, reduceMotion ? 0 : 300 + i * 280)
+		);
+
 		const wake = () => {
 			lastInteractRef.current = Date.now();
 			if (pausedRef.current) {
@@ -172,6 +180,7 @@ const FloatingCircles = () => {
 		animIdRef.current = requestAnimationFrame(animate);
 		return () => {
 			cancelAnimationFrame(animIdRef.current);
+			revealTimers.forEach(clearTimeout);
 			clearTimeout(resizeTimer);
 			window.removeEventListener('pointermove', handlePointerMove);
 			window.removeEventListener('pointerdown', handlePointerDown);
@@ -232,6 +241,8 @@ const FloatingCircles = () => {
 						width: `${c.size}rem`,
 						height: `${c.size}rem`,
 						backgroundColor: c.color,
+						opacity: 0,
+						transition: 'opacity 1.6s ease-in',
 					}}
 				/>
 			))}
@@ -362,7 +373,9 @@ const App = () => {
 				className='content-wrapper flex-1 overflow-auto'
 				style={{ position: 'relative', zIndex: 2 }}
 			>
-				<Outlet />
+				<div key={location.pathname} className='page-transition h-full'>
+					<Outlet />
+				</div>
 			</Content>
 
 			<Footer

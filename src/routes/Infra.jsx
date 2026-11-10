@@ -10,6 +10,8 @@ import {
 	MessageOutlined,
 	ProjectOutlined,
 	DeploymentUnitOutlined,
+	EnvironmentOutlined,
+	LineChartOutlined,
 } from '@ant-design/icons';
 import { usePageMeta } from '../lib/seo';
 
@@ -28,15 +30,31 @@ const apps = [
 		url: 'wss://codedbywallace.dev/websocket',
 		color: '#22c55e',
 		desc: 'Chat em tempo real com o Wallace — bot com IA (Gemini) que responde como o dono do portfólio, com boas-vindas e notificação no navegador.',
-		stack: ['Node.js', 'WebSocket', 'Gemini'],
+		stack: ['Node.js', 'ws', 'Gemini', 'Kubernetes'],
 	},
 	{
 		name: 'Shop Commerce',
 		icon: <ShoppingCartOutlined />,
 		url: 'https://codedbywallace.dev/shop-commerce/',
 		color: '#22d3ee',
-		desc: 'E-commerce multi-tenant: pagamentos (Mercado Pago/Stripe), WhatsApp, uploads em R2 e assistente de IA no admin.',
-		stack: ['FastAPI', 'React 19', 'MySQL', 'Redis', 'Cloudflare R2', 'TanStack Query', 'Zod', 'Gemini'],
+		desc: 'E-commerce multi-tenant: API FastAPI com worker em background, Redis, admin, vitrine e loja em React; pagamentos (Mercado Pago/Stripe), WhatsApp, uploads em R2 e assistente de IA no admin.',
+		stack: ['FastAPI', 'Worker', 'React 19', 'MySQL', 'Redis', 'Cloudflare R2', 'TanStack Query', 'Zod', 'Gemini'],
+	},
+	{
+		name: 'Toury',
+		icon: <EnvironmentOutlined />,
+		url: 'https://codedbywallace.dev/toury/',
+		color: '#f59e0b',
+		desc: 'Planejador de roteiros social: API Spring Boot no cluster (/toury/api), Ollama para embeddings e moderação, e o app web (export do Expo) servido como arquivos estáticos pelo Nginx do host.',
+		stack: ['Spring Boot', 'PostgreSQL', 'PostGIS', 'pgvector', 'Ollama', 'Expo', 'React Native'],
+	},
+	{
+		name: 'Monitoramento',
+		icon: <LineChartOutlined />,
+		url: '',
+		color: '#ef4444',
+		desc: 'Métricas do cluster e dos apps coletadas pelo Prometheus e visualizadas no Grafana (namespace monitoring).',
+		stack: ['Prometheus', 'Grafana'],
 	},
 ];
 
@@ -126,11 +144,11 @@ const Infra = () => {
 							}, {
 								icon: <GlobalOutlined />,
 								title: 'Nginx (host)',
-								desc: 'Reverse proxy na porta 443 com prefixos por app (/portfolio, /shop-commerce) para os serviços via *.svc.cluster.local.',
+								desc: 'Reverse proxy na porta 443 com prefixos por app (/portfolio, /websocket, /shop-commerce, /toury) para os serviços via *.svc.cluster.local.',
 							}, {
 								icon: <LockOutlined />,
 								title: 'SSL Let\u2019s Encrypt',
-								desc: 'Certificados automáticos no Nginx do host; dashboard em HTTPS na porta 8443.',
+								desc: 'Certificados automáticos (Certbot) no Nginx do host, com HTTPS e HSTS.',
 							}].map((item) => (
 								<div
 									key={item.title}
@@ -185,14 +203,18 @@ const Infra = () => {
 										</span>
 										<div className='flex flex-col'>
 											<span className='font-semibold'>{app.name}</span>
-											<a
-												href={app.url}
-												target='_blank'
-												rel='noreferrer'
-												className='text-xs text-white/70 hover:text-white underline underline-offset-2'
-											>
-												{app.url.replace('wss://', '').replace('https://', '')}
-											</a>
+											{app.url ? (
+												<a
+													href={app.url}
+													target='_blank'
+													rel='noreferrer'
+													className='text-xs text-white/70 hover:text-white underline underline-offset-2'
+												>
+													{app.url.replace('wss://', '').replace('https://', '')}
+												</a>
+											) : (
+												<span className='text-xs text-white/60'>acesso interno</span>
+											)}
 										</div>
 									</div>
 									<div className='flex flex-col gap-1 flex-1'>

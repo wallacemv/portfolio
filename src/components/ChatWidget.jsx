@@ -731,8 +731,23 @@ const ChatWidget = () => {
 				</div>
 			)}
 
-			{showNudge && !open && (
+			{!open && (
+				<div
+					aria-hidden={!showNudge}
+					style={{
+						position: 'fixed',
+						right: 24,
+						bottom: 96,
+						zIndex: 1001,
+						opacity: showNudge ? 1 : 0,
+						transform: showNudge ? 'translateY(0) scale(1)' : 'translateY(10px) scale(0.92)',
+						transformOrigin: 'bottom right',
+						transition: 'opacity 0.45s ease, transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1)',
+						pointerEvents: showNudge ? 'auto' : 'none',
+					}}
+				>
 				<button
+					tabIndex={showNudge ? 0 : -1}
 					onClick={() => {
 						requestNotificationPermission();
 						trackEvent('chat_open', { source: 'nudge' });
@@ -740,10 +755,8 @@ const ChatWidget = () => {
 					}}
 					aria-label='Fale comigo — abrir chat'
 					style={{
-						position: 'fixed',
-						right: 24,
-						bottom: 96,
-						zIndex: 1001,
+						position: 'relative',
+						display: 'block',
 						background: C.surface,
 						color: C.text,
 						border: `1px solid ${C.botLine}`,
@@ -757,7 +770,9 @@ const ChatWidget = () => {
 						animation: 'chatNudgePulse 2s ease-in-out infinite',
 					}}
 				>
-					{nudgeText}
+					<span key={nudgeText} className='chat-nudge-text'>
+						{nudgeText}
+					</span>
 					<span
 						style={{
 							position: 'absolute',
@@ -772,6 +787,7 @@ const ChatWidget = () => {
 						}}
 					/>
 				</button>
+				</div>
 			)}
 
 			<Button
