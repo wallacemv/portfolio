@@ -467,6 +467,8 @@ const App = () => {
 								padding: 0,
 								color: 'rgb(var(--text-rgb) / 0.7)',
 								fontSize: 12,
+								fontFamily: 'inherit',
+								lineHeight: 'inherit',
 								cursor: 'pointer',
 							}}
 						>

@@ -35,18 +35,18 @@ const CookieBanner = () => {
 				zIndex: 10100,
 				maxWidth: 560,
 				margin: '0 auto',
-				background: '#0f172a',
-				border: '1px solid rgba(255,255,255,0.15)',
+				background: 'var(--bg)',
+				border: '1px solid var(--border)',
 				borderRadius: 12,
 				padding: 16,
-				color: '#fff',
+				color: 'var(--text)',
 				boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
 			}}
 		>
-			<p style={{ margin: 0, fontSize: 14, lineHeight: 1.5 }}>
+			<p style={{ margin: 0, fontSize: 15, lineHeight: 1.625, color: 'rgb(var(--text-rgb) / 0.9)' }}>
 				Uso cookies do Google Analytics para entender como o site é usado.
 				Nada é coletado antes da sua escolha.{' '}
-				<Link to='/privacy' style={{ color: '#a5b4fc', textDecoration: 'underline' }}>
+				<Link to='/privacy' style={{ color: 'var(--accent-text)', textDecoration: 'underline' }}>
 					Política de privacidade
 				</Link>
 			</p>
