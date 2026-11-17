@@ -17,15 +17,16 @@ Full Stack Sênior — desenvolvimento de sistemas escaláveis de alta disponibi
 
 ## Resumo
 
-Com mais de 15 anos de experiência no desenvolvimento de softwares escaláveis, atuo como Desenvolvedor Full Stack Sênior, focado na criação de ecossistemas robustos e de alta disponibilidade. Ao longo da minha carreira, colaborei com grandes marcas dos setores de tecnologia, telecomunicações, financeiro, varejo e serviços, como Sem Parar, Banco Santander, Vivo, C&A e Movile. Minha bagagem técnica combina a agilidade do ecossistema JavaScript/TypeScript (Node.js, NestJS, Angular, React, Ionic) com a robustez e a arquitetura corporativa dos ecossistemas Java (Spring Boot, Spring Batch) e Python. Atuo há 8 anos com NestJS no desenho de APIs REST, módulos, injeção de dependência e microsserviços, com integrações AWS (EC2, S3, Cognito, DynamoDB, Route 53) e mensageria com Apache Kafka. Há 2 anos me dedico à IA generativa aplicada a produto e pipelines de engenharia, integrando LLMs via MCP, criando agentes e skills para auxiliar IAs no desenvolvimento de frontend e automatizando testes e documentação.
+Com mais de 15 anos de experiência no desenvolvimento de softwares escaláveis, atuo como Desenvolvedor Full Stack Sênior, focado na criação de ecossistemas robustos e de alta disponibilidade. Ao longo da minha carreira, colaborei com grandes marcas dos setores de tecnologia, telecomunicações, financeiro, varejo e serviços, como Sem Parar, BV Financeira, Banco Santander, Vivo, C&A, Oi, Yavox e Movile. Minha bagagem técnica combina a agilidade do ecossistema JavaScript/TypeScript (Node.js, NestJS, Angular, React, Ionic) com a robustez e a arquitetura corporativa dos ecossistemas Java (Spring Boot, Spring Batch, Java Concurrency API) e Python. Atuo há 8 anos com NestJS no desenho de APIs REST, módulos, injeção de dependência e microsserviços, com integrações AWS (EC2, S3, Cognito, DynamoDB, Route 53) e mensageria com RabbitMQ e Apache Kafka. Há 2 anos me dedico à IA generativa aplicada a produto e pipelines de engenharia, integrando LLMs via MCP — incluindo modelos locais (Ollama) —, criando agentes e skills para auxiliar IAs no desenvolvimento de frontend e automatizando testes e documentação.
 
 ## Principais competências
 
-- **Backend:** Node.js, NestJS, TypeScript, Java (JavaEE, Spring, Spring Boot, Spring Batch), Python, RESTful APIs, Microserviços, Swagger, OpenAPI, Keycloak, OAuth/OIDC, Amazon Cognito
+- **Backend:** Node.js, NestJS, TypeScript, Java (JavaEE, Spring, Spring Boot, Spring Batch, Java Concurrency API), Python, RESTful APIs, Microserviços, Swagger, OpenAPI, Keycloak, OAuth/OIDC, Amazon Cognito
 - **Frontend:** Angular, NgRx, Ionic, React, React Native, JavaScript, HTML5, CSS3, Sass
-- **Data:** Oracle, SQL Server, MySQL, Tomcat, JBoss, Redis, RabbitMQ, Apache Kafka
-- **IA:** LLM Engineering, MCP (Model Context Protocol), Criação de agentes e skills para IA em frontend, Cursor, GitHub Copilot, Automação de testes com IA
+- **Data:** Oracle, SQL Server, MySQL, PostgreSQL (PostGIS, pgvector), Tomcat, JBoss, Redis, RabbitMQ, Apache Kafka
+- **IA:** LLM Engineering, MCP (Model Context Protocol), Modelos de IA locais (Ollama, bge-m3, qwen2.5), Criação de agentes e skills para IA em frontend, Cursor, GitHub Copilot, Automação de testes com IA
 - **Infraestrutura:** Docker, Kubernetes, AWS (EC2, S3, Cognito, DynamoDB, Route 53), OpenShift, Azure DevOps
+- **Ferramentas:** IntelliJ IDEA, Git, Maven
 
 ## Experiência
 
@@ -33,9 +34,10 @@ Com mais de 15 anos de experiência no desenvolvimento de softwares escaláveis,
 
 **Desenvolvedor Fullstack** — São Paulo, Brasil
 
-_janeiro de 2019 - julho de 2026 (7 anos 6 meses)_
+*janeiro de 2019 - julho de 2026 (7 anos 6 meses)*
 
 - Atuação full stack no desenvolvimento de aplicações web para o ecossistema Sem Parar, atuando no backend com Node.js, TypeScript e NestJS e no frontend com Angular 16/21, TailwindCSS e Angular Material.
+- Engenharia de soluções full stack robustas, com back-end em Java (Spring Boot, Spring Batch) e Node.js/TypeScript (NestJS) — 8 anos no desenho de APIs REST, módulos, injeção de dependência e microsserviços —, integrações AWS (EC2, S3, Cognito, DynamoDB, Route 53) e mensageria com RabbitMQ e Apache Kafka.
 - Desenvolvimento e manutenção de APIs RESTful com Node.js, TypeScript e NestJS.
 - Arquitetura e evolução de microsserviços com foco em escalabilidade, performance e confiabilidade.
 - Criação de aplicativo mobile com Ionic para distribuição de vouchers de desconto, integrado à plataforma de vouchers do Sem Parar.
@@ -44,6 +46,7 @@ _janeiro de 2019 - julho de 2026 (7 anos 6 meses)_
 - Criação de componentes reutilizáveis e aplicação de boas práticas de componentização.
 - Integrações com ServiceNow e Cbill para automação de processos e fluxos internos.
 - Integração de microsserviços Node.js/NestJS com o Barramento da Oracle para consumo e disponibilização de serviços legados.
+- Desenvolvimento backend em Java com uso da Java Concurrency API para execução concorrente e controle de threads, com IntelliJ IDEA como IDE de desenvolvimento.
 - Autenticação e autorização com Keycloak, OAuth/OIDC e Amazon Cognito.
 - Análise de logs e troubleshooting com Elasticsearch.
 - Suporte às equipes de UX na criação e configuração de tags no Google Analytics e Google Tag Manager.
@@ -55,14 +58,22 @@ _janeiro de 2019 - julho de 2026 (7 anos 6 meses)_
 - Modelagem e consumo de dados com Amazon DynamoDB, gerenciamento de arquivos com Amazon S3.
 - Deploy e orquestração de containers com Amazon ECS, configuração e roteamento DNS com Amazon Route 53.
 - Observabilidade dos serviços com OpenTelemetry.
-- Atuação em IA generativa aplicada a produto e engenharia: integração de LLMs via MCP (Model Context Protocol), construção de agentes e skills, uso de Cursor e GitHub Copilot.
 - Testes automatizados: unitários, integração e E2E em Angular, testes em NestJS e testes com JUnit (Java). Aplicação de boas práticas (Clean Code, SOLID), CI/CD e versionamento com Git.
+- Atuação em IA generativa aplicada a produto e engenharia: integração de LLMs via MCP (Model Context Protocol), incluindo modelos locais (Ollama), criação de agentes e skills para auxiliar IAs no desenvolvimento de frontend, uso de Cursor e GitHub Copilot.
+
+### Yavox
+
+**Desenvolvedor**
+
+*Período não informado*
+
+- Atuação com mensageria RabbitMQ em integrações entre serviços.
 
 ### HDI Seguros
 
 **Desenvolvedor de Front-end** — São Paulo, Brasil
 
-_março de 2021 - abril de 2021 (1 mês)_
+*março de 2021 - abril de 2021 (1 mês)*
 
 - Atuação pontual no desenvolvimento e evolução do ecossistema digital da HDI Seguros.
 - Desenvolvimento e otimização de interfaces web com Angular, focando em performance, usabilidade e experiência do usuário (UX).
@@ -73,7 +84,7 @@ _março de 2021 - abril de 2021 (1 mês)_
 
 **Desenvolvedor Java Sênior** — São Paulo, Brasil
 
-_agosto de 2017 - janeiro de 2019 (1 ano 5 meses)_
+*agosto de 2017 - janeiro de 2019 (1 ano 5 meses)*
 
 - Desenvolvimento de sistemas e ferramentas corporativas voltadas à governança dos barramentos Oracle da Vivo.
 - Desenvolvimento backend com Java 8 e Spring Boot para mapeamento, catalogação e roteamento dos serviços expostos nos barramentos Oracle.
@@ -85,7 +96,7 @@ _agosto de 2017 - janeiro de 2019 (1 ano 5 meses)_
 
 **Desenvolvedor Ionic** — São Paulo, Brasil
 
-_janeiro de 2017 - agosto de 2017 (7 meses)_
+*janeiro de 2017 - agosto de 2017 (7 meses)*
 
 - Desenvolvimento do aplicativo de gamificação para a Bradesco Saúde, focado no engajamento de clientes através do monitoramento de hábitos saudáveis e atividades físicas.
 - Engenharia e integração de APIs de grandes plataformas de fitness (Strava, Nike Run Club e outras) para captura, sincronização e processamento de dados de performance dos usuários.
@@ -96,7 +107,7 @@ _janeiro de 2017 - agosto de 2017 (7 meses)_
 
 **Desenvolvedor Full Stack** — São Paulo, Brasil
 
-_julho de 2016 - janeiro de 2017 (6 meses)_
+*julho de 2016 - janeiro de 2017 (6 meses)*
 
 - Desenvolvimento, sustentação e evolução da plataforma crítica de alocação e reposição de estoque de todas as lojas C&A do Brasil, com alta disponibilidade e foco em performance.
 - Desenvolvimento de APIs RESTful e regras de negócio com Java, Spring Boot, Spring Framework, Spring Data JPA, Maven e Apache Tomcat, otimizadas para alta volumetria de dados.
@@ -109,7 +120,7 @@ _julho de 2016 - janeiro de 2017 (6 meses)_
 
 **Analista Programador Java Sênior** — São Paulo, Brasil
 
-_janeiro de 2015 - julho de 2016 (1 ano 6 meses)_
+*janeiro de 2015 - julho de 2016 (1 ano 6 meses)*
 
 - Desenvolvimento de melhorias e resolução de problemas complexos na plataforma de gerenciamento de pontos (ambiente de altíssimo volume de transações).
 - Manutenção e depuração de rotinas PL/SQL já existentes em Oracle, atuando sobre procedures e scripts legados do banco em produção.
@@ -120,7 +131,7 @@ _janeiro de 2015 - julho de 2016 (1 ano 6 meses)_
 
 **Desenvolvedor Mobile** — Rio de Janeiro, Brasil
 
-_julho de 2014 - dezembro de 2014 (5 meses)_
+*julho de 2014 - dezembro de 2014 (5 meses)*
 
 - Desenvolvimento do aplicativo móvel para abertura de chamados na prefeitura do estado do Rio de Janeiro.
 - Tecnologias utilizadas: Apache Cordova, Ionic e Webservices.
@@ -129,7 +140,7 @@ _julho de 2014 - dezembro de 2014 (5 meses)_
 
 **Desenvolvedor Java Sênior** — São Paulo, Brasil
 
-_janeiro de 2014 - julho de 2014 (6 meses)_
+*janeiro de 2014 - julho de 2014 (6 meses)*
 
 - Desenvolvimento e manutenção de aplicações para gerenciamento de chamados.
 - Tecnologias utilizadas: JavaEE, EJB, Webservices, Struts e Microsoft SQL Server.
@@ -138,7 +149,7 @@ _janeiro de 2014 - julho de 2014 (6 meses)_
 
 **Desenvolvedor Java Sênior** — São Paulo, Brasil
 
-_setembro de 2012 - setembro de 2013 (1 ano)_
+*setembro de 2012 - setembro de 2013 (1 ano)*
 
 - Desenvolvimento da ferramenta de lançamentos e ajustes contábeis para a área de Finanças do Banco Santander.
 - Criação e evolução de plataforma única para centralizar e unificar os lançamentos contábeis que antes eram realizados em diversos sistemas da área financeira.
@@ -150,7 +161,7 @@ _setembro de 2012 - setembro de 2013 (1 ano)_
 
 **Desenvolvedor Java Sênior**
 
-_junho de 2012 - agosto de 2012 (2 meses)_
+*junho de 2012 - agosto de 2012 (2 meses)*
 
 - Desenvolvimento e manutenção de aplicações utilizando JavaEE, Struts 1, EJB, JBoss, Tomcat, MySQL, SQL Server e Sybase.
 - Deployment de aplicações em servidores Linux (Tomcat e JBoss).
@@ -159,7 +170,7 @@ _junho de 2012 - agosto de 2012 (2 meses)_
 
 **Desenvolvedor Java Pleno**
 
-_março de 2012 - junho de 2012 (3 meses)_
+*março de 2012 - junho de 2012 (3 meses)*
 
 - Desenvolvimento de aplicações baseadas em BPM e SOA com ferramentas IBM (WebSphere Integration Developer, WebSphere MQ e WebSphere Process Server).
 - Desenvolvimento e customização de aplicações em JSF.
@@ -168,7 +179,7 @@ _março de 2012 - junho de 2012 (3 meses)_
 
 **Desenvolvedor Java Pleno** — São Paulo, Brasil
 
-_março de 2011 - janeiro de 2012 (10 meses)_
+*março de 2011 - janeiro de 2012 (10 meses)*
 
 - Desenvolvimento e manutenção de aplicações J2EE para a BV Financeira.
 - Tecnologias utilizadas: JBoss 5, Tomcat, Struts 1, jQuery, Spring, Sybase, Maven, XDoclet, Ant, EJB e WebServices (Axis).
@@ -177,7 +188,7 @@ _março de 2011 - janeiro de 2012 (10 meses)_
 
 **Desenvolvedor Java / PHP Pleno** — São Paulo, Brasil
 
-_agosto de 2010 - fevereiro de 2011 (6 meses)_
+*agosto de 2010 - fevereiro de 2011 (6 meses)*
 
 - Desenvolvimento e manutenção de aplicações J2EE e PHP.
 - Frameworks e ferramentas: Struts 1, JBoss, Tomcat, MySQL, ExtJS, jQuery e Smarty.
@@ -186,7 +197,7 @@ _agosto de 2010 - fevereiro de 2011 (6 meses)_
 
 **Desenvolvedor Java Pleno** — São Paulo, Brasil
 
-_agosto de 2008 - agosto de 2010 (2 anos)_
+*agosto de 2008 - agosto de 2010 (2 anos)*
 
 - Administração das aplicações de interatividade SMS da Globo (quiz, BBB) e das ferramentas de publicações SMS do IG, Abril, Motorola, Globo e RedeTV.
 - Desenvolvimento e manutenção de aplicações baseadas em J2EE, J2SE, PHP, MySQL e JMS.
@@ -196,7 +207,7 @@ _agosto de 2008 - agosto de 2010 (2 anos)_
 
 **Desenvolvedor PHP**
 
-_julho de 2006 - julho de 2008 (2 anos)_
+*julho de 2006 - julho de 2008 (2 anos)*
 
 - Desenvolvimento e administração do site de suporte da D-Link Brasil e das intranets do setor de Suporte Técnico e corporativa.
 - Manutenção de sistemas em linguagem PHP e desenvolvimento de ferramentas de controle utilizando Flash, JavaScript, Ajax, Java (J2EE, J2SE) e MySQL.
@@ -210,10 +221,10 @@ _julho de 2006 - julho de 2008 (2 anos)_
 
 ## Projetos
 
-- **Shop Commerce** [https://codedbywallace.dev/shop-commerce/] — E-commerce multi-tenant em produção: cada loja tem catálogo, carrinho, pedidos, cupons, avaliações e tema/design system próprios, com checkout transacional e baixa de estoque. Backend em Python 3.11 + FastAPI (SQLAlchemy async, Alembic, MySQL 8, Redis, JWT + Argon2); frontend em React 19 + TypeScript (React Router 7, TanStack Query, Zod, Tailwind CSS 4, shadcn/Radix, Tiptap, Vite). Pagamentos Mercado Pago/Stripe (Pix e cartão), uploads em Cloudflare R2, atribuição de tráfego (UTM/GA4), pedidos notificados por WhatsApp (Evolution API) e assistente de IA (Gemini) no admin que explica telas, escreve descrições e cadastra produtos, categorias, cupons e tema por chat. Deploy em Kubernetes (k3s) com Docker multi-stage, probes e rolling update sem downtime. _(Python, FastAPI, SQLAlchemy, MySQL, Redis, React, TypeScript, Tailwind, Docker, Kubernetes, Gemini)_
-- **Toury** (antigo RouterEasy) [https://codedbywallace.dev/toury/] — Planejador de roteiros com viés social: o usuário cria rotas com várias paradas no mapa, otimiza a ordem, compartilha, segue perfis, curte, comenta, copia roteiros e descobre roteiros por proximidade. Backend em Java 21 + Spring Boot 4 (Spring Security + JWT com refresh rotativo, JPA, Flyway, OpenAPI via springdoc, Testcontainers) com PostgreSQL 16, PostGIS (busca geográfica), pgvector (busca semântica com embeddings bge-m3 via Ollama), otimização de paradas via OSRM e moderação de comentários por LLM local (qwen2.5). App em Expo/React Native + TypeScript (NativeWind, React Navigation, TanStack Query, Zustand, react-native-maps), também publicado na web, com tipos gerados do contrato OpenAPI. Deploy em Kubernetes. _(Java, Spring Boot, PostgreSQL/PostGIS/pgvector, React Native, Expo, TypeScript, Docker, Kubernetes)_
-- **Portfólio codedbywallace.dev** [https://codedbywallace.dev/] — Laboratório contínuo de front-end em React/Vite: servidor WebSocket (Node.js) com chatbot de IA (Gemini) em tempo real e tratamento de imagens no cliente (thumbnails, filtros e conversão para ASCII via Canvas); infra própria em VPS com k3s, Nginx e SSL. _(React, Vite, Node.js, WebSocket, Gemini, Canvas, Docker, Kubernetes)_
+- **Shop Commerce** [https://codedbywallace.dev/shop-commerce/] — E-commerce multi-tenant em produção (FastAPI/Python + React 19/TypeScript): catálogo e checkout próprios por loja, pagamentos Mercado Pago/Stripe (Pix e cartão), uploads em Cloudflare R2, pedidos notificados por WhatsApp e assistente de IA (Gemini) no admin. Deploy em Kubernetes (k3s) com Docker multi-stage, probes e rolling update sem downtime. *(Python, FastAPI, React, TypeScript, MySQL, Redis, Docker, Kubernetes, Gemini)*
+- **Toury (antigo RouterEasy)** [https://codedbywallace.dev/toury/] — Planejador de roteiros com viés social: o usuário cria rotas com várias paradas no mapa, otimiza a ordem, compartilha, segue perfis, curte, comenta, copia roteiros e descobre roteiros por proximidade. Backend em Java 21 + Spring Boot 4 (Spring Security + JWT com refresh rotativo, JPA, Flyway, OpenAPI via springdoc, Testcontainers) com PostgreSQL 16, PostGIS (busca geográfica), pgvector (busca semântica com embeddings bge-m3 via Ollama), otimização de paradas via OSRM e moderação de comentários por LLM local (qwen2.5). App em Expo/React Native + TypeScript (NativeWind, React Navigation, TanStack Query, Zustand, react-native-maps), também publicado na web, com tipos gerados do contrato OpenAPI. Deploy em Kubernetes. *(Java, Spring Boot, PostgreSQL/PostGIS/pgvector, Ollama, React Native, Expo, TypeScript, Docker, Kubernetes)*
+- **Portfólio codedbywallace.dev** [https://codedbywallace.dev/] — Laboratório contínuo de front-end em React/Vite: servidor WebSocket (Node.js) com chatbot de IA (Gemini) em tempo real e tratamento de imagens no cliente (thumbnails, filtros e conversão para ASCII via Canvas); infra própria em VPS com k3s, Nginx e SSL. *(React, Vite, Node.js, WebSocket, Gemini, Canvas, Docker, Kubernetes)*
 
 ## Idiomas
 
-- **Inglês:** Intermediário
+- **Inglês:** Intermediário avançado (B2)

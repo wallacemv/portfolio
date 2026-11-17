@@ -18,11 +18,22 @@ export const experience = [
 			'Autenticação e autorização de serviços com Keycloak/OAuth (OIDC/JWT) no ecossistema.',
 			'Desenvolvimento de interfaces modernas, dinâmicas e responsivas com Angular, React e Ionic para plataformas web e mobile.',
 			'Observabilidade dos serviços do ecossistema com OpenTelemetry.',
-			'2 anos de atuação em IA generativa aplicada a produto e engenharia: integração de LLMs via MCP, criação de agentes e skills para auxiliar IAs no desenvolvimento de frontend, além de Cursor e GitHub Copilot no fluxo de trabalho, com ganhos na escrita de código limpo, refatoração e cobertura de testes.',
+			'2 anos de atuação em IA generativa aplicada a produto e engenharia: integração de LLMs via MCP, incluindo modelos locais (Ollama), criação de agentes e skills para auxiliar IAs no desenvolvimento de frontend, além de Cursor e GitHub Copilot no fluxo de trabalho, com ganhos na escrita de código limpo, refatoração e cobertura de testes.',
 			'Colaboração em decisões de arquitetura técnica e disseminação de boas práticas de desenvolvimento (Clean Code, testes e escalabilidade).',
 		],
 		stack: ['Node.js', 'TypeScript', 'NestJS', 'Java', 'Angular', 'React', 'Ionic', 'Keycloak', 'Apache Kafka', 'Azure DevOps', 'OpenTelemetry', 'Cursor', 'GitHub Copilot', 'MCP'],
 		color: '#b94e98',
+	},
+	{
+		role: 'Desenvolvedor',
+		company: 'Yavox',
+		period: 'Período não informado',
+		desc: 'Atuação com mensageria RabbitMQ em integrações entre serviços.',
+		highlights: [
+			'Atuação com mensageria RabbitMQ em integrações entre serviços.',
+		],
+		stack: ['RabbitMQ'],
+		color: '#2dd4bf',
 	},
 	{
 		role: 'Desenvolvedor de front-end',
