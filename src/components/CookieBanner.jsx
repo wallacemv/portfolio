@@ -43,7 +43,7 @@ const CookieBanner = () => {
 				boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
 			}}
 		>
-			<p style={{ margin: 0, fontSize: 15, lineHeight: 1.625, color: 'rgb(var(--text-rgb) / 0.9)' }}>
+			<p style={{ margin: 0, fontSize: 13, lineHeight: 1.625, color: 'rgb(var(--text-rgb) / 0.9)' }}>
 				Uso cookies do Google Analytics para entender como o site é usado.
 				Nada é coletado antes da sua escolha.{' '}
 				<Link to='/privacy' style={{ color: 'var(--accent-text)', textDecoration: 'underline' }}>
@@ -64,7 +64,7 @@ const CookieBanner = () => {
 						background: 'transparent',
 						color: '#fff',
 						fontFamily: 'inherit',
-						fontSize: 15,
+						fontSize: 13,
 						cursor: 'pointer',
 					}}
 				>
@@ -83,7 +83,7 @@ const CookieBanner = () => {
 						background: '#6366f1',
 						color: '#fff',
 						fontFamily: 'inherit',
-						fontSize: 15,
+						fontSize: 13,
 						fontWeight: 600,
 						cursor: 'pointer',
 					}}
