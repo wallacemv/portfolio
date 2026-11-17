@@ -14,11 +14,11 @@ export const experience = [
 		desc: 'Contrato indireto via Sysmap Solutions, alocado no cliente Sem Parar (Corpay). Produto de mobilidade de grande porte: APIs e microsserviços, autenticação, observabilidade e interfaces web/mobile.',
 		highlights: [
 			'Atuação no desenvolvimento e evolução de aplicações críticas e serviços do ecossistema Sem Parar, garantindo alta disponibilidade e performance.',
-			'Engenharia de soluções full stack robustas com Node.js, TypeScript e Java no back-end, com 8 anos de NestJS no desenho de APIs REST, módulos, injeção de dependência e microsserviços.',
+			'Engenharia de soluções full stack robustas, com back-end em Java (Spring Boot, Spring Batch) e Node.js/TypeScript (NestJS) — 8 anos no desenho de APIs REST, módulos, injeção de dependência e microsserviços —, integrações AWS (EC2, S3, Cognito, DynamoDB, Route 53) e mensageria com Apache Kafka.',
 			'Autenticação e autorização de serviços com Keycloak/OAuth (OIDC/JWT) no ecossistema.',
 			'Desenvolvimento de interfaces modernas, dinâmicas e responsivas com Angular, React e Ionic para plataformas web e mobile.',
 			'Observabilidade dos serviços do ecossistema com OpenTelemetry.',
-			'2 anos de atuação em IA generativa aplicada a produto e engenharia: integração de LLMs via MCP, construção de agentes e skills, além de Cursor e GitHub Copilot no fluxo de trabalho, com ganhos na escrita de código limpo, refatoração e cobertura de testes.',
+			'2 anos de atuação em IA generativa aplicada a produto e engenharia: integração de LLMs via MCP, criação de agentes e skills para auxiliar IAs no desenvolvimento de frontend, além de Cursor e GitHub Copilot no fluxo de trabalho, com ganhos na escrita de código limpo, refatoração e cobertura de testes.',
 			'Colaboração em decisões de arquitetura técnica e disseminação de boas práticas de desenvolvimento (Clean Code, testes e escalabilidade).',
 		],
 		stack: ['Node.js', 'TypeScript', 'NestJS', 'Java', 'Angular', 'React', 'Ionic', 'Keycloak', 'Apache Kafka', 'Azure DevOps', 'OpenTelemetry', 'Cursor', 'GitHub Copilot', 'MCP'],

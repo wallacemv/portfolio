@@ -17,15 +17,15 @@ Full Stack Sênior — desenvolvimento de sistemas escaláveis de alta disponibi
 
 ## Resumo
 
-Com mais de 15 anos de experiência no desenvolvimento de softwares escaláveis, atuo como Desenvolvedor Full Stack Sênior, focado na criação de ecossistemas robustos e de alta disponibilidade. Ao longo da minha carreira, colaborei com grandes marcas dos setores de tecnologia, telecomunicações, financeiro, varejo e serviços, como Sem Parar, Banco Santander, Vivo, C&A e Movile. Minha bagagem técnica combina a agilidade do ecossistema JavaScript/TypeScript (Node.js, NestJS, Angular, React, Ionic) com a robustez e a arquitetura corporativa dos ecossistemas Java e Python. Atuo há 8 anos com NestJS no desenho de APIs e microsserviços e há 2 anos me dedicando à IA generativa aplicada a produto e pipelines de engenharia, integrando LLMs via MCP, agentes e automação de testes e documentação.
+Com mais de 15 anos de experiência no desenvolvimento de softwares escaláveis, atuo como Desenvolvedor Full Stack Sênior, focado na criação de ecossistemas robustos e de alta disponibilidade. Ao longo da minha carreira, colaborei com grandes marcas dos setores de tecnologia, telecomunicações, financeiro, varejo e serviços, como Sem Parar, Banco Santander, Vivo, C&A e Movile. Minha bagagem técnica combina a agilidade do ecossistema JavaScript/TypeScript (Node.js, NestJS, Angular, React, Ionic) com a robustez e a arquitetura corporativa dos ecossistemas Java (Spring Boot, Spring Batch) e Python. Atuo há 8 anos com NestJS no desenho de APIs REST, módulos, injeção de dependência e microsserviços, com integrações AWS (EC2, S3, Cognito, DynamoDB, Route 53) e mensageria com Apache Kafka. Há 2 anos me dedico à IA generativa aplicada a produto e pipelines de engenharia, integrando LLMs via MCP, criando agentes e skills para auxiliar IAs no desenvolvimento de frontend e automatizando testes e documentação.
 
 ## Principais competências
 
-- **Backend:** Node.js, NestJS, TypeScript, Java (JavaEE, Spring), Python, RESTful APIs, Microserviços, Swagger, OpenAPI, Keycloak, OAuth/OIDC, Amazon Cognito
+- **Backend:** Node.js, NestJS, TypeScript, Java (JavaEE, Spring, Spring Boot, Spring Batch), Python, RESTful APIs, Microserviços, Swagger, OpenAPI, Keycloak, OAuth/OIDC, Amazon Cognito
 - **Frontend:** Angular, NgRx, Ionic, React, React Native, JavaScript, HTML5, CSS3, Sass
 - **Data:** Oracle, SQL Server, MySQL, Tomcat, JBoss, Redis, RabbitMQ, Apache Kafka
-- **IA:** LLM Engineering, MCP (Model Context Protocol), Agentes de IA, Cursor, GitHub Copilot, Automação de testes com IA
-- **Infraestrutura:** Docker, Kubernetes, AWS, OpenShift, Azure DevOps
+- **IA:** LLM Engineering, MCP (Model Context Protocol), Criação de agentes e skills para IA em frontend, Cursor, GitHub Copilot, Automação de testes com IA
+- **Infraestrutura:** Docker, Kubernetes, AWS (EC2, S3, Cognito, DynamoDB, Route 53), OpenShift, Azure DevOps
 
 ## Experiência
 
