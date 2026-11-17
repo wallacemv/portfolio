@@ -25,17 +25,6 @@ export const experience = [
 		color: '#b94e98',
 	},
 	{
-		role: 'Desenvolvedor',
-		company: 'Yavox',
-		period: 'Período não informado',
-		desc: 'Atuação com mensageria RabbitMQ em integrações entre serviços.',
-		highlights: [
-			'Atuação com mensageria RabbitMQ em integrações entre serviços.',
-		],
-		stack: ['RabbitMQ'],
-		color: '#2dd4bf',
-	},
-	{
 		role: 'Desenvolvedor de front-end',
 		company: 'HDI Seguros · freelance',
 		period: 'Mar 2021 - Abr 2021 · 2 meses',

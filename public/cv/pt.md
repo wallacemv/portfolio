@@ -17,7 +17,7 @@ Full Stack Sênior — desenvolvimento de sistemas escaláveis de alta disponibi
 
 ## Resumo
 
-Com mais de 15 anos de experiência no desenvolvimento de softwares escaláveis, atuo como Desenvolvedor Full Stack Sênior, focado na criação de ecossistemas robustos e de alta disponibilidade. Ao longo da minha carreira, colaborei com grandes marcas dos setores de tecnologia, telecomunicações, financeiro, varejo e serviços, como Sem Parar, BV Financeira, Banco Santander, Vivo, C&A, Oi, Yavox e Movile. Minha bagagem técnica combina a agilidade do ecossistema JavaScript/TypeScript (Node.js, NestJS, Angular, React, Ionic) com a robustez e a arquitetura corporativa dos ecossistemas Java (Spring Boot, Spring Batch, Java Concurrency API) e Python. Atuo há 8 anos com NestJS no desenho de APIs REST, módulos, injeção de dependência e microsserviços, com integrações AWS (EC2, S3, Cognito, DynamoDB, Route 53) e mensageria com RabbitMQ e Apache Kafka. Há 2 anos me dedico à IA generativa aplicada a produto e pipelines de engenharia, integrando LLMs via MCP — incluindo modelos locais (Ollama) —, criando agentes e skills para auxiliar IAs no desenvolvimento de frontend e automatizando testes e documentação.
+Com mais de 15 anos de experiência no desenvolvimento de softwares escaláveis, atuo como Desenvolvedor Full Stack Sênior, focado na criação de ecossistemas robustos e de alta disponibilidade. Ao longo da minha carreira, colaborei com grandes marcas dos setores de tecnologia, telecomunicações, financeiro, varejo e serviços, como Sem Parar, BV Financeira, Banco Santander, Vivo, C&A, Oi e Movile. Minha bagagem técnica combina a agilidade do ecossistema JavaScript/TypeScript (Node.js, NestJS, Angular, React, Ionic) com a robustez e a arquitetura corporativa dos ecossistemas Java (Spring Boot, Spring Batch, Java Concurrency API) e Python. Atuo há 8 anos com NestJS no desenho de APIs REST, módulos, injeção de dependência e microsserviços, com integrações AWS (EC2, S3, Cognito, DynamoDB, Route 53) e mensageria com RabbitMQ e Apache Kafka. Há 2 anos me dedico à IA generativa aplicada a produto e pipelines de engenharia, integrando LLMs via MCP — incluindo modelos locais (Ollama) —, criando agentes e skills para auxiliar IAs no desenvolvimento de frontend e automatizando testes e documentação.
 
 ## Principais competências
 
@@ -60,14 +60,6 @@ Com mais de 15 anos de experiência no desenvolvimento de softwares escaláveis,
 - Observabilidade dos serviços com OpenTelemetry.
 - Testes automatizados: unitários, integração e E2E em Angular, testes em NestJS e testes com JUnit (Java). Aplicação de boas práticas (Clean Code, SOLID), CI/CD e versionamento com Git.
 - Atuação em IA generativa aplicada a produto e engenharia: integração de LLMs via MCP (Model Context Protocol), incluindo modelos locais (Ollama), criação de agentes e skills para auxiliar IAs no desenvolvimento de frontend, uso de Cursor e GitHub Copilot.
-
-### Yavox
-
-**Desenvolvedor**
-
-*Período não informado*
-
-- Atuação com mensageria RabbitMQ em integrações entre serviços.
 
 ### HDI Seguros
 

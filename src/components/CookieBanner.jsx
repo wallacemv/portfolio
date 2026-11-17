@@ -63,6 +63,8 @@ const CookieBanner = () => {
 						border: '1px solid rgba(255,255,255,0.3)',
 						background: 'transparent',
 						color: '#fff',
+						fontFamily: 'inherit',
+						fontSize: 15,
 						cursor: 'pointer',
 					}}
 				>
@@ -80,6 +82,8 @@ const CookieBanner = () => {
 						border: 0,
 						background: '#6366f1',
 						color: '#fff',
+						fontFamily: 'inherit',
+						fontSize: 15,
 						fontWeight: 600,
 						cursor: 'pointer',
 					}}
